@@ -1,0 +1,33 @@
+---
+server:
+  port: 8080
+  servlet:
+    context-path: /portal
+---
+spring:
+  profiles: default
+datasource:
+  apigateway:
+    defaultSchema: CREDIT_SCORING
+    url: jdbc:oracle:thin:@127.0.0.1:1521:dev
+    username: CREDIT_SCORING
+    password: gHrzCa7857459hgUR9
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    maxPoolSize: 10
+    connectionTimeout: 30000
+    idleTimeout: 600000
+    maxLifetime: 1800000
+    hibernate:
+      hbm2ddl.method: none
+      show_sql: true
+      format_sql: true
+      dialect: org.hibernate.dialect.Oracle10gDialect
+      timeout: 2000
+    threadCorePool: 10
+    threadMaxPoolSize: 50
+    swaggerEnable: true
+api-responses:
+  return-errors: true
+jwt:
+  secret: ACD44C
+  timeout: 300000
