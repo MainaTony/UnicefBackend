@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.controller;
 
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.entity.DataSource;
@@ -137,9 +138,9 @@ public class DataSourceController {
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             if(user != null) {
-                dataSource.setCreatedBy(user.getId());
+                dataSource.setCreatedBy(BigInteger.valueOf(user.getId()));
                 dataSource.setOrganisationIdFk(user.getOrganisationIdFk());
             }
             if(dataSource.getStatus() == null)
@@ -184,7 +185,7 @@ public class DataSourceController {
                 return new ResponseEntity<>(apiResponse, responseStatus);
             }
             DataSource dataSourceEntity = dataSourceSearch.get();
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             /*if(user != null)
                 dataSourceEntity.setUpdatedBy(user.getId());*/
 

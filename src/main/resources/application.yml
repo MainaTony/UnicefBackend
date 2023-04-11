@@ -6,22 +6,42 @@ server:
 ---
 spring:
   profiles: default
+flyway:
+  baseline-on-migration: true
+  url: jdbc:mysql://localhost:3360/credit_scoring
+  user: root
+  password: gHrzCa7857459hgUR9
+  schemas: migrations
+  locations: classpath:src/main/resources/db/migration
+  enabled: true
 datasource:
   apigateway:
-    defaultSchema: CREDIT_SCORING
-    url: jdbc:oracle:thin:@127.0.0.1:1521:dev
-    username: CREDIT_SCORING
+    defaultSchema: credit_scoring
+#    CREDIT_SCORING
+    url: jdbc:mysql://localhost:3360/credit_scoring
+#    jdbc:oracle:thin:@127.0.0.1:1521:dev
+    username: root
+#    CREDIT_SCORING
     password: gHrzCa7857459hgUR9
-    driverClassName: oracle.jdbc.driver.OracleDriver
+#    gHrzCa7857459hgUR9
+#    driverClassName: oracle.jdbc.driver.OracleDriver
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+    encryptionKey: P1n0KaMHM0VzE1nA
     maxPoolSize: 10
     connectionTimeout: 30000
     idleTimeout: 600000
     maxLifetime: 1800000
     hibernate:
       hbm2ddl.method: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+      #      none update
       show_sql: true
       format_sql: true
-      dialect: org.hibernate.dialect.Oracle10gDialect
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#      org.hibernate.dialect.Oracle10gDialect
       timeout: 2000
     threadCorePool: 10
     threadMaxPoolSize: 50
@@ -31,3 +51,4 @@ api-responses:
 jwt:
   secret: ACD44C
   timeout: 300000
+

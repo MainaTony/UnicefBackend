@@ -2,7 +2,9 @@ package com.pinnoserv.portal.service;
 
 import java.util.ArrayList;
 
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
+import com.pinnoserv.portal.repositories.ApiUserRepository;
 import com.pinnoserv.portal.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +20,35 @@ public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
-    UserRepository userService;
+    ApiUserRepository apiUserRepository;
+
+//    @Transactional(readOnly = true)
+//    @Override
+//    public UserDetails loadUserByUsername(String username)
+//            throws UsernameNotFoundException {
+//        LOGGER.info("GETTING USER PASSED ########" + username);
+//        Users user = userService.findByUsername(username);
+//        LOGGER.info("User : " + user);
+//        if (user == null) {
+//            LOGGER.info("User not found");
+//            throw new UsernameNotFoundException("Username not found");
+//        }
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),new ArrayList<>());
+//    }
 
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         LOGGER.info("GETTING USER PASSED ########" + username);
-        Users user = userService.findByUsername(username);
+        ApiUsers user = apiUserRepository.findByUsername(username);
         LOGGER.info("User : " + user);
+
         if (user == null) {
             LOGGER.info("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),new ArrayList<>());
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 }

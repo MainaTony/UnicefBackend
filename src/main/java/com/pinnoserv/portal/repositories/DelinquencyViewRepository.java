@@ -15,5 +15,6 @@ import java.util.Optional;
 public interface DelinquencyViewRepository extends JpaRepository<DeliquencyModelView, BigInteger> {
     Optional<DeliquencyModelView> findByDeliquencyModelId(BigInteger id);
 
+
     List<DeliquencyModelView> findAllByProductIdFk(BigInteger productId);
 }

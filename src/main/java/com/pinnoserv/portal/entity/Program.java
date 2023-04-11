@@ -16,6 +16,12 @@ public class Program {
     private String intrash;
     private BigInteger status;
     private BigInteger dataSourceIdFk;
+
+    private String dataSource;
+
+    private String organisation;
+
+    private BigInteger organisationId;
     private String description;
     /*private Collection<CreditScore> creditScoresByProgramId;
     private Collection<CustomerSubscription> customerSubscriptionsByProgramId;
@@ -34,6 +40,25 @@ public class Program {
 
     public void setProgramId(BigInteger programId) {
         this.programId = programId;
+    }
+
+    @Basic
+    @Column(name = "ORGANISATION")
+    public String getorganisation() {
+        return organisation;
+    }
+
+    public void setorganisation(String organisation) {
+        this.organisation = organisation;
+    }
+
+    @Basic
+    @Column(name = "ORGANISATION_ID")
+    public BigInteger getorganisationId() {
+        return organisationId;
+    }
+    public void setorganisationId(String setorganisationId) {
+        this.organisationId = organisationId;
     }
 
     @Basic
@@ -131,12 +156,12 @@ public class Program {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Program program = (Program) o;
-        return programId == program.programId && organisationIdFk == program.organisationIdFk && dataSourceIdFk == program.dataSourceIdFk && Objects.equals(name, program.name) && Objects.equals(primaryIdentityType, program.primaryIdentityType) && Objects.equals(dateCreated, program.dateCreated) && Objects.equals(createdBy, program.createdBy) && Objects.equals(intrash, program.intrash) && Objects.equals(status, program.status) && Objects.equals(description, program.description);
+        return programId == program.programId && organisationIdFk == program.organisationIdFk && dataSourceIdFk == program.dataSourceIdFk && Objects.equals(name, program.name) && Objects.equals(primaryIdentityType, program.primaryIdentityType) && Objects.equals(dateCreated, program.dateCreated) && Objects.equals(createdBy, program.createdBy) && Objects.equals(intrash, program.intrash) && Objects.equals(status, program.status) && Objects.equals(description, program.description) && Objects.equals(organisation, program.organisation) && Objects.equals(organisationId, program.organisationId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(programId, organisationIdFk, name, primaryIdentityType, dateCreated, createdBy, intrash, status, dataSourceIdFk, description);
+        return Objects.hash(programId, organisationIdFk, name, primaryIdentityType, dateCreated, createdBy, intrash, status, dataSourceIdFk, description, organisation, organisationId);
     }
 
     /*@OneToMany(mappedBy = "programByProgramIdFk")

@@ -1,6 +1,7 @@
 package com.pinnoserv.portal.controller;
 
 import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.ScoreCategory;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.repositories.ScoreCategoryRepository;
@@ -93,7 +94,7 @@ public class ScoreCategoryController {
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             if(user != null) {
             }
             scoreCategory.setIntrash("NO");
@@ -134,7 +135,7 @@ public class ScoreCategoryController {
                 return new ResponseEntity<>(apiResponse, responseStatus);
             }
             ScoreCategory scoreCategoryEntity = scoreCategorySearch.get();
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             /*if(user != null)
                 scoreCategoryEntity.setUpdatedBy(user.getId());*/
             scoreCategoryEntity.setName(scoreCategory.getName());

@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.repositories;
 
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,17 +17,23 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {
+//    Optional<Users> findById(Integer id);
     Optional<Users> findById(Integer id);
 
+
+//    Users findByUsernameAndStatus(String username, Integer status);
     Users findByUsernameAndStatus(String username, Integer status);
 
-    Users findByUsername(String username);
+//    Users findByUsername(String username);
+    ApiUsers findByUsername(String username);
 
     Boolean existsByUsername(String username);
 
-    Optional<Users> findByUsernameAndIntrashAndStatus(String username, String intrash, BigInteger status);
+//    Optional<Users> findByUsernameAndIntrashAndStatus(String username, String intrash, BigInteger status);
+    Optional<ApiUsers> findByUsernameAndIntrashAndStatus(String username, String intrash, BigInteger status);
 
-    Optional<Users> findByValidationCodeAndIntrashAndStatus(String username, String intrash, BigInteger status);
+//    Optional<Users> findByValidationCodeAndIntrashAndStatus(String username, String intrash, BigInteger status);
+    Optional<ApiUsers> findByValidationCodeAndIntrashAndStatus(String username, String intrash, BigInteger status);
 
     @Transactional()
     @Modifying(flushAutomatically = true)

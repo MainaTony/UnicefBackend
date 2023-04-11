@@ -91,7 +91,7 @@ public class Jpaconfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
-        factoryBean.setPackagesToScan(new String[]{"com.tangazoletu.portal.entity", "com.tangazoletu.portal.view"});
+        factoryBean.setPackagesToScan(new String[]{"com.pinnoserv.portal.entity", "com.pinnoserv.portal.view"});
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         factoryBean.setJpaProperties(jpaProperties());
         return factoryBean;

@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.controller;
 
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Product;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.custommodels.ApiResponse;
@@ -137,9 +138,9 @@ public class ProductController {
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             if(user != null) {
-                product.setCreatedBy(user.getId());
+                product.setCreatedBy(BigInteger.valueOf(user.getId()));
             }
             product.setStatus(new BigInteger("1"));
             product.setDateCreated(new Date(System.currentTimeMillis()));
@@ -181,7 +182,7 @@ public class ProductController {
                 return new ResponseEntity<>(apiResponse, responseStatus);
             }
             Product productEntity = productSearch.get();
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             /*if(user != null)
                 product.setUpdatedBy(user.getId());*/
             productEntity.setMinAmount(product.getMinAmount());

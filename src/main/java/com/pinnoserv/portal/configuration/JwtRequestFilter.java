@@ -1,6 +1,9 @@
 package com.pinnoserv.portal.configuration;
 
+import com.pinnoserv.portal.controller.AuthController;
 import com.pinnoserv.portal.service.CustomUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,8 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
@@ -41,6 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityConfig.sendError(response, e, HttpServletResponse.SC_FORBIDDEN, "Not authorized resources");
             }
         } else {
+            LOG.info("------------------JWT request Token headers Status {}------------------", request.getHeader("Authorization"));
             logger.warn("JWT Token does not begin with Bearer String");
         }
 
@@ -53,6 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
+           
         }
         chain.doFilter(request, response);
     }

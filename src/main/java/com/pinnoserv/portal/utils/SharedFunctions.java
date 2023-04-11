@@ -7,6 +7,7 @@ import java.security.Key;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import com.google.gson.Gson;
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.configuration.JwtRequestFilter;
 import com.pinnoserv.portal.configuration.JwtToken;
@@ -268,8 +269,12 @@ public class SharedFunctions {
         return response;
     }
 
-    public Users verifyToken(String requestTokenHeader) {
-        Users user = null;
+    public String getSecretKey(){
+        return Crypt.encodeKey(environment.getRequiredProperty("datasource.apigateway.encryptionKey"));
+    }
+
+    public ApiUsers verifyToken(String requestTokenHeader) {
+        ApiUsers user = null;
         String username = null;
         String token = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {

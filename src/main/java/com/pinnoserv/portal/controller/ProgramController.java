@@ -1,6 +1,7 @@
 package com.pinnoserv.portal.controller;
 
 import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.repositories.ProgramRepository;
 import com.pinnoserv.portal.repositories.ProgramViewRepository;
@@ -137,9 +138,9 @@ public class ProgramController {
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             if(user != null) {
-                program.setCreatedBy(user.getId());
+                program.setCreatedBy(BigInteger.valueOf(user.getId()));
                 program.setOrganisationIdFk(user.getOrganisationIdFk());
             }
             if(program.getStatus() == null)
@@ -183,7 +184,7 @@ public class ProgramController {
                 return new ResponseEntity<>(apiResponse, responseStatus);
             }
             Program programEntity = programSearch.get();
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             /*if(user != null)
                 program.setUpdatedBy(user.getId());*/
             programEntity.setDataSourceIdFk(program.getDataSourceIdFk());

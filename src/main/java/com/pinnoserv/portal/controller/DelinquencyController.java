@@ -1,6 +1,7 @@
 package com.pinnoserv.portal.controller;
 
 import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.repositories.DelinquencyRepository;
 import com.pinnoserv.portal.repositories.DelinquencyViewRepository;
@@ -137,7 +138,7 @@ public class DelinquencyController {
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             if(user != null) {
             }
             delinquencyModel.setIntrash("NO");
@@ -178,7 +179,7 @@ public class DelinquencyController {
                 return new ResponseEntity<>(apiResponse, responseStatus);
             }
             DelinquencyModel delinquencyEntity = delinquencySearch.get();
-            Users user = sharedFunctions.verifyToken(Authorization);
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
             /*if(user != null)
                 delinquencyEntity.setUpdatedBy(user.getId());*/
             delinquencyEntity.setProductIdFk(delinquencyModel.getProductIdFk());

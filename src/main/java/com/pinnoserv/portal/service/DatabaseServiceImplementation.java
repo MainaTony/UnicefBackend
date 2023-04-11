@@ -3,6 +3,7 @@ package com.pinnoserv.portal.service;
 import java.util.*;
 import javax.transaction.Transactional;
 
+import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.repositories.CrudService;
 import com.pinnoserv.portal.repositories.UserRepository;
