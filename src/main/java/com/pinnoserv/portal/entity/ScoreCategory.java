@@ -7,25 +7,47 @@ import java.util.Objects;
 @Entity
 @Table(name = "SCORE_CATEGORY")
 public class ScoreCategory {
+    @Id
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCORE_CATEGORY_SEQ")
+//    @SequenceGenerator(name = "SCORE_CATEGORY_SEQ", sequenceName = "SCORE_CATEGORY_SEQ", allocationSize = 1)
+    @Column(name = "SCORE_CATEGORY_ID")
     private BigInteger id;
+    @Basic
+    @Column(name = "NAME")
     private String name;
+    @Basic
+    @Column(name = "PRODUCT_ID_FK")
     private BigInteger productIdFk;
+    @Basic
+    @Column(name = "CONTRIBUTION")
     private BigInteger contribution;
+    @Basic
+    @Column(name = "USED")
     private String used;
+    @Basic
+    @Column(name = "SC_MASTER_ID_FK")
     private BigInteger scMasterIdFk;
+    @Basic
+    @Column(name = "APPROVAL_STATUS")
     private BigInteger approvalStatus;
+    @Basic
+    @Column(name = "APPROVAL_LEVEL")
     private BigInteger approvalLevel;
+    @Basic
+    @Column(name = "MAX_APPROVALS")
     private BigInteger maxApprovals;
+    @Basic
+    @Column(name = "UPDATE_CYCLE")
     private BigInteger updateCycle;
+    @Basic
+    @Column(name = "INTRASH")
     private String intrash;
     /*private Collection<ScoreParam> scoreParamsById;
     private ScoreCategoryMaster scoreCategoryMasterByScMasterIdFk;*/
 
-    @Id
-    @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCORE_CATEGORY_SEQ")
-    @SequenceGenerator(name = "SCORE_CATEGORY_SEQ", sequenceName = "SCORE_CATEGORY_SEQ", allocationSize = 1)
-    @Column(name = "ID")
+
     public BigInteger getId() {
         return id;
     }
@@ -34,8 +56,7 @@ public class ScoreCategory {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "NAME")
+
     public String getName() {
         return name;
     }
@@ -44,8 +65,7 @@ public class ScoreCategory {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "PRODUCT_ID_FK")
+
     public BigInteger getProductIdFk() {
         return productIdFk;
     }
@@ -54,8 +74,7 @@ public class ScoreCategory {
         this.productIdFk = productIdFk;
     }
 
-    @Basic
-    @Column(name = "CONTRIBUTION")
+
     public BigInteger getContribution() {
         return contribution;
     }
@@ -64,8 +83,7 @@ public class ScoreCategory {
         this.contribution = contribution;
     }
 
-    @Basic
-    @Column(name = "USED")
+
     public String getUsed() {
         return used;
     }
@@ -74,8 +92,7 @@ public class ScoreCategory {
         this.used = used;
     }
 
-    @Basic
-    @Column(name = "SC_MASTER_ID_FK")
+
     public BigInteger getScMasterIdFk() {
         return scMasterIdFk;
     }
@@ -84,8 +101,7 @@ public class ScoreCategory {
         this.scMasterIdFk = scMasterIdFk;
     }
 
-    @Basic
-    @Column(name = "APPROVAL_STATUS")
+
     public BigInteger getApprovalStatus() {
         return approvalStatus;
     }
@@ -94,8 +110,7 @@ public class ScoreCategory {
         this.approvalStatus = approvalStatus;
     }
 
-    @Basic
-    @Column(name = "APPROVAL_LEVEL")
+
     public BigInteger getApprovalLevel() {
         return approvalLevel;
     }
@@ -104,8 +119,7 @@ public class ScoreCategory {
         this.approvalLevel = approvalLevel;
     }
 
-    @Basic
-    @Column(name = "MAX_APPROVALS")
+
     public BigInteger getMaxApprovals() {
         return maxApprovals;
     }
@@ -114,8 +128,7 @@ public class ScoreCategory {
         this.maxApprovals = maxApprovals;
     }
 
-    @Basic
-    @Column(name = "UPDATE_CYCLE")
+
     public BigInteger getUpdateCycle() {
         return updateCycle;
     }
@@ -124,8 +137,7 @@ public class ScoreCategory {
         this.updateCycle = updateCycle;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
