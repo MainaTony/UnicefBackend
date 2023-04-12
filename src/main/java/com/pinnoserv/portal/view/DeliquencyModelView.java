@@ -8,24 +8,49 @@ import java.util.Objects;
 @Entity
 @Table(name = "DELIQUENCY_MODEL_VIEW")
 public class DeliquencyModelView {
-    private BigInteger deliquencyModelId;
-    private BigInteger productIdFk;
-    private String productName;
-    private String action;
-    private BigInteger period;
-    private BigInteger penalty;
-    private String penaltyType;
-    private String intrash;
-    private BigInteger candefault;
-    private BigInteger canblacklist;
-    private BigInteger daysafterdefault;
-    private Short daystosuspension;
-    private BigInteger cansuspend;
-
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "DELIQUENCY_MODEL_ID")
+    private BigInteger deliquencyModelId;
+    @Basic
+    @Column(name = "PRODUCT_ID_FK")
+    private BigInteger productIdFk;
+//    @Basic
+//    @Column(name = "PRODUCT_NAME")
+    private String productName;
+    @Basic
+    @Column(name = "ACTION")
+    private String action;
+    @Basic
+    @Column(name = "PERIOD")
+    private BigInteger period;
+    @Basic
+    @Column(name = "PENALTY")
+    private BigInteger penalty;
+    @Basic
+    @Column(name = "PENALTY_TYPE")
+    private String penaltyType;
+    @Basic
+    @Column(name = "INTRASH")
+    private String intrash;
+    @Basic
+    @Column(name = "CANDEFAULT")
+    private BigInteger candefault;
+    @Basic
+    @Column(name = "CANBLACKLIST")
+    private BigInteger canblacklist;
+    @Basic
+    @Column(name = "DAYS_AFTER_DEFAULT")
+    private BigInteger daysafterdefault;
+    @Basic
+    @Column(name = "DAYS_TO_SUSPENSION")
+    private Short daystosuspension;
+    @Basic
+    @Column(name = "CANSUSPEND")
+    private BigInteger cansuspend;
+
+
     public BigInteger getDeliquencyModelId() {
         return deliquencyModelId;
     }
@@ -34,8 +59,7 @@ public class DeliquencyModelView {
         this.deliquencyModelId = deliquencyModelId;
     }
 
-    @Basic
-    @Column(name = "PRODUCT_ID_FK")
+
     public BigInteger getProductIdFk() {
         return productIdFk;
     }
@@ -44,8 +68,7 @@ public class DeliquencyModelView {
         this.productIdFk = productIdFk;
     }
 
-    @Basic
-    @Column(name = "PRODUCT_NAME")
+
     public String getProductName() {
         return productName;
     }
@@ -54,8 +77,7 @@ public class DeliquencyModelView {
         this.productName = productName;
     }
 
-    @Basic
-    @Column(name = "ACTION")
+
     public String getAction() {
         return action;
     }
@@ -64,8 +86,7 @@ public class DeliquencyModelView {
         this.action = action;
     }
 
-    @Basic
-    @Column(name = "PERIOD")
+
     public BigInteger getPeriod() {
         return period;
     }
@@ -74,8 +95,7 @@ public class DeliquencyModelView {
         this.period = period;
     }
 
-    @Basic
-    @Column(name = "PENALTY")
+
     public BigInteger getPenalty() {
         return penalty;
     }
@@ -84,8 +104,7 @@ public class DeliquencyModelView {
         this.penalty = penalty;
     }
 
-    @Basic
-    @Column(name = "PENALTY_TYPE")
+
     public String getPenaltyType() {
         return penaltyType;
     }
@@ -94,8 +113,7 @@ public class DeliquencyModelView {
         this.penaltyType = penaltyType;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
@@ -104,8 +122,7 @@ public class DeliquencyModelView {
         this.intrash = intrash;
     }
 
-    @Basic
-    @Column(name = "CANDEFAULT")
+
     public BigInteger getCandefault() {
         return candefault;
     }
@@ -114,8 +131,7 @@ public class DeliquencyModelView {
         this.candefault = candefault;
     }
 
-    @Basic
-    @Column(name = "CANBLACKLIST")
+
     public BigInteger getCanblacklist() {
         return canblacklist;
     }
@@ -124,8 +140,7 @@ public class DeliquencyModelView {
         this.canblacklist = canblacklist;
     }
 
-    @Basic
-    @Column(name = "DAYSAFTERDEFAULT")
+
     public BigInteger getDaysafterdefault() {
         return daysafterdefault;
     }
@@ -134,8 +149,7 @@ public class DeliquencyModelView {
         this.daysafterdefault = daysafterdefault;
     }
 
-    @Basic
-    @Column(name = "DAYSTOSUSPENSION")
+
     public Short getDaystosuspension() {
         return daystosuspension;
     }
@@ -144,8 +158,7 @@ public class DeliquencyModelView {
         this.daystosuspension = daystosuspension;
     }
 
-    @Basic
-    @Column(name = "CANSUSPEND")
+
     public BigInteger getCansuspend() {
         return cansuspend;
     }
