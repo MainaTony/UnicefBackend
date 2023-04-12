@@ -39,10 +39,10 @@ public class DelinquencyModel {
     @Column(name = "CANBLACKLIST")
     private BigInteger canblacklist;
     @Basic
-    @Column(name = "DAYSAFTERDEFAULT")
+    @Column(name = "DAYS_AFTER_DEFAULT")
     private BigInteger daysafterdefault;
     @Basic
-    @Column(name = "DAYSTOSUSPENSION")
+    @Column(name = "DAYS_TO_SUSPENSION")
     private BigInteger daystosuspension;
     @Basic
     @Column(name = "CANSUSPEND")
