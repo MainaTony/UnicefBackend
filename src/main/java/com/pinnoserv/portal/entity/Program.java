@@ -44,9 +44,9 @@ public class Program {
     @Basic
     @Column(name = "DATA_SOURCE")
     private String dataSource;
-    @Basic
-    @Column(name = "ORGANISATION_ID")
-    private BigInteger organisationId;
+//    @Basic
+//    @Column(name = "ORGANISATION_ID")
+//    private BigInteger organisationId;
     @Basic
     @Column(name = "ORGANISATION")
     private String organisation;
@@ -77,12 +77,12 @@ public class Program {
     }
 
 
-    public BigInteger getorganisationId() {
-        return organisationId;
-    }
-    public void setorganisationId(String setorganisationId) {
-        this.organisationId = organisationId;
-    }
+//    public BigInteger getorganisationId() {
+//        return organisationId;
+//    }
+//    public void setorganisationId(String setorganisationId) {
+//        this.organisationId = organisationId;
+//    }
 
 
     public BigInteger getOrganisationIdFk() {
@@ -183,7 +183,7 @@ public class Program {
 
     @Override
     public int hashCode() {
-        return Objects.hash(programId, organisationIdFk, name, primaryIdentityType, dateCreated, createdBy, intrash, dataSource, status, dataSourceIdFk, description, organisation, organisationId);
+        return Objects.hash(programId, organisationIdFk, name, primaryIdentityType, dateCreated, createdBy, intrash, dataSource, status, dataSourceIdFk, description, organisation);
     }
 
     /*@OneToMany(mappedBy = "programByProgramIdFk")
