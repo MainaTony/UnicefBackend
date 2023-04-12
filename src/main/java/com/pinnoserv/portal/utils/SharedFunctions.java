@@ -11,6 +11,7 @@ import com.pinnoserv.portal.entity.ApiUsers;
 import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.configuration.JwtRequestFilter;
 import com.pinnoserv.portal.configuration.JwtToken;
+import com.pinnoserv.portal.repositories.ApiUserRepository;
 import com.pinnoserv.portal.repositories.UserRepository;
 import com.pinnoserv.portal.service.DatabaseService;
 import io.jsonwebtoken.JwtBuilder;
@@ -41,6 +42,9 @@ public class SharedFunctions {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ApiUserRepository apiUserRepository;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -287,7 +291,7 @@ public class SharedFunctions {
         } else {
             LOGGER.warn("JWT Token does not begin with Bearer String");
         }
-        user = userRepository.findByUsername(username);
+        user = apiUserRepository.findByUsername(username);
         LOGGER.info("User : " + user);
         return  user;
     }

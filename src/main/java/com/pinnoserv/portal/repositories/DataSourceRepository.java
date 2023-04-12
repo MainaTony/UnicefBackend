@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author mwendwakelvin
  */
 @Repository
-public interface DataSourceRepository extends JpaRepository<DataSource, BigInteger> {
+public interface DataSourceRepository extends JpaRepository<DataSource, Integer> {
     Optional<DataSource> findByDataSourceId(BigInteger id);
 
     List<DataSource> findAllByOrganisationIdFk(BigInteger organisationId);

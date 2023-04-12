@@ -138,7 +138,11 @@ public class DataSourceController {
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
+            LOG.info("---------------------------ACCESSING THE APIUSER TABLE--------------------------------");
+
             ApiUsers user = sharedFunctions.verifyToken(Authorization);
+            LOG.info("---------------------------AFTER ACCESSING THE APIUSER TABLE--------------------------------");
+
             if(user != null) {
                 dataSource.setCreatedBy(BigInteger.valueOf(user.getId()));
                 dataSource.setOrganisationIdFk(user.getOrganisationIdFk());

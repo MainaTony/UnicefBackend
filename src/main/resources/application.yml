@@ -33,6 +33,7 @@ datasource:
     maxLifetime: 1800000
     hibernate:
       hbm2ddl.method: none
+#      use-new-id-generator-mappings: false
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

@@ -9,32 +9,73 @@ import java.util.Objects;
 @Entity
 @Table(name = "DATA_SOURCE_VIEW")
 public class DataSourceView {
-    private BigInteger dataSourceId;
-    private String name;
-    private String dataSourceUrl;
-    private Date dateCreated;
-    private String createdBy;
-    private String intrash;
-    private String excelUrl;
-    private String dataSourceType;
-    private String dataUsage;
-    private String status;
-    private String action;
-    private String excelPath;
-    private Date expiry;
-    private BigInteger kycId;
-    private BigInteger maxApprovals;
-    private BigInteger approvalStatus;
-    private BigInteger approvalLevel;
-    private BigInteger updateCycle;
-    private BigInteger scoringDataSize;
-    private String organisation;
-    private BigInteger organisationIdFk;
-
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "DATA_SOURCE_ID")
+    private BigInteger dataSourceId;
+    @Basic
+    @Column(name = "NAME")
+    private String name;
+    @Basic
+    @Column(name = "DATA_SOURCE_URL")
+    private String dataSourceUrl;
+    @Basic
+    @Column(name = "DATE_CREATED")
+    private Date dateCreated;
+    @Basic
+    @Column(name = "CREATED_BY")
+    private String createdBy;
+    @Basic
+    @Column(name = "INTRASH")
+    private String intrash;
+    @Basic
+    @Column(name = "EXCEL_URL")
+    private String excelUrl;
+    @Basic
+    @Column(name = "DATA_SOURCE_TYPE")
+    private String dataSourceType;
+    @Basic
+    @Column(name = "DATA_USAGE")
+    private String dataUsage;
+    @Basic
+    @Column(name = "STATUS")
+    private String status;
+    @Basic
+    @Column(name = "ACTION")
+    private String action;
+    @Basic
+    @Column(name = "EXCEL_PATH")
+    private String excelPath;
+    @Basic
+    @Column(name = "EXPIRY")
+    private Date expiry;
+    @Basic
+    @Column(name = "KYC_ID")
+    private BigInteger kycId;
+    @Basic
+    @Column(name = "MAX_APPROVALS")
+    private BigInteger maxApprovals;
+    @Basic
+    @Column(name = "APPROVAL_STATUS")
+    private BigInteger approvalStatus;
+    @Basic
+    @Column(name = "APPROVAL_LEVEL")
+    private BigInteger approvalLevel;
+    @Basic
+    @Column(name = "UPDATE_CYCLE")
+    private BigInteger updateCycle;
+    @Basic
+    @Column(name = "SCORING_DATA_SIZE")
+    private BigInteger scoringDataSize;
+    @Basic
+    @Column(name = "ORGANISATION")
+    private String organisation;
+    @Basic
+    @Column(name = "ORGANISATION_ID_FK")
+    private BigInteger organisationIdFk;
+
+
     public BigInteger getDataSourceId() {
         return dataSourceId;
     }
@@ -43,8 +84,7 @@ public class DataSourceView {
         this.dataSourceId = dataSourceId;
     }
 
-    @Basic
-    @Column(name = "NAME")
+
     public String getName() {
         return name;
     }
@@ -53,8 +93,7 @@ public class DataSourceView {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "DATA_SOURCE_URL")
+
     public String getDataSourceUrl() {
         return dataSourceUrl;
     }
@@ -63,8 +102,7 @@ public class DataSourceView {
         this.dataSourceUrl = dataSourceUrl;
     }
 
-    @Basic
-    @Column(name = "DATE_CREATED")
+
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -73,8 +111,7 @@ public class DataSourceView {
         this.dateCreated = dateCreated;
     }
 
-    @Basic
-    @Column(name = "CREATED_BY")
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -83,8 +120,7 @@ public class DataSourceView {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
@@ -93,8 +129,7 @@ public class DataSourceView {
         this.intrash = intrash;
     }
 
-    @Basic
-    @Column(name = "EXCEL_URL")
+
     public String getExcelUrl() {
         return excelUrl;
     }
@@ -103,8 +138,7 @@ public class DataSourceView {
         this.excelUrl = excelUrl;
     }
 
-    @Basic
-    @Column(name = "DATA_SOURCE_TYPE")
+
     public String getDataSourceType() {
         return dataSourceType;
     }
@@ -113,8 +147,7 @@ public class DataSourceView {
         this.dataSourceType = dataSourceType;
     }
 
-    @Basic
-    @Column(name = "DATA_USAGE")
+
     public String getDataUsage() {
         return dataUsage;
     }
@@ -123,8 +156,7 @@ public class DataSourceView {
         this.dataUsage = dataUsage;
     }
 
-    @Basic
-    @Column(name = "STATUS")
+
     public String getStatus() {
         return status;
     }
@@ -133,8 +165,7 @@ public class DataSourceView {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "ACTION")
+
     public String getAction() {
         return action;
     }
@@ -143,8 +174,7 @@ public class DataSourceView {
         this.action = action;
     }
 
-    @Basic
-    @Column(name = "EXCEL_PATH")
+
     public String getExcelPath() {
         return excelPath;
     }
@@ -153,8 +183,7 @@ public class DataSourceView {
         this.excelPath = excelPath;
     }
 
-    @Basic
-    @Column(name = "EXPIRY")
+
     public Date getExpiry() {
         return expiry;
     }
@@ -163,8 +192,7 @@ public class DataSourceView {
         this.expiry = expiry;
     }
 
-    @Basic
-    @Column(name = "KYC_ID")
+
     public BigInteger getKycId() {
         return kycId;
     }
@@ -173,8 +201,7 @@ public class DataSourceView {
         this.kycId = kycId;
     }
 
-    @Basic
-    @Column(name = "MAX_APPROVALS")
+
     public BigInteger getMaxApprovals() {
         return maxApprovals;
     }
@@ -183,8 +210,7 @@ public class DataSourceView {
         this.maxApprovals = maxApprovals;
     }
 
-    @Basic
-    @Column(name = "APPROVAL_STATUS")
+
     public BigInteger getApprovalStatus() {
         return approvalStatus;
     }
@@ -193,8 +219,7 @@ public class DataSourceView {
         this.approvalStatus = approvalStatus;
     }
 
-    @Basic
-    @Column(name = "APPROVAL_LEVEL")
+
     public BigInteger getApprovalLevel() {
         return approvalLevel;
     }
@@ -203,8 +228,7 @@ public class DataSourceView {
         this.approvalLevel = approvalLevel;
     }
 
-    @Basic
-    @Column(name = "UPDATE_CYCLE")
+
     public BigInteger getUpdateCycle() {
         return updateCycle;
     }
@@ -213,8 +237,7 @@ public class DataSourceView {
         this.updateCycle = updateCycle;
     }
 
-    @Basic
-    @Column(name = "SCORING_DATA_SIZE")
+
     public BigInteger getScoringDataSize() {
         return scoringDataSize;
     }
@@ -223,8 +246,7 @@ public class DataSourceView {
         this.scoringDataSize = scoringDataSize;
     }
 
-    @Basic
-    @Column(name = "ORGANISATION")
+
     public String getOrganisation() {
         return organisation;
     }
@@ -233,8 +255,7 @@ public class DataSourceView {
         this.organisation = organisation;
     }
 
-    @Basic
-    @Column(name = "ORGANISATION_ID_FK")
+
     public BigInteger getOrganisationIdFk() {
         return organisationIdFk;
     }
