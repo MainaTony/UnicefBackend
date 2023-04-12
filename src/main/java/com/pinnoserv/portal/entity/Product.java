@@ -7,43 +7,97 @@ import java.util.Objects;
 
 @Entity
 public class Product {
+    @Id
+    @Basic(optional = false)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @SequenceGenerator(name = "PRODUCT_SEQ", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
+    @Column(name = "PRODUCT_ID")
     private BigInteger productId;
+    @Basic
+    @Column(name = "PROGRAM_ID_FK")
     private BigInteger programIdFk;
+    @Basic
+    @Column(name = "NAME")
     private String name;
+    @Basic
+    @Column(name = "MIN_AMOUNT")
     private BigInteger minAmount;
+    @Basic
+    @Column(name = "MAX_AMOUNT")
     private BigInteger maxAmount;
+    @Basic
+    @Column(name = "MAX_REPAY_PERIOD")
     private BigInteger maxRepayPeriod;
+    @Basic
+    @Column(name = "MIN_REPAY_PERIOD")
     private BigInteger minRepayPeriod;
+    @Basic
+    @Column(name = "RECIPIENT_TYPE")
     private String recipientType;
+    @Basic
+    @Column(name = "DATE_CREATED")
     private Date dateCreated;
+    @Basic
+    @Column(name = "CREATED_BY")
     private BigInteger createdBy;
+    @Basic
+    @Column(name = "STATUS")
     private BigInteger status;
+    @Basic
+    @Column(name = "INTRASH")
     private String intrash;
+    @Basic
+    @Column(name = "INTEREST_RATE")
     private BigInteger interestRate;
+    @Basic
+    @Column(name = "INTEREST_TYPE")
     private String interestType;
+    @Basic
+    @Column(name = "ARMOTIZED")
     private BigInteger armotized;
+    @Basic
+    @Column(name = "REDUCING_BALANCE")
     private BigInteger reducingBalance;
+    @Basic
+    @Column(name = "INSTALLMENT_PERIOD")
     private BigInteger installmentPeriod;
+    @Basic
+    @Column(name = "INTEREST_UPFRONT")
     private BigInteger interestUpfront;
+    @Basic
+    @Column(name = "ATTACHED_SUPPLIER_ID")
     private String attachedSupplierId;
+    @Basic
+    @Column(name = "PERIOD_UNITS")
     private String periodUnits;
+    @Basic
+    @Column(name = "UPDATE_CYCLE")
     private BigInteger updateCycle;
+    @Basic
+    @Column(name = "INSTALLMENT_OPTIONS")
     private String installmentOptions;
+    @Basic
+    @Column(name = "CBS_PRODUCT")
     private String cbsProduct;
+    @Basic
+    @Column(name = "LOAN_LIMIT_LOAN_NUM_CAP")
     private BigInteger loanLimitLoanNumCap;
+    @Basic
+    @Column(name = "LOAN_LIMIT_LOAN_AMOUNT_CAP")
     private BigInteger loanLimitLoanAmountCap;
+    @Basic
+    @Column(name = "TAKE_CHARGES_UPFRONT")
     private BigInteger takeChargesUpfront;
+    @Basic
+    @Column(name = "AUTOMATED_SCORING")
     private BigInteger automatedScoring;
     //private Collection<DelinquencyModel> delinquencyModelsByProductId;
     //private Collection<Loan> loansByProductId;
     //private Program programByProgramIdFk;
     //private Collection<RepaymentChannel> repaymentChannelsByProductId;
 
-    @Id
-    @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQ")
-    @SequenceGenerator(name = "PRODUCT_SEQ", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
-    @Column(name = "PRODUCT_ID")
+
     public BigInteger getProductId() {
         return productId;
     }
@@ -52,8 +106,7 @@ public class Product {
         this.productId = productId;
     }
 
-    @Basic
-    @Column(name = "PROGRAM_ID_FK")
+
     public BigInteger getProgramIdFk() {
         return programIdFk;
     }
@@ -62,8 +115,7 @@ public class Product {
         this.programIdFk = programIdFk;
     }
 
-    @Basic
-    @Column(name = "NAME")
+
     public String getName() {
         return name;
     }
@@ -72,8 +124,7 @@ public class Product {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "MIN_AMOUNT")
+
     public BigInteger getMinAmount() {
         return minAmount;
     }
@@ -82,8 +133,7 @@ public class Product {
         this.minAmount = minAmount;
     }
 
-    @Basic
-    @Column(name = "MAX_AMOUNT")
+
     public BigInteger getMaxAmount() {
         return maxAmount;
     }
@@ -92,8 +142,7 @@ public class Product {
         this.maxAmount = maxAmount;
     }
 
-    @Basic
-    @Column(name = "MAX_REPAY_PERIOD")
+
     public BigInteger getMaxRepayPeriod() {
         return maxRepayPeriod;
     }
@@ -102,8 +151,7 @@ public class Product {
         this.maxRepayPeriod = maxRepayPeriod;
     }
 
-    @Basic
-    @Column(name = "MIN_REPAY_PERIOD")
+
     public BigInteger getMinRepayPeriod() {
         return minRepayPeriod;
     }
@@ -112,8 +160,7 @@ public class Product {
         this.minRepayPeriod = minRepayPeriod;
     }
 
-    @Basic
-    @Column(name = "RECIPIENT_TYPE")
+
     public String getRecipientType() {
         return recipientType;
     }
@@ -122,8 +169,7 @@ public class Product {
         this.recipientType = recipientType;
     }
 
-    @Basic
-    @Column(name = "DATE_CREATED")
+
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -132,8 +178,7 @@ public class Product {
         this.dateCreated = dateCreated;
     }
 
-    @Basic
-    @Column(name = "CREATED_BY")
+
     public BigInteger getCreatedBy() {
         return createdBy;
     }
@@ -142,8 +187,7 @@ public class Product {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "STATUS")
+
     public BigInteger getStatus() {
         return status;
     }
@@ -152,8 +196,7 @@ public class Product {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
@@ -162,8 +205,7 @@ public class Product {
         this.intrash = intrash;
     }
 
-    @Basic
-    @Column(name = "INTEREST_RATE")
+
     public BigInteger getInterestRate() {
         return interestRate;
     }
@@ -172,8 +214,7 @@ public class Product {
         this.interestRate = interestRate;
     }
 
-    @Basic
-    @Column(name = "INTEREST_TYPE")
+
     public String getInterestType() {
         return interestType;
     }
@@ -182,8 +223,7 @@ public class Product {
         this.interestType = interestType;
     }
 
-    @Basic
-    @Column(name = "ARMOTIZED")
+
     public BigInteger getArmotized() {
         return armotized;
     }
@@ -192,8 +232,7 @@ public class Product {
         this.armotized = armotized;
     }
 
-    @Basic
-    @Column(name = "REDUCING_BALANCE")
+
     public BigInteger getReducingBalance() {
         return reducingBalance;
     }
@@ -202,8 +241,7 @@ public class Product {
         this.reducingBalance = reducingBalance;
     }
 
-    @Basic
-    @Column(name = "INSTALLMENT_PERIOD")
+
     public BigInteger getInstallmentPeriod() {
         return installmentPeriod;
     }
@@ -212,8 +250,7 @@ public class Product {
         this.installmentPeriod = installmentPeriod;
     }
 
-    @Basic
-    @Column(name = "INTEREST_UPFRONT")
+
     public BigInteger getInterestUpfront() {
         return interestUpfront;
     }
@@ -222,8 +259,7 @@ public class Product {
         this.interestUpfront = interestUpfront;
     }
 
-    @Basic
-    @Column(name = "ATTACHED_SUPPLIER_ID")
+
     public String getAttachedSupplierId() {
         return attachedSupplierId;
     }
@@ -232,8 +268,7 @@ public class Product {
         this.attachedSupplierId = attachedSupplierId;
     }
 
-    @Basic
-    @Column(name = "PERIOD_UNITS")
+
     public String getPeriodUnits() {
         return periodUnits;
     }
@@ -242,8 +277,7 @@ public class Product {
         this.periodUnits = periodUnits;
     }
 
-    @Basic
-    @Column(name = "UPDATE_CYCLE")
+
     public BigInteger getUpdateCycle() {
         return updateCycle;
     }
@@ -252,8 +286,7 @@ public class Product {
         this.updateCycle = updateCycle;
     }
 
-    @Basic
-    @Column(name = "INSTALLMENT_OPTIONS")
+
     public String getInstallmentOptions() {
         return installmentOptions;
     }
@@ -262,8 +295,7 @@ public class Product {
         this.installmentOptions = installmentOptions;
     }
 
-    @Basic
-    @Column(name = "CBS_PRODUCT")
+
     public String getCbsProduct() {
         return cbsProduct;
     }
@@ -272,8 +304,7 @@ public class Product {
         this.cbsProduct = cbsProduct;
     }
 
-    @Basic
-    @Column(name = "LOAN_LIMIT_LOAN_NUM_CAP")
+
     public BigInteger getLoanLimitLoanNumCap() {
         return loanLimitLoanNumCap;
     }
@@ -282,8 +313,7 @@ public class Product {
         this.loanLimitLoanNumCap = loanLimitLoanNumCap;
     }
 
-    @Basic
-    @Column(name = "LOAN_LIMIT_LOAN_AMOUNT_CAP")
+
     public BigInteger getLoanLimitLoanAmountCap() {
         return loanLimitLoanAmountCap;
     }
@@ -292,8 +322,7 @@ public class Product {
         this.loanLimitLoanAmountCap = loanLimitLoanAmountCap;
     }
 
-    @Basic
-    @Column(name = "TAKE_CHARGES_UPFRONT")
+
     public BigInteger getTakeChargesUpfront() {
         return takeChargesUpfront;
     }
@@ -302,8 +331,7 @@ public class Product {
         this.takeChargesUpfront = takeChargesUpfront;
     }
 
-    @Basic
-    @Column(name = "AUTOMATED_SCORING")
+
     public BigInteger getAutomatedScoring() {
         return automatedScoring;
     }
