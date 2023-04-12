@@ -7,33 +7,58 @@ import java.util.Objects;
 
 @Entity
 public class Program {
+    @Id
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROGRAM_SEQ")
+//    @SequenceGenerator(name = "PROGRAM_SEQ", sequenceName = "PROGRAM_SEQ", allocationSize = 1)
+    @Column(name = "PROGRAM_ID")
     private BigInteger programId;
-    private BigInteger organisationIdFk;
-    private String name;
-    private String primaryIdentityType;
-    private Date dateCreated;
+    @Basic
+    @Column(name = "CREATED_BY")
     private BigInteger createdBy;
-    private String intrash;
-    private BigInteger status;
+    @Basic
+    @Column(name = "DATA_SOURCE_ID_FK")
     private BigInteger dataSourceIdFk;
-
+    @Basic
+    @Column(name = "DATE_CREATED")
+    private Date dateCreated;
+    @Basic
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Basic
+    @Column(name = "INTRASH")
+    private String intrash;
+    @Basic
+    @Column(name = "NAME")
+    private String name;
+    @Basic
+    @Column(name = "ORGANISATION_ID_FK")
+    private BigInteger organisationIdFk;
+    @Basic
+    @Column(name = "PRIMARY_IDENTITY_TYPE")
+    private String primaryIdentityType;
+    @Basic
+    @Column(name = "STATUS")
+    private BigInteger status;
+    @Basic
+    @Column(name = "DATA_SOURCE")
     private String dataSource;
-
+    @Basic
+    @Column(name = "ORGANISATION_ID")
+    private BigInteger organisationId;
+    @Basic
+    @Column(name = "ORGANISATION")
     private String organisation;
 
-    private BigInteger organisationId;
-    private String description;
+
     /*private Collection<CreditScore> creditScoresByProgramId;
     private Collection<CustomerSubscription> customerSubscriptionsByProgramId;
     private Collection<Product> productsByProgramId;
     private Organisation organisationByOrganisationIdFk;
     private DataSource dataSourceByDataSourceIdFk;*/
 
-    @Id
-    @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROGRAM_SEQ")
-    @SequenceGenerator(name = "PROGRAM_SEQ", sequenceName = "PROGRAM_SEQ", allocationSize = 1)
-    @Column(name = "PROGRAM_ID")
+
     public BigInteger getProgramId() {
         return programId;
     }
@@ -42,8 +67,7 @@ public class Program {
         this.programId = programId;
     }
 
-    @Basic
-    @Column(name = "ORGANISATION")
+
     public String getorganisation() {
         return organisation;
     }
@@ -52,8 +76,7 @@ public class Program {
         this.organisation = organisation;
     }
 
-    @Basic
-    @Column(name = "ORGANISATION_ID")
+
     public BigInteger getorganisationId() {
         return organisationId;
     }
@@ -61,8 +84,7 @@ public class Program {
         this.organisationId = organisationId;
     }
 
-    @Basic
-    @Column(name = "ORGANISATION_ID_FK")
+
     public BigInteger getOrganisationIdFk() {
         return organisationIdFk;
     }
@@ -71,8 +93,7 @@ public class Program {
         this.organisationIdFk = organisationIdFk;
     }
 
-    @Basic
-    @Column(name = "NAME")
+
     public String getName() {
         return name;
     }
@@ -81,8 +102,7 @@ public class Program {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "PRIMARY_IDENTITY_TYPE")
+
     public String getPrimaryIdentityType() {
         return primaryIdentityType;
     }
@@ -91,8 +111,7 @@ public class Program {
         this.primaryIdentityType = primaryIdentityType;
     }
 
-    @Basic
-    @Column(name = "DATE_CREATED")
+
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -101,8 +120,7 @@ public class Program {
         this.dateCreated = dateCreated;
     }
 
-    @Basic
-    @Column(name = "CREATED_BY")
+
     public BigInteger getCreatedBy() {
         return createdBy;
     }
@@ -111,8 +129,7 @@ public class Program {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
@@ -121,8 +138,15 @@ public class Program {
         this.intrash = intrash;
     }
 
-    @Basic
-    @Column(name = "STATUS")
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
     public BigInteger getStatus() {
         return status;
     }
@@ -131,8 +155,7 @@ public class Program {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "DATA_SOURCE_ID_FK")
+
     public BigInteger getDataSourceIdFk() {
         return dataSourceIdFk;
     }
@@ -141,8 +164,7 @@ public class Program {
         this.dataSourceIdFk = dataSourceIdFk;
     }
 
-    @Basic
-    @Column(name = "DESCRIPTION")
+
     public String getDescription() {
         return description;
     }
@@ -156,12 +178,12 @@ public class Program {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Program program = (Program) o;
-        return programId == program.programId && organisationIdFk == program.organisationIdFk && dataSourceIdFk == program.dataSourceIdFk && Objects.equals(name, program.name) && Objects.equals(primaryIdentityType, program.primaryIdentityType) && Objects.equals(dateCreated, program.dateCreated) && Objects.equals(createdBy, program.createdBy) && Objects.equals(intrash, program.intrash) && Objects.equals(status, program.status) && Objects.equals(description, program.description) && Objects.equals(organisation, program.organisation) && Objects.equals(organisationId, program.organisationId);
+        return programId == program.programId && organisationIdFk == program.organisationIdFk && dataSourceIdFk == program.dataSourceIdFk && Objects.equals(name, program.name) && Objects.equals(primaryIdentityType, program.primaryIdentityType) && Objects.equals(dateCreated, program.dateCreated) && Objects.equals(createdBy, program.createdBy) && Objects.equals(intrash, program.intrash) && Objects.equals(status, program.status) && Objects.equals(description, program.description) && Objects.equals(organisation, program.organisation) && Objects.equals(dataSource, program.dataSource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(programId, organisationIdFk, name, primaryIdentityType, dateCreated, createdBy, intrash, status, dataSourceIdFk, description, organisation, organisationId);
+        return Objects.hash(programId, organisationIdFk, name, primaryIdentityType, dateCreated, createdBy, intrash, dataSource, status, dataSourceIdFk, description, organisation, organisationId);
     }
 
     /*@OneToMany(mappedBy = "programByProgramIdFk")
