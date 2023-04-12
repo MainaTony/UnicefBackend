@@ -7,25 +7,51 @@ import java.util.Objects;
 @Entity
 @Table(name = "DELINQUENCY_MODEL")
 public class DelinquencyModel {
-    private BigInteger deliquencyModelId;
-    private BigInteger productIdFk;
-    private String action;
-    private BigInteger period;
-    private BigInteger penalty;
-    private String penaltyType;
-    private String intrash;
-    private BigInteger candefault;
-    private BigInteger canblacklist;
-    private BigInteger daysafterdefault;
-    private BigInteger daystosuspension;
-    private BigInteger cansuspend;
-    private Product productByProductIdFk;
-
     @Id
     @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DELIQUENCY_MODEL_SEQ")
-    @SequenceGenerator(name = "DELIQUENCY_MODEL_SEQ", sequenceName = "DELIQUENCY_MODEL_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DELIQUENCY_MODEL_SEQ")
+//    @SequenceGenerator(name = "DELIQUENCY_MODEL_SEQ", sequenceName = "DELIQUENCY_MODEL_SEQ", allocationSize = 1)
     @Column(name = "DELIQUENCY_MODEL_ID")
+    private BigInteger deliquencyModelId;
+    @Basic
+    @Column(name = "PRODUCT_ID_FK")
+    private BigInteger productIdFk;
+    @Basic
+    @Column(name = "ACTION")
+    private String action;
+    @Basic
+    @Column(name = "PERIOD")
+    private BigInteger period;
+    @Basic
+    @Column(name = "PENALTY")
+    private BigInteger penalty;
+    @Basic
+    @Column(name = "PENALTY_TYPE")
+    private String penaltyType;
+    @Basic
+    @Column(name = "INTRASH")
+    private String intrash;
+    @Basic
+    @Column(name = "CANDEFAULT")
+    private BigInteger candefault;
+    @Basic
+    @Column(name = "CANBLACKLIST")
+    private BigInteger canblacklist;
+    @Basic
+    @Column(name = "DAYSAFTERDEFAULT")
+    private BigInteger daysafterdefault;
+    @Basic
+    @Column(name = "DAYSTOSUSPENSION")
+    private BigInteger daystosuspension;
+    @Basic
+    @Column(name = "CANSUSPEND")
+    private BigInteger cansuspend;
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_ID_FK", referencedColumnName = "PRODUCT_ID", nullable = false, insertable=false, updatable=false)
+    private Product productByProductIdFk;
+
+
     public BigInteger getDeliquencyModelId() {
         return deliquencyModelId;
     }
@@ -34,8 +60,7 @@ public class DelinquencyModel {
         this.deliquencyModelId = deliquencyModelId;
     }
 
-    @Basic
-    @Column(name = "PRODUCT_ID_FK")
+
     public BigInteger getProductIdFk() {
         return productIdFk;
     }
@@ -44,8 +69,7 @@ public class DelinquencyModel {
         this.productIdFk = productIdFk;
     }
 
-    @Basic
-    @Column(name = "ACTION")
+
     public String getAction() {
         return action;
     }
@@ -54,8 +78,7 @@ public class DelinquencyModel {
         this.action = action;
     }
 
-    @Basic
-    @Column(name = "PERIOD")
+
     public BigInteger getPeriod() {
         return period;
     }
@@ -64,8 +87,7 @@ public class DelinquencyModel {
         this.period = period;
     }
 
-    @Basic
-    @Column(name = "PENALTY")
+
     public BigInteger getPenalty() {
         return penalty;
     }
@@ -74,8 +96,7 @@ public class DelinquencyModel {
         this.penalty = penalty;
     }
 
-    @Basic
-    @Column(name = "PENALTY_TYPE")
+
     public String getPenaltyType() {
         return penaltyType;
     }
@@ -84,8 +105,7 @@ public class DelinquencyModel {
         this.penaltyType = penaltyType;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
@@ -94,8 +114,7 @@ public class DelinquencyModel {
         this.intrash = intrash;
     }
 
-    @Basic
-    @Column(name = "CANDEFAULT")
+
     public BigInteger getCandefault() {
         return candefault;
     }
@@ -104,8 +123,7 @@ public class DelinquencyModel {
         this.candefault = candefault;
     }
 
-    @Basic
-    @Column(name = "CANBLACKLIST")
+
     public BigInteger getCanblacklist() {
         return canblacklist;
     }
@@ -114,8 +132,7 @@ public class DelinquencyModel {
         this.canblacklist = canblacklist;
     }
 
-    @Basic
-    @Column(name = "DAYSAFTERDEFAULT")
+
     public BigInteger getDaysafterdefault() {
         return daysafterdefault;
     }
@@ -124,8 +141,7 @@ public class DelinquencyModel {
         this.daysafterdefault = daysafterdefault;
     }
 
-    @Basic
-    @Column(name = "DAYSTOSUSPENSION")
+
     public BigInteger getDaystosuspension() {
         return daystosuspension;
     }
@@ -134,8 +150,7 @@ public class DelinquencyModel {
         this.daystosuspension = daystosuspension;
     }
 
-    @Basic
-    @Column(name = "CANSUSPEND")
+
     public BigInteger getCansuspend() {
         return cansuspend;
     }
@@ -157,8 +172,7 @@ public class DelinquencyModel {
         return Objects.hash(deliquencyModelId, productIdFk, action, period, penalty, penaltyType, intrash, candefault, canblacklist, daysafterdefault, daystosuspension, cansuspend);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID_FK", referencedColumnName = "PRODUCT_ID", nullable = false, insertable=false, updatable=false)
+
     public Product getProductByProductIdFk() {
         return productByProductIdFk;
     }
