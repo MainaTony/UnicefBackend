@@ -16,8 +16,8 @@ public class DeliquencyModelView {
     @Basic
     @Column(name = "PRODUCT_ID_FK")
     private BigInteger productIdFk;
-//    @Basic
-//    @Column(name = "PRODUCT_NAME")
+    @Basic
+    @Column(name = "PRODUCT_NAME")
     private String productName;
     @Basic
     @Column(name = "ACTION")
