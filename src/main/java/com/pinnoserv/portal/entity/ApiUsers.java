@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "ApiUsers.findByAccessChannelId", query = "SELECT s FROM ApiUsers s WHERE s.accessChannelId = :accessChannelId")})
 public class ApiUsers implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long sserialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -43,7 +43,7 @@ public class ApiUsers implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Column(name = "ORGANISATION_ID_FK")
-    private BigInteger organisationIdFk;
+    private Integer organisationIdFk;
     @Column(name = "PASSWORD")
     private String password;
     @Column(name = "ACCESS_CHANNEL_ID")
@@ -103,11 +103,11 @@ public class ApiUsers implements Serializable {
 
     @Basic
     @Column(name = "ORGANISATION_ID_FK")
-    public BigInteger getOrganisationIdFk() {
+    public Integer getOrganisationIdFk() {
         return organisationIdFk;
     }
 
-    public void setOrganisationIdFk(BigInteger organisationIdFk) {
+    public void setOrganisationIdFk(Integer organisationIdFk) {
         this.organisationIdFk = organisationIdFk;
     }
 
@@ -152,7 +152,7 @@ public class ApiUsers implements Serializable {
         return true;
     }
 
-    public ApiUsers(String username, String password, String fullname, Integer accessChannelId, Integer inTrash, Date dateCreated, BigInteger organisationIdFk) {
+    public ApiUsers(String username, String password, String fullname, Integer accessChannelId, Integer inTrash, Date dateCreated, Integer organisationIdFk) {
         this.username = username;
         this.password = password;
         this.fullName = fullname;

@@ -21,7 +21,7 @@ public class Organisation {
     private String intrash;
     private Collection<Config> configsByOrganisationId;
     private Collection<Customer> customersByOrganisationId;
-    private BusinessType businessTypeByBusinessTypeFk;
+    private BusinessTypeModel businessTypeByBusinessTypeFkModel;
     //private Collection<Program> programsByOrganisationId;
     //private Collection<Users> usersByOrganisationId;
 
@@ -175,12 +175,12 @@ public class Organisation {
 
     @ManyToOne
     @JoinColumn(name = "BUSINESS_TYPE_FK", referencedColumnName = "ID", nullable = false, insertable=false, updatable=false)
-    public BusinessType getBusinessTypeByBusinessTypeFk() {
-        return businessTypeByBusinessTypeFk;
+    public BusinessTypeModel getBusinessTypeByBusinessTypeFk() {
+        return businessTypeByBusinessTypeFkModel;
     }
 
-    public void setBusinessTypeByBusinessTypeFk(BusinessType businessTypeByBusinessTypeFk) {
-        this.businessTypeByBusinessTypeFk = businessTypeByBusinessTypeFk;
+    public void setBusinessTypeByBusinessTypeFk(BusinessTypeModel businessTypeByBusinessTypeFkModel) {
+        this.businessTypeByBusinessTypeFkModel = businessTypeByBusinessTypeFkModel;
     }
 
     /*@OneToMany(mappedBy = "organisationByOrganisationIdFk")

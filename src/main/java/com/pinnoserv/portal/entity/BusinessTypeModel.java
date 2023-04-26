@@ -4,21 +4,36 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "BUSINESS_TYPE")
-public class BusinessType {
-    private BigInteger id;
-    private String type;
-    private String description;
-    private Timestamp dateCreated;
-    private BigInteger createdByFk;
-    private String intrash;
-    private Collection<Organisation> organisationsById;
-
+public class BusinessTypeModel {
     @Id
     @Column(name = "ID")
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private BigInteger id;
+    @Basic
+    @Column(name = "TYPE")
+    private String type;
+    @Basic
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Basic
+    @Column(name = "DATE_CREATED")
+    private Date dateCreated;
+    @Basic
+    @Column(name = "CREATED_BY_FK")
+    private BigInteger createdByFk;
+    @Basic
+    @Column(name = "INTRASH")
+    private String intrash;
+//    @OneToMany(mappedBy = "businessTypeByBusinessTypeFk")
+//    private Collection<Organisation> organisationsById;
+
+
     public BigInteger getId() {
         return id;
     }
@@ -27,8 +42,7 @@ public class BusinessType {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "TYPE")
+
     public String getType() {
         return type;
     }
@@ -37,8 +51,7 @@ public class BusinessType {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "DESCRIPTION")
+
     public String getDescription() {
         return description;
     }
@@ -47,18 +60,16 @@ public class BusinessType {
         this.description = description;
     }
 
-    @Basic
-    @Column(name = "DATE_CREATED")
-    public Timestamp getDateCreated() {
+
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Timestamp dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    @Basic
-    @Column(name = "CREATED_BY_FK")
+
     public BigInteger getCreatedByFk() {
         return createdByFk;
     }
@@ -67,8 +78,7 @@ public class BusinessType {
         this.createdByFk = createdByFk;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
@@ -81,7 +91,7 @@ public class BusinessType {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BusinessType that = (BusinessType) o;
+        BusinessTypeModel that = (BusinessTypeModel) o;
         return id == that.id && Objects.equals(type, that.type) && Objects.equals(description, that.description) && Objects.equals(dateCreated, that.dateCreated) && Objects.equals(createdByFk, that.createdByFk) && Objects.equals(intrash, that.intrash);
     }
 
@@ -90,12 +100,12 @@ public class BusinessType {
         return Objects.hash(id, type, description, dateCreated, createdByFk, intrash);
     }
 
-    @OneToMany(mappedBy = "businessTypeByBusinessTypeFk")
-    public Collection<Organisation> getOrganisationsById() {
-        return organisationsById;
-    }
 
-    public void setOrganisationsById(Collection<Organisation> organisationsById) {
-        this.organisationsById = organisationsById;
-    }
+//    public Collection<Organisation> getOrganisationsById() {
+//        return organisationsById;
+//    }
+//
+//    public void setOrganisationsById(Collection<Organisation> organisationsById) {
+//        this.organisationsById = organisationsById;
+//    }
 }

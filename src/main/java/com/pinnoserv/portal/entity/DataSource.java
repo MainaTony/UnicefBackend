@@ -12,7 +12,7 @@ public class DataSource {
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DATA_SOURCE_ID")
-    private BigInteger dataSourceId;
+    private int dataSourceId;
     @Basic
     @Column(name = "NAME")
     private String name;
@@ -24,7 +24,7 @@ public class DataSource {
     private Date dateCreated;
     @Basic
     @Column(name = "CREATED_BY")
-    private BigInteger createdBy;
+    private int createdBy;
     @Basic
     @Column(name = "INTRASH")
     private String intrash;
@@ -39,7 +39,7 @@ public class DataSource {
     private String dataUsage;
     @Basic
     @Column(name = "STATUS")
-    private BigInteger status;
+    private int status;
     @Basic
     @Column(name = "ACTION")
     private String action;
@@ -51,25 +51,25 @@ public class DataSource {
     private Date expiry;
     @Basic
     @Column(name = "KYC_ID")
-    private BigInteger kycId;
+    private int kycId;
     @Basic
     @Column(name = "MAX_APPROVALS")
-    private BigInteger maxApprovals;
+    private int maxApprovals;
     @Basic
     @Column(name = "APPROVAL_STATUS")
-    private BigInteger approvalStatus;
+    private int approvalStatus;
     @Basic
     @Column(name = "APPROVAL_LEVEL")
-    private BigInteger approvalLevel;
+    private int approvalLevel;
     @Basic
     @Column(name = "UPDATE_CYCLE")
-    private BigInteger updateCycle;
+    private int updateCycle;
     @Basic
     @Column(name = "SCORING_DATA_SIZE")
-    private BigInteger scoringDataSize;
+    private int scoringDataSize;
     @Basic
     @Column(name = "ORGANISATION_ID_FK")
-    private BigInteger organisationIdFk;
+    private int organisationIdFk;
     //private Collection<DataSourceMapping> dataSourceMappingsByDataSourceId;
     //private Collection<Program> programsByDataSourceId;
 
@@ -77,11 +77,11 @@ public class DataSource {
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DATA_SOURCE_SEQ")
 //    @SequenceGenerator(name = "DATA_SOURCE_SEQ", sequenceName = "DATA_SOURCE_SEQ", allocationSize = 1)
 
-    public BigInteger getDataSourceId() {
+    public int getDataSourceId() {
         return dataSourceId;
     }
 
-    public void setDataSourceId(BigInteger dataSourceId) {
+    public void setDataSourceId(int dataSourceId) {
         this.dataSourceId = dataSourceId;
     }
 
@@ -113,11 +113,11 @@ public class DataSource {
     }
 
 
-    public BigInteger getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(BigInteger createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -158,11 +158,11 @@ public class DataSource {
     }
 
 
-    public BigInteger getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(BigInteger status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -194,65 +194,65 @@ public class DataSource {
     }
 
 
-    public BigInteger getKycId() {
+    public int getKycId() {
         return kycId;
     }
 
-    public void setKycId(BigInteger kycId) {
+    public void setKycId(int kycId) {
         this.kycId = kycId;
     }
 
 
-    public BigInteger getMaxApprovals() {
+    public int getMaxApprovals() {
         return maxApprovals;
     }
 
-    public void setMaxApprovals(BigInteger maxApprovals) {
+    public void setMaxApprovals(int maxApprovals) {
         this.maxApprovals = maxApprovals;
     }
 
 
-    public BigInteger getApprovalStatus() {
+    public int getApprovalStatus() {
         return approvalStatus;
     }
 
-    public void setApprovalStatus(BigInteger approvalStatus) {
+    public void setApprovalStatus(int approvalStatus) {
         this.approvalStatus = approvalStatus;
     }
 
 
-    public BigInteger getApprovalLevel() {
+    public int getApprovalLevel() {
         return approvalLevel;
     }
 
-    public void setApprovalLevel(BigInteger approvalLevel) {
+    public void setApprovalLevel(int approvalLevel) {
         this.approvalLevel = approvalLevel;
     }
 
 
-    public BigInteger getUpdateCycle() {
+    public int getUpdateCycle() {
         return updateCycle;
     }
 
-    public void setUpdateCycle(BigInteger updateCycle) {
+    public void setUpdateCycle(int updateCycle) {
         this.updateCycle = updateCycle;
     }
 
 
-    public BigInteger getScoringDataSize() {
+    public int getScoringDataSize() {
         return scoringDataSize;
     }
 
-    public void setScoringDataSize(BigInteger scoringDataSize) {
+    public void setScoringDataSize(int scoringDataSize) {
         this.scoringDataSize = scoringDataSize;
     }
 
 
-    public BigInteger getOrganisationIdFk() {
+    public int getOrganisationIdFk() {
         return organisationIdFk;
     }
 
-    public void setOrganisationIdFk(BigInteger organisationIdFk) {
+    public void setOrganisationIdFk(int organisationIdFk) {
         this.organisationIdFk = organisationIdFk;
     }
 

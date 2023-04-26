@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 @Repository
 public interface DataSourceRepository extends JpaRepository<DataSource, Integer> {
-    Optional<DataSource> findByDataSourceId(BigInteger id);
+    Optional<DataSource> findByDataSourceId(int id);
 
     List<DataSource> findAllByOrganisationIdFk(BigInteger organisationId);
 }

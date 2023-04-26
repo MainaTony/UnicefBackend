@@ -197,7 +197,7 @@ public class AuthController {
                     String encodedPassword = new BCryptPasswordEncoder().encode(password);
                     String fullname = body.get("fullname");
                     Integer accessChannelId = Integer.parseInt(body.get("accesschannel"));
-                    BigInteger organisationIdFk = new BigInteger("1");
+                    Integer organisationIdFk = new Integer("1");
                     Date createdDate = new Date(System.currentTimeMillis());
                     Integer inTrash = Integer.parseInt(body.get("inTrash"));
 //                  body.setDateCreated(new Date(System.currentTimeMillis()));

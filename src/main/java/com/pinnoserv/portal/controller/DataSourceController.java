@@ -144,11 +144,12 @@ public class DataSourceController {
             LOG.info("---------------------------AFTER ACCESSING THE APIUSER TABLE--------------------------------");
 
             if(user != null) {
-                dataSource.setCreatedBy(BigInteger.valueOf(user.getId()));
+                dataSource.setCreatedBy(user.getId());
                 dataSource.setOrganisationIdFk(user.getOrganisationIdFk());
+
             }
             if(dataSource.getStatus() == null)
-                dataSource.setStatus(new BigInteger("1"));
+//                dataSource.setStatus(new BigInteger("1"));
             dataSource.setDateCreated(new Date(System.currentTimeMillis()));
             dataSource.setAction("New");
             dataSource.setIntrash("NO");
