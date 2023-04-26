@@ -227,32 +227,43 @@ public class DataSourceController {
 //    }
 
     @PostMapping("/viewById")
-    public ResponseEntity<?> viewById(@RequestBody() Map<String, Object> requestParams) {
+    public ResponseEntity<?> viewById(@RequestHeader("Authorization") String Authorization, @RequestBody() Map<String, Object> requestParams) {
         LOG.info("---------------------------STARTING 'VIEW DATA SOURCE' --------------------------------");
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
         try {
+            LOG.info("------------------------Accessing the User to make sure they Are AAuthorised--------");
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
+            LOG.info("My UserName is : " + user.getUsername());
+//            LOG.info("NUMBER OF DATA SOURCE FOUND >> {}" + dataSource.size());
+            LOG.info("------------------------User verified, passing the data Source {} --------");
+
             String dataSourceId = requestParams.containsKey("dataSourceId") ? requestParams.get("dataSourceId").toString() : null;
-            if (dataSourceId == null) {
-                apiResponse.setResponseCode("01");
-                apiResponse.setResponseDescription("Error! Parameter dataSourceId is required.");
-                responseStatus = HttpStatus.BAD_REQUEST;
-                LOG.info("PARAMETER {dataSourceId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
-                return new ResponseEntity<>(apiResponse, responseStatus);
+            LOG.info("My Data Source ID is " + requestParams.get("dataSourceId").toString());
+
+            if(user != null) {
+                LOG.info("User is present");
+                if (dataSourceId == null) {
+                    apiResponse.setResponseCode("01");
+                    apiResponse.setResponseDescription("Error! Parameter dataSourceId is required.");
+                    responseStatus = HttpStatus.BAD_REQUEST;
+                    LOG.info("PARAMETER {dataSourceId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
+                    return new ResponseEntity<>(apiResponse, responseStatus);
+                }
+                Optional<DataSourceView> dataSourceSearch = dataSourceViewRepository.findByDataSourceId(new Integer(dataSourceId));
+                if (!dataSourceSearch.isPresent()) {
+                    LOG.info("DATA SOURCE NOT FOUND >> RETURNING WITH STATUS CODE 01");
+                    apiResponse.setResponseDescription("Data Source Not Found!");
+                    apiResponse.setResponseCode("01");
+                    responseStatus = HttpStatus.OK;
+                    return new ResponseEntity<>(apiResponse, responseStatus);
+                }
+                DataSourceView dataSourceEntity = dataSourceSearch.get();
+                apiResponse.setEntity(dataSourceEntity);
+                apiResponse.setResponseCode("00");
+                apiResponse.setResponseDescription("Success! Data Source Fetched.");
+                LOG.info("OK! RETURNING WITH STATUS CODE 00");
             }
-            Optional<DataSourceView> dataSourceSearch = dataSourceViewRepository.findByDataSourceId(new Integer(dataSourceId));
-            if (!dataSourceSearch.isPresent()) {
-                LOG.info("DATA SOURCE NOT FOUND >> RETURNING WITH STATUS CODE 01");
-                apiResponse.setResponseDescription("Data Source Not Found!");
-                apiResponse.setResponseCode("01");
-                responseStatus = HttpStatus.OK;
-                return new ResponseEntity<>(apiResponse, responseStatus);
-            }
-            DataSourceView dataSourceEntity = dataSourceSearch.get();
-            apiResponse.setEntity(dataSourceEntity);
-            apiResponse.setResponseCode("00");
-            apiResponse.setResponseDescription("Success! Data Source Fetched.");
-            LOG.info("OK! RETURNING WITH STATUS CODE 00");
         } catch (Exception e) {
             LOG.error("ERROR! COULD NOT FETCH DATA SOURCE >> " + e.getMessage());
             e.printStackTrace();
