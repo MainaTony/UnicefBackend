@@ -7,17 +7,30 @@ import java.util.Objects;
 @Entity
 @Table(name = "DATA_SOURCE_MAPPING")
 public class DataSourceMapping {
+    @Id
+    @Column(name = "DS_MAPPING_ID")
     private Integer dsMappingId;
+    @Basic
+    @Column(name = "DATA_SOURCE_ID_FK")
     private Integer dataSourceIdFk;
+    @Basic
+    @Column(name = "DATA_SOURCE_DESC")
     private String dataSourceDesc;
+    @Basic
+    @Column(name = "PARAMETER")
     private String parameter;
+    @Basic
+    @Column(name = "TYPE_OF_DATA")
     private String typeOfData;
+    @Basic
+    @Column(name = "DATA_COLUMN_ID_FK")
     private String dataColumnIdFk;
+    @Basic
+    @Column(name = "INTRASH")
     private String intrash;
     //private DataSource dataSourceByDataSourceIdFk;
 
-    @Id
-    @Column(name = "DS_MAPPING_ID")
+
     public Integer getDsMappingId() {
         return dsMappingId;
     }
@@ -26,8 +39,7 @@ public class DataSourceMapping {
         this.dsMappingId = dsMappingId;
     }
 
-    @Basic
-    @Column(name = "DATA_SOURCE_ID_FK")
+
     public Integer getDataSourceIdFk() {
         return dataSourceIdFk;
     }
@@ -36,8 +48,7 @@ public class DataSourceMapping {
         this.dataSourceIdFk = dataSourceIdFk;
     }
 
-    @Basic
-    @Column(name = "DATA_SOURCE_DESC")
+
     public String getDataSourceDesc() {
         return dataSourceDesc;
     }
@@ -46,8 +57,7 @@ public class DataSourceMapping {
         this.dataSourceDesc = dataSourceDesc;
     }
 
-    @Basic
-    @Column(name = "PARAMETER")
+
     public String getParameter() {
         return parameter;
     }
@@ -56,8 +66,7 @@ public class DataSourceMapping {
         this.parameter = parameter;
     }
 
-    @Basic
-    @Column(name = "TYPE_OF_DATA")
+
     public String getTypeOfData() {
         return typeOfData;
     }
@@ -66,8 +75,7 @@ public class DataSourceMapping {
         this.typeOfData = typeOfData;
     }
 
-    @Basic
-    @Column(name = "DATA_COLUMN_ID_FK")
+
     public String getDataColumnIdFk() {
         return dataColumnIdFk;
     }
@@ -76,8 +84,7 @@ public class DataSourceMapping {
         this.dataColumnIdFk = dataColumnIdFk;
     }
 
-    @Basic
-    @Column(name = "INTRASH")
+
     public String getIntrash() {
         return intrash;
     }
