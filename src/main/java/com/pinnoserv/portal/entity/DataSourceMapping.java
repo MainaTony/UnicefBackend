@@ -7,8 +7,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "DATA_SOURCE_MAPPING")
 public class DataSourceMapping {
-    private BigInteger dsMappingId;
-    private BigInteger dataSourceIdFk;
+    private Integer dsMappingId;
+    private Integer dataSourceIdFk;
     private String dataSourceDesc;
     private String parameter;
     private String typeOfData;
@@ -18,21 +18,21 @@ public class DataSourceMapping {
 
     @Id
     @Column(name = "DS_MAPPING_ID")
-    public BigInteger getDsMappingId() {
+    public Integer getDsMappingId() {
         return dsMappingId;
     }
 
-    public void setDsMappingId(BigInteger dsMappingId) {
+    public void setDsMappingId(Integer dsMappingId) {
         this.dsMappingId = dsMappingId;
     }
 
     @Basic
     @Column(name = "DATA_SOURCE_ID_FK")
-    public BigInteger getDataSourceIdFk() {
+    public Integer getDataSourceIdFk() {
         return dataSourceIdFk;
     }
 
-    public void setDataSourceIdFk(BigInteger dataSourceIdFk) {
+    public void setDataSourceIdFk(Integer dataSourceIdFk) {
         this.dataSourceIdFk = dataSourceIdFk;
     }
 

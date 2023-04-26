@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pinnoserv.portal.custommodels.JwtResponse;
 import com.pinnoserv.portal.custommodels.userregmodel.ApiResponseBody;
 import com.pinnoserv.portal.entity.ApiUsers;
-import com.pinnoserv.portal.entity.Users;
+//import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.configuration.JwtToken;
 import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.JwtRequest;
 import com.pinnoserv.portal.repositories.ApiUserRepository;
-import com.pinnoserv.portal.repositories.UserRepository;
+//import com.pinnoserv.portal.repositories.UserRepository;
 import com.pinnoserv.portal.service.CustomUserDetailsService;
 import com.pinnoserv.portal.custommodels.userregmodel.ApiResponseRegistration;
 import com.pinnoserv.portal.utils.Crypt;
@@ -49,8 +49,8 @@ public class AuthController {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    UserRepository userRepository;
+//    @Autowired
+//    UserRepository userRepository;
 
     @Autowired
     private Environment environment;
@@ -123,44 +123,44 @@ public class AuthController {
      *
      * @return
      */
-    @PostMapping("/create")
-    public ResponseEntity<?> addNewUser(@RequestBody() Users user) {
-        LOG.info("---------------------------STARTING 'ADD NEW USER' --------------------------------");
-        ApiResponse apiResponse = new ApiResponse();
-        HttpStatus responseStatus = HttpStatus.OK;
-        try {
-            user.setCreatedBy(new BigInteger("1"));
-            user.setDateCreated(new Date(System.currentTimeMillis()));
-            if (userRepository.existsByUsername(user.getUsername())){
-                LOG.info("...............Username already existed...............");
-                apiResponse.setResponseCode("01");
-                apiResponse.setResponseDescription("Error! Username Exists !");
-                responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
-            else {
-                user.setPassword(globalFunctions.encodePassword(user.getPassword()));
-                Users savedUser = userRepository.saveAndFlush(user);
-                apiResponse.setEntity(savedUser);
-                apiResponse.setResponseCode("00");
-                apiResponse.setResponseDescription("Success! User saved.");
-            }
-        } catch (Exception e) {
-            LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
-            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-                Map<String, String> error = new HashMap();
-                error.put("error", e.getMessage());
-                error.put("cause", e.getCause().toString());
-                apiResponse.setEntity(error);
-            }
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Could not add User");
-            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-            LOG.info("---------------------------ENDING 'ADD NEW User'--------------------------------'");
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(apiResponse, responseStatus);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<?> addNewUser(@RequestBody() Users user) {
+//        LOG.info("---------------------------STARTING 'ADD NEW USER' --------------------------------");
+//        ApiResponse apiResponse = new ApiResponse();
+//        HttpStatus responseStatus = HttpStatus.OK;
+//        try {
+//            user.setCreatedBy(new BigInteger("1"));
+//            user.setDateCreated(new Date(System.currentTimeMillis()));
+//            if (userRepository.existsByUsername(user.getUsername())){
+//                LOG.info("...............Username already existed...............");
+//                apiResponse.setResponseCode("01");
+//                apiResponse.setResponseDescription("Error! Username Exists !");
+//                responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+//            }
+//            else {
+//                user.setPassword(globalFunctions.encodePassword(user.getPassword()));
+//                Users savedUser = userRepository.saveAndFlush(user);
+//                apiResponse.setEntity(savedUser);
+//                apiResponse.setResponseCode("00");
+//                apiResponse.setResponseDescription("Success! User saved.");
+//            }
+//        } catch (Exception e) {
+//            LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
+//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+//                Map<String, String> error = new HashMap();
+//                error.put("error", e.getMessage());
+//                error.put("cause", e.getCause().toString());
+//                apiResponse.setEntity(error);
+//            }
+//            apiResponse.setResponseCode("01");
+//            apiResponse.setResponseDescription("Error! Could not add User");
+//            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+//            LOG.info("---------------------------ENDING 'ADD NEW User'--------------------------------'");
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(apiResponse, responseStatus);
+//    }
 
 /**
  * Endpoint To Register New API Users
