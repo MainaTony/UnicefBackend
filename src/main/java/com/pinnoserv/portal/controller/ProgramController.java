@@ -9,7 +9,7 @@ import com.pinnoserv.portal.repositories.ProgramViewRepository;
 import com.pinnoserv.portal.service.DatabaseService;
 import com.pinnoserv.portal.service.RestTemplateServices;
 import com.pinnoserv.portal.utils.SharedFunctions;
-import com.pinnoserv.portal.view.ProgramView;
+//import com.pinnoserv.portal.view.ProgramView;
 import com.pinnoserv.portal.entity.Program;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +58,12 @@ public class ProgramController {
             }
             if(program.getStatus() == null)
                 program.setStatus(new Integer("1"));
-            program.setDateCreated(new Date(System.currentTimeMillis()));
-            program.setIntrash("NO");
-            Program savedProgram = programRepository.saveAndFlush(program);
-            apiResponse.setEntity(savedProgram);
-            apiResponse.setResponseCode("00");
-            apiResponse.setResponseDescription("Success! Program saved.");
+                program.setDateCreated(new Date(System.currentTimeMillis()));
+                program.setIntrash("NO");
+                Program savedProgram = programRepository.saveAndFlush(program);
+                apiResponse.setEntity(savedProgram);
+                apiResponse.setResponseCode("00");
+                apiResponse.setResponseDescription("Success! Program saved.");
         } catch (Exception e) {
             LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
             e.printStackTrace();
