@@ -176,107 +176,107 @@ public class ProductController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-//    @PostMapping("/listAll")
-//    public ResponseEntity<?> getAllProducts() {
-//        LOG.info("---------------------------STARTING 'FETCH ALL PRODUCTS' ----------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        try {
-//            List<ProductView> products = productViewRepository.findAll();
-//            if (products.isEmpty()) {
-//                LOG.info("DID NOT FIND ANY PRODUCTS >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Not Found!");
-//                apiResponse.setResponseCode("01");
-//                apiResponse.setRecordCount(0);
-//                apiResponse.setEntity("Did not find any Products");
-//                LOG.info("---------------------------ENDING 'GET ALL PRODUCTS'--------------------------------'");
-//                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//            }
-//            LOG.info("NUMBER OF PRODUCTS FOUND >> {}" + products.size());
-//            apiResponse.setRecordCount(products.size());
-//            apiResponse.setEntity(products);
-//            apiResponse.setResponseCode("00");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause().toString());
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not fetch Any Products");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//            LOG.info("---------------------------ENDING GET ALL PRODUCTS --------------------------------'");
-//            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        LOG.info("---------------------------ENDING 'GET ALL PRODUCTS --------------------------------'");
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
-//
+    @PostMapping("/listAll")
+    public ResponseEntity<?> getAllProducts() {
+        LOG.info("---------------------------STARTING 'FETCH ALL PRODUCTS' ----------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            List<Product> products = productViewRepository.findAll();
+            if (products.isEmpty()) {
+                LOG.info("DID NOT FIND ANY PRODUCTS >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Not Found!");
+                apiResponse.setResponseCode("01");
+                apiResponse.setRecordCount(0);
+                apiResponse.setEntity("Did not find any Products");
+                LOG.info("---------------------------ENDING 'GET ALL PRODUCTS'--------------------------------'");
+                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            }
+            LOG.info("NUMBER OF PRODUCTS FOUND >> {}" + products.size());
+            apiResponse.setRecordCount(products.size());
+            apiResponse.setEntity(products);
+            apiResponse.setResponseCode("00");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause().toString());
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not fetch Any Products");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+            LOG.info("---------------------------ENDING GET ALL PRODUCTS --------------------------------'");
+            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        LOG.info("---------------------------ENDING 'GET ALL PRODUCTS --------------------------------'");
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
-//    @PostMapping("/updateById")
-//    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() Product product) {
-//        LOG.info("---------------------------STARTING 'UPDATE Product' --------------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        HttpStatus responseStatus = HttpStatus.OK;
-//        try {
-//            Optional<Product> productSearch = productRepository.findByProductId(product.getProductId());
-//            if (!productSearch.isPresent()) {
-//                LOG.info("Product NOT FOUND >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Product Not Found!");
-//                apiResponse.setResponseCode("01");
-//                responseStatus = HttpStatus.OK;
-//                return new ResponseEntity<>(apiResponse, responseStatus);
-//            }
-//            Product productEntity = productSearch.get();
-//            ApiUsers user = sharedFunctions.verifyToken(Authorization);
-//            /*if(user != null)
-//                product.setUpdatedBy(user.getId());*/
-//            productEntity.setMinAmount(product.getMinAmount());
-//            productEntity.setMaxAmount(product.getMaxAmount());
-//            productEntity.setMaxRepayPeriod(product.getMaxRepayPeriod());
-//            productEntity.setMinRepayPeriod(product.getMinRepayPeriod());
-//            productEntity.setRecipientType(product.getRecipientType());
-//            productEntity.setInterestRate(product.getInterestRate());
-//            productEntity.setInterestType(product.getInterestType());
-//            productEntity.setArmotized(product.getArmotized());
-//            productEntity.setReducingBalance(product.getReducingBalance());
-//            productEntity.setInstallmentPeriod(product.getInstallmentPeriod());
-//            productEntity.setInterestUpfront(product.getInterestUpfront());
-//            productEntity.setPeriodUnits(product.getPeriodUnits());
-//            productEntity.setInstallmentOptions(product.getInstallmentOptions());
-//            productEntity.setCbsProduct(product.getCbsProduct());
-//            productEntity.setLoanLimitLoanAmountCap(product.getLoanLimitLoanAmountCap());
-//            productEntity.setLoanLimitLoanNumCap(product.getLoanLimitLoanNumCap());
-//            productEntity.setTakeChargesUpfront(product.getTakeChargesUpfront());
-//            productEntity.setAutomatedScoring(product.getAutomatedScoring());
-//            productEntity.setProgramIdFk(product.getProgramIdFk());
-//            productEntity.setName(product.getName());
-//            productEntity.setStatus(product.getStatus());
-//            productRepository.save(productEntity);
-//            apiResponse.setEntity(productEntity);
-//            apiResponse.setResponseCode("00");
-//            apiResponse.setResponseDescription("Success! Product Saved.");
-//            LOG.info("OK! RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not add Product");
-//            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//        }
-//        LOG.info("---------------------------ENDING 'UPDATE Product'--------------------------------'");
-//        return new ResponseEntity<>(apiResponse, responseStatus);
-//    }
+
+    @PostMapping("/updateById")
+    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() Product product) {
+        LOG.info("---------------------------STARTING 'UPDATE Product' --------------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        HttpStatus responseStatus = HttpStatus.OK;
+        try {
+            Optional<Product> productSearch = productRepository.findByProductId(product.getProductId());
+            if (!productSearch.isPresent()) {
+                LOG.info("Product NOT FOUND >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Product Not Found!");
+                apiResponse.setResponseCode("01");
+                responseStatus = HttpStatus.OK;
+                return new ResponseEntity<>(apiResponse, responseStatus);
+            }
+            Product productEntity = productSearch.get();
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
+            /*if(user != null)
+                product.setUpdatedBy(user.getId());*/
+            productEntity.setMinAmount(product.getMinAmount());
+            productEntity.setMaxAmount(product.getMaxAmount());
+            productEntity.setMaxRepayPeriod(product.getMaxRepayPeriod());
+            productEntity.setMinRepayPeriod(product.getMinRepayPeriod());
+            productEntity.setRecipientType(product.getRecipientType());
+            productEntity.setInterestRate(product.getInterestRate());
+            productEntity.setInterestType(product.getInterestType());
+            productEntity.setArmotized(product.getArmotized());
+            productEntity.setReducingBalance(product.getReducingBalance());
+            productEntity.setInstallmentPeriod(product.getInstallmentPeriod());
+            productEntity.setInterestUpfront(product.getInterestUpfront());
+            productEntity.setPeriodUnits(product.getPeriodUnits());
+            productEntity.setInstallmentOptions(product.getInstallmentOptions());
+            productEntity.setCbsProduct(product.getCbsProduct());
+            productEntity.setLoanLimitLoanAmountCap(product.getLoanLimitLoanAmountCap());
+            productEntity.setLoanLimitLoanNumCap(product.getLoanLimitLoanNumCap());
+            productEntity.setTakeChargesUpfront(product.getTakeChargesUpfront());
+            productEntity.setAutomatedScoring(product.getAutomatedScoring());
+            productEntity.setProgramIdFk(product.getProgramIdFk());
+            productEntity.setName(product.getName());
+            productEntity.setStatus(product.getStatus());
+            productRepository.save(productEntity);
+            apiResponse.setEntity(productEntity);
+            apiResponse.setResponseCode("00");
+            apiResponse.setResponseDescription("Success! Product Saved.");
+            LOG.info("OK! RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not add Product");
+            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+        }
+        LOG.info("---------------------------ENDING 'UPDATE Product'--------------------------------'");
+        return new ResponseEntity<>(apiResponse, responseStatus);
+    }
 
 
 }

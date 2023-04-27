@@ -17,6 +17,6 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findByProductId(Integer id);
 
 //    List<Product> findAllByProgramIdFk(Integer programId);
-//
+
     List<Product> findAllByOrganisationIdFk(Integer organisationId);
 }
