@@ -178,92 +178,92 @@ public class ProgramController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-//    @PostMapping("/listAll")
-//    public ResponseEntity<?> getAllPrograms() {
-//        LOG.info("---------------------------STARTING 'FETCH ALL PROGRAMS' ----------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        try {
-//            List<ProgramView> programs = programViewRepository.findAll();
-//            if (programs.isEmpty()) {
-//                LOG.info("DID NOT FIND ANY PROGRAMS >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Not Found!");
-//                apiResponse.setResponseCode("01");
-//                apiResponse.setRecordCount(0);
-//                apiResponse.setEntity("Did not find any Programs");
-//                LOG.info("---------------------------ENDING 'GET ALL PROGRAMS'--------------------------------'");
-//                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//            }
-//            LOG.info("NUMBER OF PROGRAMS FOUND >> {}" + programs.size());
-//            apiResponse.setRecordCount(programs.size());
-//            apiResponse.setEntity(programs);
-//            apiResponse.setResponseCode("00");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause().toString());
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not fetch Any PROGRAMS");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//            LOG.info("---------------------------ENDING GET ALL PROGRAMS --------------------------------'");
-//            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        LOG.info("---------------------------ENDING 'GET ALL PROGRAMS --------------------------------'");
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
-//
+    @PostMapping("/listAll")
+    public ResponseEntity<?> getAllPrograms() {
+        LOG.info("---------------------------STARTING 'FETCH ALL PROGRAMS' ----------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            List<Program> programs = programViewRepository.findAll();
+            if (programs.isEmpty()) {
+                LOG.info("DID NOT FIND ANY PROGRAMS >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Not Found!");
+                apiResponse.setResponseCode("01");
+                apiResponse.setRecordCount(0);
+                apiResponse.setEntity("Did not find any Programs");
+                LOG.info("---------------------------ENDING 'GET ALL PROGRAMS'--------------------------------'");
+                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            }
+            LOG.info("NUMBER OF PROGRAMS FOUND >> {}" + programs.size());
+            apiResponse.setRecordCount(programs.size());
+            apiResponse.setEntity(programs);
+            apiResponse.setResponseCode("00");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause().toString());
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not fetch Any PROGRAMS");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+            LOG.info("---------------------------ENDING GET ALL PROGRAMS --------------------------------'");
+            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        LOG.info("---------------------------ENDING 'GET ALL PROGRAMS --------------------------------'");
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
-//
-//    @PostMapping("/updateById")
-//    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() Program program) {
-//        LOG.info("---------------------------STARTING 'UPDATE PROGRAM' --------------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        HttpStatus responseStatus = HttpStatus.OK;
-//        try {
-//            Optional<Program> programSearch = programRepository.findByProgramId(program.getProgramId());
-//            if (!programSearch.isPresent()) {
-//                LOG.info("PROGRAM NOT FOUND >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Program Not Found!");
-//                apiResponse.setResponseCode("01");
-//                responseStatus = HttpStatus.OK;
-//                return new ResponseEntity<>(apiResponse, responseStatus);
-//            }
-//            Program programEntity = programSearch.get();
-//            ApiUsers user = sharedFunctions.verifyToken(Authorization);
-//            /*if(user != null)
-//                program.setUpdatedBy(user.getId());*/
-//            programEntity.setDataSourceIdFk(program.getDataSourceIdFk());
-//            programEntity.setName(program.getName());
-//            programEntity.setDescription(program.getDescription());
-//            programEntity.setPrimaryIdentityType(program.getPrimaryIdentityType());
-//            programEntity.setStatus(program.getStatus());
-//            programRepository.save(programEntity);
-//            apiResponse.setEntity(programEntity);
-//            apiResponse.setResponseCode("00");
-//            apiResponse.setResponseDescription("Success! Program Saved.");
-//            LOG.info("OK! RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not add Program");
-//            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//        }
-//        LOG.info("---------------------------ENDING 'UPDATE PROGRAM'--------------------------------'");
-//        return new ResponseEntity<>(apiResponse, responseStatus);
-//    }
-//
+
+
+    @PostMapping("/updateById")
+    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() Program program) {
+        LOG.info("---------------------------STARTING 'UPDATE PROGRAM' --------------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        HttpStatus responseStatus = HttpStatus.OK;
+        try {
+            Optional<Program> programSearch = programRepository.findByProgramId(program.getProgramId());
+            if (!programSearch.isPresent()) {
+                LOG.info("PROGRAM NOT FOUND >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Program Not Found!");
+                apiResponse.setResponseCode("01");
+                responseStatus = HttpStatus.OK;
+                return new ResponseEntity<>(apiResponse, responseStatus);
+            }
+            Program programEntity = programSearch.get();
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
+            /*if(user != null)
+                program.setUpdatedBy(user.getId());*/
+            programEntity.setDataSourceIdFk(program.getDataSourceIdFk());
+            programEntity.setName(program.getName());
+            programEntity.setDescription(program.getDescription());
+            programEntity.setPrimaryIdentityType(program.getPrimaryIdentityType());
+            programEntity.setStatus(program.getStatus());
+            programRepository.save(programEntity);
+            apiResponse.setEntity(programEntity);
+            apiResponse.setResponseCode("00");
+            apiResponse.setResponseDescription("Success! Program Saved.");
+            LOG.info("OK! RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not add Program");
+            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+        }
+        LOG.info("---------------------------ENDING 'UPDATE PROGRAM'--------------------------------'");
+        return new ResponseEntity<>(apiResponse, responseStatus);
+    }
+
 
 }
