@@ -1,7 +1,7 @@
 package com.pinnoserv.portal.repositories;
 
 import com.pinnoserv.portal.entity.DataSource;
-import com.pinnoserv.portal.view.DataSourceView;
+//import com.pinnoserv.portal.view.DataSourceView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

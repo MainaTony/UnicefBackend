@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.repositories;
 
+import com.pinnoserv.portal.entity.Program;
 import com.pinnoserv.portal.view.ProgramView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,10 +14,10 @@ import java.util.Optional;
  * @author mwendwakelvin
  */
 @Repository
-public interface ProgramViewRepository extends JpaRepository<ProgramView, Integer> {
-    Optional<ProgramView> findByProgramId(Integer id);
+public interface ProgramViewRepository extends JpaRepository<Program, Integer> {
+    Optional<Program> findByProgramId(Integer id);
 
-    List<ProgramView> findAllByOrganisationId(Integer organisationId);
+    List<Program> findAllByOrganisationIdFk(Integer organisationId);
 
-    List<ProgramView> findAll();
+    List<Program> findAll();
 }
