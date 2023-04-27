@@ -141,148 +141,148 @@ public class DataSourceController {
         LOG.info("---------------------------ENDING 'VIEW DATA SOURCE'--------------------------------'");
         return new ResponseEntity<>(apiResponse, responseStatus);
     }
-//
-//    @PostMapping("/getAll")
-//    public ResponseEntity<?> getDataSourceByOrgId(@RequestBody() Map<String, Object> requestParams) {
-//        LOG.info("---------------------------STARTING 'FETCH DATA SOURCE' ----------------------------");
-//        LOG.info("PARAMS GOTTEN >> {}", requestParams);
-//        ApiResponse apiResponse = new ApiResponse();
-//        HttpStatus httpStatus = null;
-//        String orgId = requestParams.containsKey("organisationId") ? requestParams.get("organisationId").toString() : null;
-//        if (orgId == null) {
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Parameter organisationId is required.");
-//            httpStatus = HttpStatus.BAD_REQUEST;
-//            LOG.info("PARAMETER {organisationId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
-//            return new ResponseEntity<>(apiResponse, httpStatus);
-//        }
-//        try {
-//            List<DataSourceView> dataSource = dataSourceViewRepository.findAllByOrganisationIdFk(new BigInteger(orgId));
-//            if (dataSource.isEmpty()) {
-//                LOG.info("DID NOT FIND DATA SOURCE >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Not Found!");
-//                apiResponse.setResponseCode("01");
-//                apiResponse.setRecordCount(0);
-//                apiResponse.setEntity("Did not find any DataSource for params " + requestParams);
-//                LOG.info("---------------------------ENDING 'GET DATA SOURCE BY ID'--------------------------------'");
-//                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//            }
-//            LOG.info("NUMBER OF DATA SOURCE FOUND >> {}" + dataSource.size());
-//            apiResponse.setRecordCount(dataSource.size());
-//            apiResponse.setEntity(dataSource);
-//            apiResponse.setResponseCode("00");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause().toString());
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not fetch DATA SOURCE");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//            LOG.info("---------------------------ENDING 'GET DATA SOURCE BY ID' WITH ID >> " + orgId + "--------------------------------'");
-//            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        LOG.info("---------------------------ENDING 'GET DATA SOURCE BY ID' WITH ID >> " + orgId + "--------------------------------'");
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
 
-//    @PostMapping("/listAll")
-//    public ResponseEntity<?> getAllDataSource() {
-//        LOG.info("---------------------------STARTING 'FETCH ALL DATA SOURCE' ----------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        try {
-//            List<DataSourceView> dataSource = dataSourceViewRepository.findAll();
-//            if (dataSource.isEmpty()) {
-//                LOG.info("DID NOT FIND ANY DATA SOURCE >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Not Found!");
-//                apiResponse.setResponseCode("01");
-//                apiResponse.setRecordCount(0);
-//                apiResponse.setEntity("Did not find any DataSource");
-//                LOG.info("---------------------------ENDING 'GET ALL DATA SOURCE'--------------------------------'");
-//                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//            }
-//            LOG.info("NUMBER OF DATA SOURCE FOUND >> {}" + dataSource.size());
-//            apiResponse.setRecordCount(dataSource.size());
-//            apiResponse.setEntity(dataSource);
-//            apiResponse.setResponseCode("00");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause().toString());
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not fetch DATA SOURCE");
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//            LOG.info("---------------------------ENDING 'GET ALL DATA SOURCES' --------------------------------'");
-//            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        LOG.info("---------------------------ENDING 'GET DATA ALL SOURCES' --------------------------------'");
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
+    @PostMapping("/getAll")
+    public ResponseEntity<?> getDataSourceByOrgId(@RequestBody() Map<String, Object> requestParams) {
+        LOG.info("---------------------------STARTING 'FETCH DATA SOURCE' ----------------------------");
+        LOG.info("PARAMS GOTTEN >> {}", requestParams);
+        ApiResponse apiResponse = new ApiResponse();
+        HttpStatus httpStatus = null;
+        String orgId = requestParams.containsKey("organisationId") ? requestParams.get("organisationId").toString() : null;
+        if (orgId == null) {
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Parameter organisationId is required.");
+            httpStatus = HttpStatus.BAD_REQUEST;
+            LOG.info("PARAMETER {organisationId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
+            return new ResponseEntity<>(apiResponse, httpStatus);
+        }
+        try {
+            List<DataSource> dataSource = dataSourceViewRepository.findAllByOrganisationIdFk(new Integer(orgId));
+            if (dataSource.isEmpty()) {
+                LOG.info("DID NOT FIND DATA SOURCE >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Not Found!");
+                apiResponse.setResponseCode("01");
+                apiResponse.setRecordCount(0);
+                apiResponse.setEntity("Did not find any DataSource for params " + requestParams);
+                LOG.info("---------------------------ENDING 'GET DATA SOURCE BY ID'--------------------------------'");
+                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            }
+            LOG.info("NUMBER OF DATA SOURCE FOUND >> {}" + dataSource.size());
+            apiResponse.setRecordCount(dataSource.size());
+            apiResponse.setEntity(dataSource);
+            apiResponse.setResponseCode("00");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause().toString());
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not fetch DATA SOURCE");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+            LOG.info("---------------------------ENDING 'GET DATA SOURCE BY ID' WITH ID >> " + orgId + "--------------------------------'");
+            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        LOG.info("---------------------------ENDING 'GET DATA SOURCE BY ID' WITH ID >> " + orgId + "--------------------------------'");
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/listAll")
+    public ResponseEntity<?> getAllDataSource() {
+        LOG.info("---------------------------STARTING 'FETCH ALL DATA SOURCE' ----------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            List<DataSource> dataSource = dataSourceViewRepository.findAll();
+            if (dataSource.isEmpty()) {
+                LOG.info("DID NOT FIND ANY DATA SOURCE >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Not Found!");
+                apiResponse.setResponseCode("01");
+                apiResponse.setRecordCount(0);
+                apiResponse.setEntity("Did not find any DataSource");
+                LOG.info("---------------------------ENDING 'GET ALL DATA SOURCE'--------------------------------'");
+                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            }
+            LOG.info("NUMBER OF DATA SOURCE FOUND >> {}" + dataSource.size());
+            apiResponse.setRecordCount(dataSource.size());
+            apiResponse.setEntity(dataSource);
+            apiResponse.setResponseCode("00");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause().toString());
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not fetch DATA SOURCE");
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+            LOG.info("---------------------------ENDING 'GET ALL DATA SOURCES' --------------------------------'");
+            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        LOG.info("---------------------------ENDING 'GET DATA ALL SOURCES' --------------------------------'");
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
 
 
-//    @PostMapping("/updateById")
-//    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() DataSource dataSource) {
-//        LOG.info("---------------------------STARTING 'UPDATE DATA SOURCE' --------------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        HttpStatus responseStatus = HttpStatus.OK;
-//        try {
-//            Optional<DataSource> dataSourceSearch = dataSourceRepository.findByDataSourceId(dataSource.getDataSourceId());
-//            if (!dataSourceSearch.isPresent()) {
-//                LOG.info("DATA SOURCE NOT FOUND >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("DataSource Not Found!");
-//                apiResponse.setResponseCode("01");
-//                responseStatus = HttpStatus.OK;
-//                return new ResponseEntity<>(apiResponse, responseStatus);
-//            }
-//            DataSource dataSourceEntity = dataSourceSearch.get();
-//            ApiUsers user = sharedFunctions.verifyToken(Authorization);
-//            /*if(user != null)
-//                dataSourceEntity.setUpdatedBy(user.getId());*/
-//
-//            dataSourceEntity.setName(dataSource.getName());
-//            dataSourceEntity.setDataSourceUrl(dataSource.getDataSourceUrl());
-//            dataSourceEntity.setExcelUrl(dataSource.getExcelUrl());
-//            dataSourceEntity.setExcelPath(dataSource.getExcelPath());
-//            dataSourceEntity.setDataSourceType(dataSource.getDataSourceType());
-//            dataSourceEntity.setDataUsage(dataSource.getDataUsage());
-//            dataSourceEntity.setStatus(dataSource.getStatus());
-//            dataSource.setAction("Update");
-//            dataSourceEntity.setExpiry(dataSource.getExpiry());
-//            dataSourceEntity.setScoringDataSize(dataSource.getScoringDataSize());
-//            dataSourceRepository.save(dataSourceEntity);
-//            apiResponse.setEntity(dataSourceEntity);
-//            apiResponse.setResponseCode("00");
-//            apiResponse.setResponseDescription("Success! DataSource Saved.");
-//            LOG.info("OK! RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not add DataSource");
-//            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//        }
-//        LOG.info("---------------------------ENDING 'UPDATE DATA SOURCE'--------------------------------'");
-//        return new ResponseEntity<>(apiResponse, responseStatus);
-//    }
+    @PostMapping("/updateById")
+    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() DataSource dataSource) {
+        LOG.info("---------------------------STARTING 'UPDATE DATA SOURCE' --------------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        HttpStatus responseStatus = HttpStatus.OK;
+        try {
+            Optional<DataSource> dataSourceSearch = dataSourceRepository.findByDataSourceId(dataSource.getDataSourceId());
+            if (!dataSourceSearch.isPresent()) {
+                LOG.info("DATA SOURCE NOT FOUND >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("DataSource Not Found!");
+                apiResponse.setResponseCode("01");
+                responseStatus = HttpStatus.OK;
+                return new ResponseEntity<>(apiResponse, responseStatus);
+            }
+            DataSource dataSourceEntity = dataSourceSearch.get();
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
+            /*if(user != null)
+                dataSourceEntity.setUpdatedBy(user.getId());*/
+
+            dataSourceEntity.setName(dataSource.getName());
+            dataSourceEntity.setDataSourceUrl(dataSource.getDataSourceUrl());
+            dataSourceEntity.setExcelUrl(dataSource.getExcelUrl());
+            dataSourceEntity.setExcelPath(dataSource.getExcelPath());
+            dataSourceEntity.setDataSourceType(dataSource.getDataSourceType());
+            dataSourceEntity.setDataUsage(dataSource.getDataUsage());
+            dataSourceEntity.setStatus(dataSource.getStatus());
+            dataSource.setAction("Update");
+            dataSourceEntity.setExpiry(dataSource.getExpiry());
+            dataSourceEntity.setScoringDataSize(dataSource.getScoringDataSize());
+            dataSourceRepository.save(dataSourceEntity);
+            apiResponse.setEntity(dataSourceEntity);
+            apiResponse.setResponseCode("00");
+            apiResponse.setResponseDescription("Success! DataSource Saved.");
+            LOG.info("OK! RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not add DataSource");
+            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+        }
+        LOG.info("---------------------------ENDING 'UPDATE DATA SOURCE'--------------------------------'");
+        return new ResponseEntity<>(apiResponse, responseStatus);
+    }
 
 
 }
