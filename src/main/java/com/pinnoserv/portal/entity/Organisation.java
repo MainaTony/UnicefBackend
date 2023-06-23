@@ -1,10 +1,9 @@
 package com.pinnoserv.portal.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -16,22 +15,27 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "Organisation")
 public class Organisation {
+    @Id
     @Column(name = "Organisation_Id")
-    private int organisationId;
+    private Long organisationId;
     @Column(name = "Organisation_Name")
-    private String name;
+    private String organisationName;
     @Column(name = "Organisation_Code")
-    private String orgCode;
+    private String organisationCode;
+
+//    BusinessType is a foreign key
     @Column(name = "Business_Type")
-    private int businessTypeFk;
+    private int businessType;
     @Column(name = "Organisation_Address")
-    private String physicalAddress;
+    private String organisationAddress;
     @Column(name = "Organisation_Phone")
-    private String msisdn;
+    private String organisationPhone;
     @Column(name = "Organisation_Email")
-    private String emailAddress;
+    private String organisationEmail;
     @Column(name = "Date_Created")
     private LocalDateTime dateCreated;
     @Column(name = "Created_By")
