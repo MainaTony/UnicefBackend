@@ -15,14 +15,11 @@ import java.time.LocalDateTime;
 @RequestMapping("/organisation")
 @CrossOrigin
 public class OrganisationController {
-    Logger log = LoggerFactory.getLogger(OrganisationController.class);
-//    @Autowired
-//    DatabaseService dbService;
-//    @Autowired
-//    private OrganisationService organisationService;
-//    public OrganisationController(OrganisationService organisationService){
-//        this.organisationService = organisationService;
-//    }
+    private static final Logger log = LoggerFactory.getLogger(OrganisationController.class);
+    private OrganisationService organisationService;
+    public OrganisationController(OrganisationService organisationService){
+        this.organisationService = organisationService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<?> createOrganisation(@RequestHeader("Authorization") String Authorization, @RequestBody() Organisation organisation){
