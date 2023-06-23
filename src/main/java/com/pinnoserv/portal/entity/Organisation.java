@@ -1,30 +1,51 @@
-//package com.pinnoserv.portal.entity;
-//
-//import javax.persistence.*;
-//import java.math.BigInteger;
-//import java.sql.Timestamp;
-//import java.util.Collection;
-//import java.util.Objects;
-//
-//@Entity
-//public class Organisation {
-//    private BigInteger organisationId;
-//    private String name;
-//    private String orgCode;
-//    private BigInteger businessTypeFk;
-//    private String physicalAddress;
-//    private String msisdn;
-//    private String emailAddress;
-//    private Timestamp dateCreated;
-//    private BigInteger createdBy;
-//    private Boolean status;
-//    private String intrash;
+package com.pinnoserv.portal.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Objects;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "Organisation")
+public class Organisation {
+    @Column(name = "Organisation_Id")
+    private int organisationId;
+    @Column(name = "Organisation_Name")
+    private String name;
+    @Column(name = "Organisation_Code")
+    private String orgCode;
+    @Column(name = "Business_Type")
+    private int businessTypeFk;
+    @Column(name = "Organisation_Address")
+    private String physicalAddress;
+    @Column(name = "Organisation_Phone")
+    private String msisdn;
+    @Column(name = "Organisation_Email")
+    private String emailAddress;
+    @Column(name = "Date_Created")
+    private LocalDateTime dateCreated;
+    @Column(name = "Created_By")
+    private int createdBy;
+    @Column(name = "Status")
+    private Boolean status;
+    @Column(name = "Intrash")
+    private String intrash;
 //    private Collection<Config> configsByOrganisationId;
 //    private Collection<Customer> customersByOrganisationId;
 //    private BusinessTypeModel businessTypeByBusinessTypeFkModel;
-//    //private Collection<Program> programsByOrganisationId;
-//    //private Collection<Users> usersByOrganisationId;
-//
+    //private Collection<Program> programsByOrganisationId;
+    //private Collection<Users> usersByOrganisationId;
+
 //    public Organisation() {
 //    }
 //
@@ -182,22 +203,22 @@
 //    public void setBusinessTypeByBusinessTypeFk(BusinessTypeModel businessTypeByBusinessTypeFkModel) {
 //        this.businessTypeByBusinessTypeFkModel = businessTypeByBusinessTypeFkModel;
 //    }
-//
-//    /*@OneToMany(mappedBy = "organisationByOrganisationIdFk")
-//    public Collection<Program> getProgramsByOrganisationId() {
-//        return programsByOrganisationId;
-//    }
-//
-//    public void setProgramsByOrganisationId(Collection<Program> programsByOrganisationId) {
-//        this.programsByOrganisationId = programsByOrganisationId;
-//    }
-//
-//    @OneToMany(mappedBy = "organisationByOrganisationIdFk")
-//    public Collection<Users> getUsersByOrganisationId() {
-//        return usersByOrganisationId;
-//    }
-//
-//    public void setUsersByOrganisationId(Collection<Users> usersByOrganisationId) {
-//        this.usersByOrganisationId = usersByOrganisationId;
-//    }*/
-//}
+
+    /*@OneToMany(mappedBy = "organisationByOrganisationIdFk")
+    public Collection<Program> getProgramsByOrganisationId() {
+        return programsByOrganisationId;
+    }
+
+    public void setProgramsByOrganisationId(Collection<Program> programsByOrganisationId) {
+        this.programsByOrganisationId = programsByOrganisationId;
+    }
+
+    @OneToMany(mappedBy = "organisationByOrganisationIdFk")
+    public Collection<Users> getUsersByOrganisationId() {
+        return usersByOrganisationId;
+    }
+
+    public void setUsersByOrganisationId(Collection<Users> usersByOrganisationId) {
+        this.usersByOrganisationId = usersByOrganisationId;
+    }*/
+}
