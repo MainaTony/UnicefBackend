@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author mwendwakelvin
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByProductId(Integer id);
 
     List<Product> findAllByProgramIdFk(Integer programId);

@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -22,11 +23,12 @@ public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "organisation_id")
+    private Long organisationId;
     @Column(name = "Organisation_Name")
     private String organisationName;
     @Column(name = "Organisation_Code")
     private String organisationCode;
-
     @Column(name = "Business_Type")
     private int businessType;
     @Column(name = "Organisation_Address")
@@ -41,8 +43,10 @@ public class Organisation {
     private int createdBy;
     @Column(name = "Status")
     private Boolean status;
-    @Column(name = "Intrash")
+    @Column(name = "In_trash")
     private String intrash;
+
+//    private List<Product> product;
 //    private Collection<Config> configsByOrganisationId;
 //    private Collection<Customer> customersByOrganisationId;
 //    private BusinessTypeModel businessTypeByBusinessTypeFkModel;
