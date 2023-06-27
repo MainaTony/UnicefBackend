@@ -24,24 +24,24 @@ public class OrganisationController {
     @PostMapping("/create")
     public ResponseEntity<?> createOrganisation(@RequestHeader("Authorization") String Authorization, @RequestBody() Organisation organisation){
         log.info("----------------------Initiated Creating of Organisation------------------------------------");
+        organisationService.createOrganisation(organisation);
+        try{
 
-        Organisation newOrganisation = new Organisation();
-        newOrganisation.setCreatedBy(1);
-        newOrganisation.setDateCreated(LocalDateTime.now());
-        newOrganisation.setIntrash("No");
-        newOrganisation.setStatus(Boolean.TRUE);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        newOrganisation.setBusinessType(organisation.getBusinessType());
-        newOrganisation.setOrganisationEmail(organisation.getOrganisationEmail());
-        newOrganisation.setOrganisationPhone(organisation.getOrganisationPhone());
-        newOrganisation.setOrganisationName(organisation.getOrganisationName());
-        newOrganisation.setOrganisationCode(organisation.getOrganisationCode());
-        newOrganisation.setOrganisationAddress(organisation.getOrganisationAddress());
-
-        log.info("My Organisation Details {}", newOrganisation);
-
-
-        return ResponseEntity.ok(newOrganisation);
+        return ResponseEntity.ok(organisation);
 
     }
+
+    @PostMapping("/getById")
+    public ResponseEntity<?> getOrganisationById(@RequestBody Organisation organisation){
+
+        int orgCode = Integer.parseInt(organisation.getOrganisationCode());
+        organisationService.getById(orgCode);
+
+        return ResponseEntity.ok(organisation);
+    }
+
 }

@@ -14,20 +14,19 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
-@Getter
-@Setter
 @Table(name = "Organisation")
 public class Organisation {
+    @Column(name = "id")
     @Id
-    @Column(name = "Organisation_Id")
-    private Long organisationId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "Organisation_Name")
     private String organisationName;
     @Column(name = "Organisation_Code")
     private String organisationCode;
 
-//    BusinessType is a foreign key
     @Column(name = "Business_Type")
     private int businessType;
     @Column(name = "Organisation_Address")
