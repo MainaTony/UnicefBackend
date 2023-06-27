@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class OrganisationServiceImpl implements OrganisationService{
@@ -65,5 +66,24 @@ public class OrganisationServiceImpl implements OrganisationService{
 
         }
         return org;
+    }
+
+    @Override
+    public List<Organisation> getAll() {
+//        Steps
+//        1. Check if org Code exists
+//        2. Fetch all the organisations
+        List<Organisation> allOrgs = null;
+        try{
+            allOrgs = organisationRepository.findAll();
+            if(allOrgs.isEmpty()){
+            log.info("The List is empty");
+            }
+        }
+        catch (Exception e){
+
+        }
+
+        return allOrgs;
     }
 }

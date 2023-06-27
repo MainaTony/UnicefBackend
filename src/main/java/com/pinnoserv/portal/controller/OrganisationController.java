@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/organisation")
@@ -48,9 +49,15 @@ public class OrganisationController {
     }
 
     @PostMapping("/getAll")
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<List<Organisation>> getAll() {
 
-        return ResponseEntity.ok();
+        List<Organisation> allOrgs = null;
+        try {
+            allOrgs = organisationService.getAll();
+        } catch (Exception e) {
+
+        }
+        return ResponseEntity.ok(allOrgs);
     }
 
 
