@@ -24,9 +24,9 @@ public class OrganisationController {
     @PostMapping("/create")
     public ResponseEntity<?> createOrganisation(@RequestHeader("Authorization") String Authorization, @RequestBody() Organisation organisation){
         log.info("----------------------Initiated Creating of Organisation------------------------------------");
-        organisationService.createOrganisation(organisation);
-        try{
 
+        try{
+            organisationService.createOrganisation(organisation);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -36,12 +36,11 @@ public class OrganisationController {
     }
 
     @PostMapping("/getById")
-    public ResponseEntity<?> getOrganisationById(@RequestBody Organisation organisation){
+    public ResponseEntity<Organisation> getOrganisationById(@RequestBody Organisation organisation){
 
-        int orgCode = Integer.parseInt(organisation.getOrganisationCode());
-        organisationService.getById(orgCode);
+        Organisation org = organisationService.getById(organisation);
 
-        return ResponseEntity.ok(organisation);
+        return ResponseEntity.ok(org);
     }
 
 }

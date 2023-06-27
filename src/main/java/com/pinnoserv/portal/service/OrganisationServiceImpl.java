@@ -46,19 +46,24 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
     @Override
-    public int getById(int orgCode) {
-//  Steps:
+    public Organisation getById(Organisation organisation) {
+        Long orgCode = organisation.getId();
+        log.info("Initiating Get By Id, Value  {} ", orgCode);
+//        Steps
+//        Check if org exist
+//        Fetch details of the organisation
 
+        Organisation org = null;
+        try {
+            if (organisationRepository.existsById(orgCode)) {
+                log.info("Id is Available");
+                org = organisationRepository.findById(orgCode).get();
+                log.info("Response from the repository {}", org);
+            }
+            log.info("Id is Not Available");
+        } catch (Exception e) {
 
-
-//        if(organisationRepository.findByOrganisationCode(orgCode)){
-//            organisationRepository.fi
-//        } else{
-//
-//        }
-//        log.info("");
-//
-//        return null;
-        return 1;
+        }
+        return org;
     }
 }
