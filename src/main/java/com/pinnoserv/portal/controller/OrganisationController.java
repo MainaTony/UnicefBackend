@@ -3,6 +3,7 @@ package com.pinnoserv.portal.controller;
 import com.pinnoserv.portal.entity.Organisation;
 import com.pinnoserv.portal.service.DatabaseService;
 import com.pinnoserv.portal.service.OrganisationService;
+import javassist.bytecode.stackmap.BasicBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,22 @@ public class OrganisationController {
     }
 
     @PostMapping("/getById")
-    public ResponseEntity<Organisation> getOrganisationById(@RequestBody Organisation organisation){
+    public ResponseEntity<Organisation> getOrganisationById(@RequestBody Organisation organisation) {
+        Organisation org = null;
+        try {
+            org = organisationService.getById(organisation);
+        } catch (Exception e) {
 
-        Organisation org = organisationService.getById(organisation);
-
+        }
         return ResponseEntity.ok(org);
     }
+
+    @PostMapping("/getAll")
+    public ResponseEntity<?> getAll(){
+
+        return ResponseEntity.ok();
+    }
+
+
 
 }
