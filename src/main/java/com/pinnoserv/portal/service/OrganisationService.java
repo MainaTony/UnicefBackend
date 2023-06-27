@@ -10,4 +10,5 @@ public interface OrganisationService {
      String createOrganisation(Organisation organisation);
      Organisation getById(Organisation orgCode);
      List<Organisation> getAll();
+     Organisation updateById(Organisation organisation);
 }

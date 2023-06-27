@@ -3,12 +3,14 @@ package com.pinnoserv.portal.service;
 import com.pinnoserv.portal.entity.Organisation;
 import com.pinnoserv.portal.repositories.OrganisationRepository;
 import lombok.Builder;
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrganisationServiceImpl implements OrganisationService{
@@ -85,5 +87,57 @@ public class OrganisationServiceImpl implements OrganisationService{
         }
 
         return allOrgs;
+    }
+
+    @Override
+    public Organisation updateById(Organisation organisation) {
+//        Check if the Organisation exists
+//        Update the only values that have values in them and leave out the empty ones
+
+        Organisation dbOrganisation = null;
+        try {
+
+            Long orgCode = organisation.getId();
+            log.info("Update Id : {}", orgCode);
+
+            if (organisationRepository.existsById(orgCode)) {
+//                Organisation updateOrganisation = Organisation.builder()
+//                        .build();
+                dbOrganisation = organisationRepository.findById(orgCode).get();
+
+                String orgName = organisation.getOrganisationName();
+                String organisationCode = organisation.getOrganisationCode();
+                int businessType = organisation.getBusinessType();
+                String organisationAddress = organisation.getOrganisationAddress();
+                String organisationPhone = organisation.getOrganisationPhone();
+                String organisationEmail = organisation.getOrganisationEmail();
+
+                log.info("My Update Data : {}", orgName);
+
+                if (!orgName.isEmpty() && !orgName.equalsIgnoreCase(dbOrganisation.getOrganisationName())) {
+                    dbOrganisation.setOrganisationName(orgName);
+                }
+                if (!organisationCode.isEmpty() && !organisationCode.equalsIgnoreCase(dbOrganisation.getOrganisationCode())){
+                    dbOrganisation.setOrganisationCode(organisationCode);
+                }
+                if (businessType != 0) {
+                    dbOrganisation.setBusinessType(businessType);
+                }
+                if (!organisationAddress.isEmpty() && !organisationAddress.equalsIgnoreCase(dbOrganisation.getOrganisationAddress())) {
+                    dbOrganisation.setOrganisationAddress(organisationAddress);
+                }
+                if (!organisationPhone.isEmpty() && !organisationPhone.equalsIgnoreCase(dbOrganisation.getOrganisationPhone())) {
+                    dbOrganisation.setOrganisationPhone(organisationPhone);
+                }
+                if (!organisationEmail.isEmpty() && !organisationEmail.equalsIgnoreCase(dbOrganisation.getOrganisationEmail())) {
+                    dbOrganisation.setOrganisationEmail(organisationEmail);
+                }
+                organisationRepository.save(dbOrganisation);
+
+            }
+        } catch (Exception e) {
+
+        }
+        return dbOrganisation;
     }
 }

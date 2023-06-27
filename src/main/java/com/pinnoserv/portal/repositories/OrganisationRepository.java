@@ -15,4 +15,5 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
     Optional<Organisation> findById(Long aLong);
     @Override
     List<Organisation> findAll();
+
 }

@@ -59,7 +59,18 @@ public class OrganisationController {
         }
         return ResponseEntity.ok(allOrgs);
     }
+    @PostMapping("/updateById")
+    public ResponseEntity<Organisation> updateById(@RequestBody Organisation organisation) {
 
+        Organisation myOrg = null;
+        try {
+            myOrg = organisationService.updateById(organisation);
+        } catch (Exception e) {
+
+        }
+
+        return ResponseEntity.ok(myOrg);
+    }
 
 
 }
