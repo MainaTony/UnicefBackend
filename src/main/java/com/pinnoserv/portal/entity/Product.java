@@ -21,7 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long productId;
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "min_amount")
@@ -73,10 +73,10 @@ public class Product {
     private Double takeChargesUpfront;
     @Column(name = "automated_scoring")
     private Integer automatedScoring;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(
             name = "organisation_id",
-            referencedColumnName = "organisationId"
+            referencedColumnName = "organisation_id"
     )
     private Organisation organisation;
 

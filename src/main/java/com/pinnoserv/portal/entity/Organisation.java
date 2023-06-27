@@ -23,6 +23,10 @@ public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToMany(
+            mappedBy = "organisation"
+    )
+    private List<Product> product;
     @Column(name = "organisation_id")
     private Long organisationId;
     @Column(name = "Organisation_Name")
