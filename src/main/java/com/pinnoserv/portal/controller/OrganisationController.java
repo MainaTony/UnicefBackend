@@ -68,8 +68,17 @@ public class OrganisationController {
         } catch (Exception e) {
 
         }
-
         return ResponseEntity.ok(myOrg);
+    }
+
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<String> deleteOrganisation(@RequestBody Organisation organisation){
+        try{
+            organisationService.deleteById(organisation);
+        } catch (Exception e){
+
+        }
+    return ResponseEntity.ok("Organisation Deleted Successfully");
     }
 
 

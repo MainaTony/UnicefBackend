@@ -133,11 +133,26 @@ public class OrganisationServiceImpl implements OrganisationService{
                     dbOrganisation.setOrganisationEmail(organisationEmail);
                 }
                 organisationRepository.save(dbOrganisation);
-
             }
         } catch (Exception e) {
 
         }
         return dbOrganisation;
+    }
+
+    @Override
+    public void deleteById(Organisation organisation) {
+//        Check if the organisation exists
+//        Delete the organisation
+
+        Long orgCode = organisation.getId();
+
+        try{
+            if(organisationRepository.existsById(orgCode)){
+                organisationRepository.deleteById(orgCode);
+            }
+        } catch(Exception e){
+
+        }
     }
 }
