@@ -1,32 +1,34 @@
 package com.pinnoserv.portal.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "business_type")
-public class BusinessTypeModel {
+public class BusinessType {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "type")
     private String type;
+    @Column(name = "business_code")
+    private Long businessCode;
     @Column(name = "description")
     private String description;
     @Column(name = "date_created")
-    private Date dateCreated;
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
     @Column(name = "created_by")
     private Integer createdBy;
     @Column(name = "in_trash")
