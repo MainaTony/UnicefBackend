@@ -1,38 +1,39 @@
-//package com.pinnoserv.portal.entity;
-//
-//import javax.persistence.*;
-//import java.math.BigInteger;
-//import java.sql.Timestamp;
-//import java.util.Collection;
-//import java.util.Date;
-//import java.util.Objects;
-//
-//@Entity
-//@Table(name = "BUSINESS_TYPE")
-//public class BusinessTypeModel {
-//    @Id
-//    @Column(name = "ID")
-//    @Basic(optional = false)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Integer id;
-//    @Basic
-//    @Column(name = "TYPE")
-//    private String type;
-//    @Basic
-//    @Column(name = "DESCRIPTION")
-//    private String description;
-//    @Basic
-//    @Column(name = "DATE_CREATED")
-//    private Date dateCreated;
-//    @Basic
-//    @Column(name = "CREATED_BY_FK")
-//    private Integer createdByFk;
-//    @Basic
-//    @Column(name = "INTRASH")
-//    private String intrash;
-////    @OneToMany(mappedBy = "businessTypeByBusinessTypeFk")
-////    private Collection<Organisation> organisationsById;
-//
+package com.pinnoserv.portal.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Objects;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "business_type")
+public class BusinessTypeModel {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "type")
+    private String type;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "date_created")
+    private Date dateCreated;
+    @Column(name = "created_by")
+    private Integer createdBy;
+    @Column(name = "in_trash")
+    private String inTrash;
+//    @OneToMany(mappedBy = "businessTypeByBusinessTypeFk")
+//    private Collection<Organisation> organisationsById;
+
 //
 //    public Integer getId() {
 //        return id;
@@ -99,13 +100,13 @@
 //    public int hashCode() {
 //        return Objects.hash(id, type, description, dateCreated, createdByFk, intrash);
 //    }
+
+
+//    public Collection<Organisation> getOrganisationsById() {
+//        return organisationsById;
+//    }
 //
-//
-////    public Collection<Organisation> getOrganisationsById() {
-////        return organisationsById;
-////    }
-////
-////    public void setOrganisationsById(Collection<Organisation> organisationsById) {
-////        this.organisationsById = organisationsById;
-////    }
-//}
+//    public void setOrganisationsById(Collection<Organisation> organisationsById) {
+//        this.organisationsById = organisationsById;
+//    }
+}
