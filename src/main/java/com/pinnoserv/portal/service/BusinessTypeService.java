@@ -7,5 +7,8 @@ import java.util.List;
 public interface BusinessTypeService {
     BusinessType getBusinessById(BusinessType businessType);
     List<BusinessType> getAllBusinesses();
+    BusinessType updateById(BusinessType businessType);
+
+    void deleteById(BusinessType businessType);
 
 }

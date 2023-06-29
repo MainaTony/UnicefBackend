@@ -107,7 +107,22 @@ public class BusinessTypeController {
         return ResponseEntity.ok(businessResponse);
     }
 //
-//    @PostMapping("/updateById")
-//
-//    @PostMapping("/delete")
+    @PostMapping("/updateById")
+    public ResponseEntity<BusinessType> geUpdateById(@RequestBody BusinessType businessType) {
+        BusinessType updatedBusiness = null;
+        try {
+            updatedBusiness = businessTypeService.updateById(businessType);
+        } catch (Exception e) {
+        }
+
+        return ResponseEntity.ok(updatedBusiness);
+    }
+
+    @PostMapping("/deleteById")
+    public ResponseEntity<?> deleteBusinessType(@RequestBody BusinessType businessType){
+        try{
+            businessTypeService.deleteById(businessType);
+        } catch (Exception e) {}
+        return ResponseEntity.ok("Business Deleted Successfully");
+    }
 }
