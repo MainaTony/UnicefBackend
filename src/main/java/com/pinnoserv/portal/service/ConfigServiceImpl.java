@@ -2,14 +2,45 @@ package com.pinnoserv.portal.service;
 
 import com.pinnoserv.portal.entity.BusinessType;
 import com.pinnoserv.portal.entity.Config;
+import com.pinnoserv.portal.entity.Organisation;
 import com.pinnoserv.portal.repositories.ConfigRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
+@Slf4j
+@Service
 public class ConfigServiceImpl implements ConfigService{
     ConfigRepository configRepository;
     public ConfigServiceImpl(ConfigRepository configRepository){
         this.configRepository = configRepository;
+    }
+
+    @Override
+    public String createConfig(Config config) {
+        log.info("");
+        Config configCreated = Config.builder()
+                .createdBy(Long.valueOf(2))
+                .createdDate(LocalDateTime.now())
+                .category(config.getCategory())
+                .name(config.getName())
+                .value(config.getValue())
+                .largeValue(config.getLargeValue())
+                .organisationIdFk(config.getOrganisationIdFk())
+                .updatedBy(config.getUpdatedBy())
+                .updatedDate(LocalDateTime.now())
+                .build();
+        configRepository.save(configCreated);
+
+        try {
+            log.info("-------------Persisting Organisation to Database------------");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return null;
     }
     @Override
     public Config getConfigById(Config config) {
