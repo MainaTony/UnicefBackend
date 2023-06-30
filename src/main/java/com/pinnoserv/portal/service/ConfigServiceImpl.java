@@ -104,7 +104,6 @@ public class ConfigServiceImpl implements ConfigService{
     @Override
     public void deleteById(Config config) {
         Long id = config.getId();
-
         try{
             if(configRepository.existsById(id)){
                 configRepository.deleteById(id);
