@@ -30,7 +30,8 @@ public class ScoreParamServiceImpl implements ScoreParamService{
                         .scoreCategoryIdFk(scoreParam.getScoreCategoryIdFk())
                         .masterParamIdFk(scoreParam.getMasterParamIdFk())
                         .percentageValue(scoreParam.getPercentageValue())
-                        .approvalLevel(scoreParam.getApprovalStatus())
+                        .approvalLevel(scoreParam.getApprovalLevel())
+                        .approvalStatus(scoreParam.getApprovalStatus())
                         .maxApprovals(scoreParam.getMaxApprovals())
                         .updateCycle(scoreParam.getUpdateCycle())
                         .inTrash("No")
@@ -87,7 +88,6 @@ public class ScoreParamServiceImpl implements ScoreParamService{
                 BigInteger maxApprovals = scoreParam.getMaxApprovals();
                 BigInteger updateCycle = scoreParam.getUpdateCycle();
                 String inTrash = scoreParam.getInTrash();
-
 
 
                 if (!dataType.isEmpty() && !dataType.equalsIgnoreCase(scoreParamDb.getDataType())) {
