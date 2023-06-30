@@ -1,25 +1,51 @@
-//package com.pinnoserv.portal.entity;
-//
-//import javax.persistence.*;
-//import java.math.BigInteger;
-//import java.sql.Timestamp;
-//import java.util.Date;
-//import java.util.Objects;
-//
-//@Entity
-//public class Config {
-//    private BigInteger id;
-//    private BigInteger createdBy;
-//    private String name;
-//    private Date timeCreated;
-//    private Timestamp timeUpdated;
-//    private BigInteger updatedBy;
-//    private BigInteger orgIdFk;
-//    private String category;
-//    private String value;
-//    private String largeValue;
-//    private Organisation organisationByOrgIdFk;
-//
+package com.pinnoserv.portal.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Objects;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "config")
+public class Config {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "created_by")
+    private Long createdBy;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "created_date")
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+    @Column(name = "")
+    @UpdateTimestamp
+    private LocalDateTime updatedDate;
+    @Column(name = "updated_by")
+    private Long updatedBy;
+    @Column(name = "organisation_id")
+    private Long organisationIdFk;
+    @Column(name = "category")
+    private String category;
+    @Column(name = "value")
+    private String value;
+    @Column(name = "large_value")
+    private String largeValue;
+
 //    @Id
 //    @Column(name = "ID")
 //    public BigInteger getId() {
@@ -142,4 +168,4 @@
 //    public void setOrganisationByOrgIdFk(Organisation organisationByOrgIdFk) {
 //        this.organisationByOrgIdFk = organisationByOrgIdFk;
 //    }
-//}
+}
