@@ -27,6 +27,7 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                     .computation(scoreParamMaster.getComputation())
                     .scoreCategoryMasterIdFk(scoreParamMaster.getScoreCategoryMasterIdFk())
                     .defaultCriteria(scoreParamMaster.getDefaultCriteria())
+                    .description(scoreParamMaster.getDescription())
                     .inTrash("No")
                     .build();
             scoreParamMasterRepository.save(scoreParamMasterCreated);
@@ -74,6 +75,7 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                 String name =  scoreParamMaster.getName();
                 String computation =  scoreParamMaster.getComputation();
                 String defaultCriteria =  scoreParamMaster.getDefaultCriteria();
+                String description = scoreParamMaster.getDescription();
 
 
                 if (!dataType.isEmpty() && !dataType.equalsIgnoreCase(scoreParamMasterDb.getDataType())) {
@@ -90,6 +92,9 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                 }
                 if (!defaultCriteria.isEmpty() && !defaultCriteria.equalsIgnoreCase(scoreParamMasterDb.getDefaultCriteria())) {
                     scoreParamMasterDb.setDefaultCriteria(dataType);
+                }
+                if (!description.isEmpty() && !description.equalsIgnoreCase(scoreParamMasterDb.getDescription())) {
+                    scoreParamMasterDb.setDescription(description);
                 }
                 scoreParamMasterRepository.save(scoreParamMasterDb);
             }
