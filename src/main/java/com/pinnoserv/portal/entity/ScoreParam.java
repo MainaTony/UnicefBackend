@@ -1,29 +1,53 @@
-//package com.pinnoserv.portal.entity;
-//
-//import javax.persistence.*;
-//import java.math.BigInteger;
-//import java.util.Objects;
-//
-//@Entity
-//@Table(name = "SCORE_PARAM")
-//public class ScoreParam {
-//    private BigInteger id;
-//    private String name;
-//    private String dataType;
-//    private String dataSource;
-//    private String computation;
-//    private BigInteger scoreCategoryIdFk;
-//    private BigInteger masterParamIdFk;
-//    private BigInteger percentageValue;
-//    private BigInteger approvalStatus;
-//    private BigInteger approvalLevel;
-//    private BigInteger maxApprovals;
-//    private BigInteger updateCycle;
-//    private String intrash;
-//    /*private ScoreCategory scoreCategoryByScoreCategoryIdFk;
-//    private ScoreParamMaster scoreParamMasterByMasterParamIdFk;
-//    private Collection<ScoreCard> scoreCardsById;*/
-//
+package com.pinnoserv.portal.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.util.Objects;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "score_param")
+public class ScoreParam {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "data_type")
+    private String dataType;
+    @Column(name = "data_source")
+    private String dataSource;
+    @Column(name = "computation")
+    private String computation;
+    @Column(name = "score_category_id")
+    private Long scoreCategoryIdFk;
+    @Column(name = "master_param_id")
+    private BigInteger masterParamIdFk;
+    @Column(name = "percentage_value")
+    private BigInteger percentageValue;
+    @Column(name = "approval_status")
+    private BigInteger approvalStatus;
+    @Column(name = "approval_level")
+    private BigInteger approvalLevel;
+    @Column(name = "max_approvals")
+    private BigInteger maxApprovals;
+    @Column(name = "update_cycle")
+    private BigInteger updateCycle;
+    @Column(name = "in_trash")
+    private String inTrash;
+    /*private ScoreCategory scoreCategoryByScoreCategoryIdFk;
+    private ScoreParamMaster scoreParamMasterByMasterParamIdFk;
+    private Collection<ScoreCard> scoreCardsById;*/
+
 //    @Id
 //    @Basic(optional = false)
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCORE_PARAM_SEQ")
@@ -169,33 +193,33 @@
 //    public int hashCode() {
 //        return Objects.hash(id, name, dataType, dataSource, computation, scoreCategoryIdFk, masterParamIdFk, percentageValue, approvalStatus, approvalLevel, maxApprovals, updateCycle, intrash);
 //    }
-//
-//    /*@ManyToOne
-//    @JoinColumn(name = "SCORE_CATEGORY_ID_FK", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
-//    public ScoreCategory getScoreCategoryByScoreCategoryIdFk() {
-//        return scoreCategoryByScoreCategoryIdFk;
-//    }
-//
-//    public void setScoreCategoryByScoreCategoryIdFk(ScoreCategory scoreCategoryByScoreCategoryIdFk) {
-//        this.scoreCategoryByScoreCategoryIdFk = scoreCategoryByScoreCategoryIdFk;
-//    }
-//
-//    @ManyToOne
-//    @JoinColumn(name = "MASTER_PARAM_ID_FK", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
-//    public ScoreParamMaster getScoreParamMasterByMasterParamIdFk() {
-//        return scoreParamMasterByMasterParamIdFk;
-//    }
-//
-//    public void setScoreParamMasterByMasterParamIdFk(ScoreParamMaster scoreParamMasterByMasterParamIdFk) {
-//        this.scoreParamMasterByMasterParamIdFk = scoreParamMasterByMasterParamIdFk;
-//    }
-//
-//    @OneToMany(mappedBy = "scoreParamByScoreParamIdFk")
-//    public Collection<ScoreCard> getScoreCardsById() {
-//        return scoreCardsById;
-//    }
-//
-//    public void setScoreCardsById(Collection<ScoreCard> scoreCardsById) {
-//        this.scoreCardsById = scoreCardsById;
-//    }*/
-//}
+
+    /*@ManyToOne
+    @JoinColumn(name = "SCORE_CATEGORY_ID_FK", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+    public ScoreCategory getScoreCategoryByScoreCategoryIdFk() {
+        return scoreCategoryByScoreCategoryIdFk;
+    }
+
+    public void setScoreCategoryByScoreCategoryIdFk(ScoreCategory scoreCategoryByScoreCategoryIdFk) {
+        this.scoreCategoryByScoreCategoryIdFk = scoreCategoryByScoreCategoryIdFk;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "MASTER_PARAM_ID_FK", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+    public ScoreParamMaster getScoreParamMasterByMasterParamIdFk() {
+        return scoreParamMasterByMasterParamIdFk;
+    }
+
+    public void setScoreParamMasterByMasterParamIdFk(ScoreParamMaster scoreParamMasterByMasterParamIdFk) {
+        this.scoreParamMasterByMasterParamIdFk = scoreParamMasterByMasterParamIdFk;
+    }
+
+    @OneToMany(mappedBy = "scoreParamByScoreParamIdFk")
+    public Collection<ScoreCard> getScoreCardsById() {
+        return scoreCardsById;
+    }
+
+    public void setScoreCardsById(Collection<ScoreCard> scoreCardsById) {
+        this.scoreCardsById = scoreCardsById;
+    }*/
+}
