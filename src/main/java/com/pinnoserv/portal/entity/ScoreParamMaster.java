@@ -1,24 +1,43 @@
-//package com.pinnoserv.portal.entity;
-//
-//import javax.persistence.*;
-//import java.math.BigInteger;
-//import java.util.Objects;
-//
-//@Entity
-//@Table(name = "SCORE_PARAM_MASTER")
-//public class ScoreParamMaster {
-//    private BigInteger id;
-//    private String name;
-//    private String dataType;
-//    private String dataSource;
-//    private String computation;
-//    private BigInteger categoryMasterIdFk;
-//    private String description;
-//    private String defaultCriteria;
-//    private String intrash;
-//    /*private Collection<ScoreParam> scoreParamsById;
-//    private ScoreCategoryMaster scoreCategoryMasterByCategoryMasterIdFk;*/
-//
+package com.pinnoserv.portal.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.util.Objects;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "score_param_master")
+public class ScoreParamMaster {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "data_type")
+    private String dataType;
+    @Column(name = "data_source")
+    private String dataSource;
+    @Column(name = "computation")
+    private String computation;
+    @Column(name = "score_category_master_id")
+    private Long scoreCategoryMasterIdFk;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "default_criteria")
+    private String defaultCriteria;
+    @Column(name = "in_trash")
+    private String inTrash;
+    /*private Collection<ScoreParam> scoreParamsById;
+    private ScoreCategoryMaster scoreCategoryMasterByCategoryMasterIdFk;*/
+
 //    @Id
 //    @Basic(optional = false)
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCORE_PARAM_MASTER_SEQ")
@@ -124,23 +143,23 @@
 //    public int hashCode() {
 //        return Objects.hash(id, name, dataType, dataSource, computation, categoryMasterIdFk, description, defaultCriteria, intrash);
 //    }
-//
-//    /*@OneToMany(mappedBy = "scoreParamMasterByMasterParamIdFk")
-//    public Collection<ScoreParam> getScoreParamsById() {
-//        return scoreParamsById;
-//    }
-//
-//    public void setScoreParamsById(Collection<ScoreParam> scoreParamsById) {
-//        this.scoreParamsById = scoreParamsById;
-//    }
-//
-//    @ManyToOne
-//    @JoinColumn(name = "CATEGORY_MASTER_ID_FK", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
-//    public ScoreCategoryMaster getScoreCategoryMasterByCategoryMasterIdFk() {
-//        return scoreCategoryMasterByCategoryMasterIdFk;
-//    }
-//
-//    public void setScoreCategoryMasterByCategoryMasterIdFk(ScoreCategoryMaster scoreCategoryMasterByCategoryMasterIdFk) {
-//        this.scoreCategoryMasterByCategoryMasterIdFk = scoreCategoryMasterByCategoryMasterIdFk;
-//    }*/
-//}
+
+    /*@OneToMany(mappedBy = "scoreParamMasterByMasterParamIdFk")
+    public Collection<ScoreParam> getScoreParamsById() {
+        return scoreParamsById;
+    }
+
+    public void setScoreParamsById(Collection<ScoreParam> scoreParamsById) {
+        this.scoreParamsById = scoreParamsById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "CATEGORY_MASTER_ID_FK", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+    public ScoreCategoryMaster getScoreCategoryMasterByCategoryMasterIdFk() {
+        return scoreCategoryMasterByCategoryMasterIdFk;
+    }
+
+    public void setScoreCategoryMasterByCategoryMasterIdFk(ScoreCategoryMaster scoreCategoryMasterByCategoryMasterIdFk) {
+        this.scoreCategoryMasterByCategoryMasterIdFk = scoreCategoryMasterByCategoryMasterIdFk;
+    }*/
+}
