@@ -70,10 +70,12 @@ public class ConfigServiceImpl implements ConfigService{
     @Override
     public Config updateById(Config config) {
         Long id = config.getId();
+        log.info("Started the update Functionality");
         Config configDb = null;
         try {
             if (configRepository.existsById(id)) {
                 configDb = configRepository.findById(id).get();
+
                 String category = config.getCategory();
                 String largeValue = config.getLargeValue();
                 String name =  config.getName();

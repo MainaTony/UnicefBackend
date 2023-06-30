@@ -36,7 +36,7 @@ public class ConfigController {
         return ResponseEntity.ok(configId);
     }
     @PostMapping("getAll")
-    public ResponseEntity<List<Config>> getAllConfigs(@RequestBody Config config){
+    public ResponseEntity<List<Config>> getAllConfigs(){
         List<Config> allConfigs = null;
         try{
             allConfigs = configService.getAllConfigs();
@@ -48,7 +48,9 @@ public class ConfigController {
         Config updateConfig = null;
         try{
             updateConfig = configService.updateById(config);
-        } catch (Exception e){}
+        } catch (Exception e){
+
+        }
         return ResponseEntity.ok(updateConfig);
     }
     @PostMapping("/delete")
