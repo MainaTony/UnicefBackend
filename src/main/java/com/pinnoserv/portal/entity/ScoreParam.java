@@ -31,7 +31,7 @@ public class ScoreParam {
     @Column(name = "score_category_id")
     private Long scoreCategoryIdFk;
     @Column(name = "master_param_id")
-    private BigInteger masterParamIdFk;
+    private Long masterParamIdFk;
     @Column(name = "percentage_value")
     private BigInteger percentageValue;
     @Column(name = "approval_status")
