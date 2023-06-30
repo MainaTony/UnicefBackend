@@ -32,7 +32,7 @@ public class Config {
     @Column(name = "created_date")
     @CreationTimestamp
     private LocalDateTime createdDate;
-    @Column(name = "")
+    @Column(name = "updated_date")
     @UpdateTimestamp
     private LocalDateTime updatedDate;
     @Column(name = "updated_by")
