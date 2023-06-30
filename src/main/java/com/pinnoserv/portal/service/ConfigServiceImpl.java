@@ -18,7 +18,7 @@ public class ConfigServiceImpl implements ConfigService{
     }
 
     @Override
-    public String createConfig(Config config) {
+    public Config createConfig(Config config) {
         log.info("");
         Config configCreated = Config.builder()
                 .createdBy(Long.valueOf(2))
@@ -34,13 +34,13 @@ public class ConfigServiceImpl implements ConfigService{
         configRepository.save(configCreated);
 
         try {
-            log.info("-------------Persisting Organisation to Database------------");
+            log.info("-------------Persisting Config to Database------------");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
 
-        return null;
+        return configCreated;
     }
     @Override
     public Config getConfigById(Config config) {
