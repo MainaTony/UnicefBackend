@@ -19,9 +19,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 
 @Configuration
 @ComponentScan
@@ -66,7 +71,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
+		httpSecurity
+				.cors().configurationSource(new CorsConfigurationSource() {
+					@Override
+					public CorsConfiguration getCorsConfiguration(HttpServletRequest httpServletRequest) {
+						CorsConfiguration config = new CorsConfiguration();
+						config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+						config.setAllowedMethods(Collections.singletonList("*"));
+						config.setAllowCredentials(true);
+						config.setAllowedHeaders(Collections.singletonList("*"));
+						config.setMaxAge(3600L);
+						return config;
+					}
+				})
+//				.csrf().disable()
+				.and().csrf().disable()
 				.authorizeRequests().antMatchers("/auth/authenticate", "/auth/userreg",   "/", "/api/**", "/test/**", "/v2/api-docs", "/swagger-resources", "/swagger-ui.html", "/webjars/**",
 				"/swagger-resources/configuration/ui", "/swagger-resources/configuration/security").permitAll().
 				anyRequest().authenticated().and().

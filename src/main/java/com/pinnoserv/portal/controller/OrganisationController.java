@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/organisation")
-@CrossOrigin
 public class OrganisationController {
     private static final Logger log = LoggerFactory.getLogger(OrganisationController.class);
     private OrganisationService organisationService;
@@ -23,6 +22,7 @@ public class OrganisationController {
         this.organisationService = organisationService;
     }
 
+//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/create")
     public ResponseEntity<?> createOrganisation(@RequestHeader("Authorization") String Authorization, @RequestBody() Organisation organisation){
         log.info("----------------------Initiated Creating of Organisation------------------------------------");
