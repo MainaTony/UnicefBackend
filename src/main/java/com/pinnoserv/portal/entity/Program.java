@@ -1,64 +1,71 @@
-//package com.pinnoserv.portal.entity;
-//
-//import javax.persistence.*;
-//import java.math.BigInteger;
-//import java.util.Date;
-//import java.util.Objects;
-//
-//@Entity
-//public class Program {
-//    @Id
-//    @Basic(optional = false)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-////    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROGRAM_SEQ")
-////    @SequenceGenerator(name = "PROGRAM_SEQ", sequenceName = "PROGRAM_SEQ", allocationSize = 1)
-//    @Column(name = "PROGRAM_ID")
-//    private Integer programId;
+package com.pinnoserv.portal.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Objects;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "program")
+public class Program {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "created_by")
+    private int createdBy;
+
+    @Column(name = "data_source_id")
+    private int dataSourceIdFk;
+
+    @CreatedDate
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "inTrash")
+    private String inTrash;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "organisation_id_fk")
+    private int organisationIdFk;
+
+    @Column(name = "primary_identity_type")
+    private String primaryIdentityType;
+
+    @Column(name = "status")
+    private int status;
+
+    @Column(name = "data_source")
+    private String dataSource;
 //    @Basic
-//    @Column(name = "CREATED_BY")
-//    private Integer createdBy;
-//    @Basic
-//    @Column(name = "DATA_SOURCE_ID_FK")
-//    private Integer dataSourceIdFk;
-//    @Basic
-//    @Column(name = "DATE_CREATED")
-//    private Date dateCreated;
-//    @Basic
-//    @Column(name = "DESCRIPTION")
-//    private String description;
-//    @Basic
-//    @Column(name = "INTRASH")
-//    private String intrash;
-//    @Basic
-//    @Column(name = "NAME")
-//    private String name;
-//    @Basic
-//    @Column(name = "ORGANISATION_ID_FK")
-//    private Integer organisationIdFk;
-//    @Basic
-//    @Column(name = "PRIMARY_IDENTITY_TYPE")
-//    private String primaryIdentityType;
-//    @Basic
-//    @Column(name = "STATUS")
-//    private Integer status;
-//    @Basic
-//    @Column(name = "DATA_SOURCE")
-//    private String dataSource;
-////    @Basic
-////    @Column(name = "ORGANISATION_ID")
-////    private BigInteger organisationId;
-//    @Basic
-//    @Column(name = "ORGANISATION")
-//    private String organisation;
-//
-//
-//    /*private Collection<CreditScore> creditScoresByProgramId;
-//    private Collection<CustomerSubscription> customerSubscriptionsByProgramId;
-//    private Collection<Product> productsByProgramId;
-//    private Organisation organisationByOrganisationIdFk;
-//    private DataSource dataSourceByDataSourceIdFk;*/
-//
-//
+//    @Column(name = "ORGANISATION_ID")
+//    private BigInteger organisationId;
+
+    @Column(name = "organisation")
+    private String organisation;
+
+
+    /*private Collection<CreditScore> creditScoresByProgramId;
+    private Collection<CustomerSubscription> customerSubscriptionsByProgramId;
+    private Collection<Product> productsByProgramId;
+    private Organisation organisationByOrganisationIdFk;
+    private DataSource dataSourceByDataSourceIdFk;*/
+
+
 //    public Integer getProgramId() {
 //        return programId;
 //    }
@@ -232,4 +239,4 @@
 //    public void setDataSourceByDataSourceIdFk(DataSource dataSourceByDataSourceIdFk) {
 //        this.dataSourceByDataSourceIdFk = dataSourceByDataSourceIdFk;
 //    }*/
-//}
+}

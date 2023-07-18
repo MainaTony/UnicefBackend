@@ -11,6 +11,6 @@ public interface DataSourceService {
     List<DataSource> findAll();
     void createDataSource(DataSource dataSource);
     DataSource updataDataSource(DataSource dataSource);
-    void deleteDataSource(int id);
+    void deleteDataSource(DataSource dataSource);
 
 }

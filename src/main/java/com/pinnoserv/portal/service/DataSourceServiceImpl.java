@@ -151,7 +151,14 @@ public class DataSourceServiceImpl implements DataSourceService{
     }
 
     @Override
-    public void deleteDataSource(int id) {
+    public void deleteDataSource(DataSource dataSource) {
+        try{
+            Long id = dataSource.getId();
+            dataSourceRepository.deleteById(id);
+        }
+        catch (Exception e){
+
+        }
 
     }
 }

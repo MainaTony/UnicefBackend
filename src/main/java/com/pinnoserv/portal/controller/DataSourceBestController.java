@@ -58,7 +58,13 @@ public class DataSourceBestController {
         return ResponseEntity.ok("Update Successful");
     }
     @DeleteMapping("delete")
-    public ResponseEntity<String> delete(){
+    public ResponseEntity<String> delete(@RequestBody DataSource dataSource){
+        try{
+            dataSourceService.deleteDataSource(dataSource);
+        }
+        catch (Exception e){
+
+        }
         return ResponseEntity.ok("Deleted Successfully");
     }
 }
