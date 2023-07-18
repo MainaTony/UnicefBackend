@@ -1,134 +1,139 @@
-//package com.pinnoserv.portal.controller;
-//
-//import com.pinnoserv.portal.custommodels.ApiResponse;
-//import com.pinnoserv.portal.entity.ApiUsers;
-//import com.pinnoserv.portal.entity.Users;
-//import com.pinnoserv.portal.repositories.ProgramRepository;
-////import com.pinnoserv.portal.repositories.ProgramViewRepository;
+package com.pinnoserv.portal.controller;
+
+import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.entity.ApiUsers;
+import com.pinnoserv.portal.entity.Users;
+import com.pinnoserv.portal.repositories.ProgramRepository;
 //import com.pinnoserv.portal.repositories.ProgramViewRepository;
-//import com.pinnoserv.portal.service.DatabaseService;
-//import com.pinnoserv.portal.service.RestTemplateServices;
-//import com.pinnoserv.portal.utils.SharedFunctions;
-////import com.pinnoserv.portal.view.ProgramView;
-//import com.pinnoserv.portal.entity.Program;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.core.env.Environment;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//import java.math.BigInteger;
-//import java.util.*;
-//
-//@RestController
-//@RequestMapping("/program")
-//public class ProgramController {
-//
-//    private static final Logger LOG = LoggerFactory.getLogger(ProgramController.class);
-//
+import com.pinnoserv.portal.repositories.ProgramViewRepository;
+import com.pinnoserv.portal.service.DatabaseService;
+import com.pinnoserv.portal.service.RestTemplateServices;
+import com.pinnoserv.portal.utils.SharedFunctions;
+//import com.pinnoserv.portal.view.ProgramView;
+import com.pinnoserv.portal.entity.Program;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.math.BigInteger;
+import java.util.*;
+
+@RestController
+@RequestMapping("/program")
+public class ProgramController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ProgramController.class);
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    DatabaseService dbService;
+
+    @Autowired
+    RestTemplateServices restTemplateService;
+
+    @Autowired
+    SharedFunctions sharedFunctions;
+
+    @Autowired
+    ProgramRepository programRepository;
+
 //    @Autowired
-//    private Environment environment;
-//
-//    @Autowired
-//    DatabaseService dbService;
-//
-//    @Autowired
-//    RestTemplateServices restTemplateService;
-//
-//    @Autowired
-//    SharedFunctions sharedFunctions;
-//
-//    @Autowired
-//    ProgramRepository programRepository;
-//
-//    @Autowired
-//    ProgramViewRepository programViewRepository;
-//
-//    @PostMapping("/create")
-//    public ResponseEntity<?> addNewProgram(@RequestHeader("Authorization") String Authorization, @RequestBody() Program program) {
-//        LOG.info("---------------------------STARTING 'ADD NEW PROGRAM' --------------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        HttpStatus responseStatus = HttpStatus.OK;
-//        try {
-//            ApiUsers user = sharedFunctions.verifyToken(Authorization);
-//            if(user != null) {
-//                program.setCreatedBy(user.getId());
-//                program.setOrganisationIdFk(user.getOrganisationIdFk());
-//            }
-//            if(program.getStatus() == null)
-//                program.setStatus(new Integer("1"));
-//                program.setDateCreated(new Date(System.currentTimeMillis()));
-//                program.setIntrash("NO");
-//                Program savedProgram = programRepository.saveAndFlush(program);
-//                apiResponse.setEntity(savedProgram);
-//                apiResponse.setResponseCode("00");
-//                apiResponse.setResponseDescription("Success! Program saved.");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause().toString());
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not add Program");
-//            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//            LOG.info("---------------------------ENDING 'ADD NEW PROGRAM'--------------------------------'");
-//        }
-//        return new ResponseEntity<>(apiResponse, responseStatus);
-//    }
-//
-//    @PostMapping("/viewById")
-//    public ResponseEntity<?> viewById(@RequestBody() Map<String, Object> requestParams) {
-//        LOG.info("---------------------------STARTING 'VIEW PROGRAM' --------------------------------");
-//        ApiResponse apiResponse = new ApiResponse();
-//        HttpStatus responseStatus = HttpStatus.OK;
-//        try {
-//            String programId = requestParams.containsKey("programId") ? requestParams.get("programId").toString() : null;
-////            String dataSourceId = requestParams.containsKey("dataSourceId") ? requestParams.get("dataSourceId").toString() : null;
-//            if (programId == null) {
-//                apiResponse.setResponseCode("01");
-//                apiResponse.setResponseDescription("Error! Parameter programId is required.");
-//                responseStatus = HttpStatus.BAD_REQUEST;
-//                LOG.info("PARAMETER {programId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
-//                return new ResponseEntity<>(apiResponse, responseStatus);
-//            }
-//            Optional<Program> programSearch = programViewRepository.findByProgramId(new Integer(programId));
-//            if (!programSearch.isPresent()) {
-//                LOG.info("PROGRAM NOT FOUND >> RETURNING WITH STATUS CODE 01");
-//                apiResponse.setResponseDescription("Program Not Found!");
-//                apiResponse.setResponseCode("01");
-//                responseStatus = HttpStatus.OK;
-//                return new ResponseEntity<>(apiResponse, responseStatus);
-//            }
-//            Program programEntity = programSearch.get();
-//            apiResponse.setEntity(programEntity);
-//            apiResponse.setResponseCode("00");
-//            apiResponse.setResponseDescription("Success! Program Fetched.");
-//            LOG.info("OK! RETURNING WITH STATUS CODE 00");
-//        } catch (Exception e) {
-//            LOG.error("ERROR! COULD NOT FETCH PROGRAM >> " + e.getMessage());
-//            e.printStackTrace();
-//            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-//                Map<String, String> error = new HashMap();
-//                error.put("error", e.getMessage());
-//                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
-//                apiResponse.setEntity(error);
-//            }
-//            apiResponse.setResponseCode("01");
-//            apiResponse.setResponseDescription("Error! Could not View Program");
-//            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-//        }
-//        LOG.info("---------------------------ENDING 'VIEW PROGRAM'--------------------------------'");
-//        return new ResponseEntity<>(apiResponse, responseStatus);
-//    }
-//
-//
+    ProgramViewRepository programViewRepository;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> addNewProgram(@RequestHeader("Authorization") String Authorization, @RequestBody() Program program) {
+        LOG.info("---------------------------STARTING 'ADD NEW PROGRAM' --------------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        HttpStatus responseStatus = HttpStatus.OK;
+        try {
+            ApiUsers user = sharedFunctions.verifyToken(Authorization);
+            if(user != null) {
+                program.setCreatedBy(user.getId());
+                program.setOrganisationIdFk(user.getOrganisationIdFk());
+            }
+            if(program.getStatus() == null)
+                program.setStatus(new Integer("1"));
+                program.setDateCreated(new Date(System.currentTimeMillis()));
+                program.setInTrash("NO");
+                Program savedProgram = programRepository.saveAndFlush(program);
+                apiResponse.setEntity(savedProgram);
+                apiResponse.setResponseCode("00");
+                apiResponse.setResponseDescription("Success! Program saved.");
+        } catch (Exception e) {
+            LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause().toString());
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not add Program");
+            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+            LOG.info("---------------------------ENDING 'ADD NEW PROGRAM'--------------------------------'");
+        }
+        return new ResponseEntity<>(apiResponse, responseStatus);
+    }
+
+    @PostMapping("/viewById")
+    public ResponseEntity<?> viewById(@RequestBody() Map<String, Object> requestParams) {
+        LOG.info("---------------------------STARTING 'VIEW PROGRAM' --------------------------------");
+        ApiResponse apiResponse = new ApiResponse();
+        HttpStatus responseStatus = HttpStatus.OK;
+        try {
+            String programId = requestParams.containsKey("programId") ? requestParams.get("programId").toString() : null;
+            LOG.info("My Program Search is: {}", programId);
+//            String dataSourceId = requestParams.containsKey("dataSourceId") ? requestParams.get("dataSourceId").toString() : null;
+
+            if (programId == null) {
+                apiResponse.setResponseCode("01");
+                apiResponse.setResponseDescription("Error! Parameter programId is required.");
+                responseStatus = HttpStatus.BAD_REQUEST;
+                LOG.info("PARAMETER {programId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
+                return new ResponseEntity<>(apiResponse, responseStatus);
+            }
+            Optional<Program> programSearch = programViewRepository.findByProgramId(new Integer(programId));
+            LOG.info("My Program Search -> ->");
+            LOG.info("My Program Search is: {}", programSearch);
+
+            if (!programSearch.isPresent()) {
+                LOG.info("PROGRAM NOT FOUND >> RETURNING WITH STATUS CODE 01");
+                apiResponse.setResponseDescription("Program Not Found!");
+                apiResponse.setResponseCode("01");
+                responseStatus = HttpStatus.OK;
+                return new ResponseEntity<>(apiResponse, responseStatus);
+            }
+            Program programEntity = programSearch.get();
+            apiResponse.setEntity(programEntity);
+            apiResponse.setResponseCode("00");
+            apiResponse.setResponseDescription("Success! Program Fetched.");
+            LOG.info("OK! RETURNING WITH STATUS CODE 00");
+        } catch (Exception e) {
+            LOG.error("ERROR! COULD NOT FETCH PROGRAM >> " + e.getMessage());
+            e.printStackTrace();
+            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
+                Map<String, String> error = new HashMap();
+                error.put("error", e.getMessage());
+                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
+                apiResponse.setEntity(error);
+            }
+            apiResponse.setResponseCode("01");
+            apiResponse.setResponseDescription("Error! Could not View Program");
+            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+        }
+        LOG.info("---------------------------ENDING 'VIEW PROGRAM'--------------------------------'");
+        return new ResponseEntity<>(apiResponse, responseStatus);
+    }
+
+
 //    @PostMapping("/getAll")
 //    public ResponseEntity<?> getProgramsByOrgId(@RequestBody() Map<String, Object> requestParams) {
 //        LOG.info("---------------------------STARTING 'FETCH PROGRAMS' ----------------------------");
@@ -177,7 +182,7 @@
 //        LOG.info("---------------------------ENDING 'GET PROGRAMS BY ID' WITH ID >> " + orgId + "--------------------------------'");
 //        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 //    }
-//
+
 //    @PostMapping("/listAll")
 //    public ResponseEntity<?> getAllPrograms() {
 //        LOG.info("---------------------------STARTING 'FETCH ALL PROGRAMS' ----------------------------");
@@ -216,9 +221,9 @@
 //        LOG.info("---------------------------ENDING 'GET ALL PROGRAMS --------------------------------'");
 //        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 //    }
-//
-//
-//
+
+
+
 //    @PostMapping("/updateById")
 //    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() Program program) {
 //        LOG.info("---------------------------STARTING 'UPDATE PROGRAM' --------------------------------");
@@ -264,6 +269,6 @@
 //        LOG.info("---------------------------ENDING 'UPDATE PROGRAM'--------------------------------'");
 //        return new ResponseEntity<>(apiResponse, responseStatus);
 //    }
-//
-//
-//}
+
+
+}

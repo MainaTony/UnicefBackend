@@ -2,6 +2,7 @@ package com.pinnoserv.portal.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,16 +22,16 @@ public class Program {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer programId;
     @Column(name = "created_by")
     private int createdBy;
 
     @Column(name = "data_source_id")
     private int dataSourceIdFk;
 
-    @CreatedDate
+//    @CreatedDate
     @Column(name = "date_created")
-    private LocalDateTime dateCreated;
+    private Date dateCreated;
 
     @Column(name = "description")
     private String description;
@@ -47,7 +49,7 @@ public class Program {
     private String primaryIdentityType;
 
     @Column(name = "status")
-    private int status;
+    private Integer status;
 
     @Column(name = "data_source")
     private String dataSource;
