@@ -11,6 +11,5 @@ public interface OrganisationService {
      Organisation getById(Organisation orgCode);
      List<Organisation> getAll();
      Organisation updateById(Organisation organisation);
-
      void deleteById(Organisation organisation);
 }

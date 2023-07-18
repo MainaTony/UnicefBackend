@@ -23,6 +23,8 @@ public class DataSource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "datasource_code")
+    private Integer datasourceCode;
     @Column(name = "name")
     private String name;
     @Basic
@@ -57,7 +59,7 @@ public class DataSource {
     private String excelPath;
 
     @Column(name = "expiry")
-    private LocalDateTime expiry;
+    private String expiry;
 
     @Column(name = "kyc_id")
     private int kycId;
