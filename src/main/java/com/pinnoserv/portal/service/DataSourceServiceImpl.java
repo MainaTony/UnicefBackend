@@ -15,14 +15,17 @@ public class DataSourceServiceImpl implements DataSourceService{
     @Autowired
     DataSourceRepository dataSourceRepository;
     @Override
-    public DataSource findById(int id) {
+    public DataSource findById(DataSource dataSource) {
 
+        DataSource dataSourceResponse = null;
         try {
-            return dataSourceRepository.findById(id).get();
-        } catch (Exception e){
+            Long id = dataSource.getId();
+            dataSourceResponse = dataSourceRepository.findById(id).get();
+            log.info("Db datasource {}",dataSourceResponse);
+        } catch (Exception e) {
 
         }
-        return dataSourceRepository.findById(id).get();
+        return dataSourceResponse;
     }
 
     @Override

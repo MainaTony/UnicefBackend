@@ -37,6 +37,16 @@ public class DataSourceBestController {
 //
 //        return ResponseEntity.ok()
 //    }
+
+    @PostMapping("/getById")
+    public ResponseEntity<DataSource> getById(@RequestBody DataSource dataSource) {
+        DataSource dataSource1 = null;
+        try {
+            dataSource1 = dataSourceService.findById(dataSource);
+        } catch (Exception e) {
+        }
+        return ResponseEntity.ok(dataSource1);
+    }
     @PostMapping("/updateById")
     public ResponseEntity<String> updateById(){
         return ResponseEntity.ok("Update Successful");
