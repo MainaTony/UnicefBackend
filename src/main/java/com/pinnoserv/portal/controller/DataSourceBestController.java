@@ -26,17 +26,16 @@ public class DataSourceBestController {
         }
         return ResponseEntity.ok("Datasource Created");
     }
-//    @PostMapping("/getAll")
-//    public ResponseEntity<List<DataSource>> findAll(){
-//
-//        return ResponseEntity.ok(List<DataSource>);
-//    }
+    @PostMapping("/getAll")
+    public ResponseEntity<List<DataSource>> findAll() {
+        List<DataSource> dataSources = null;
+        try {
+            dataSources = dataSourceService.findAll();
+        } catch (Exception e) {
 
-//    @PostMapping("/findById")
-//    public ResponseEntity<DataSource> getById(){
-//
-//        return ResponseEntity.ok()
-//    }
+        }
+        return ResponseEntity.ok(dataSources);
+    }
 
     @PostMapping("/getById")
     public ResponseEntity<DataSource> getById(@RequestBody DataSource dataSource) {
@@ -47,6 +46,7 @@ public class DataSourceBestController {
         }
         return ResponseEntity.ok(dataSource1);
     }
+
     @PostMapping("/updateById")
     public ResponseEntity<String> updateById(){
         return ResponseEntity.ok("Update Successful");
