@@ -67,53 +67,88 @@ public class DataSourceServiceImpl implements DataSourceService{
         }
     }
 
-//    @Override
-//    public DataSource updataDataSource(DataSource dataSource) {
-//        DataSource updateDataSource = null;
-//        try {
-//
-//            Long id = dataSource.getId();
-//            Integer code = dataSource.getDatasourceCode();
-//            log.info("Update Id : {}", code);
-//
-//            if (dataSourceRepository.existsById(code)) {
-//
-//                DataSource dbDataSource = dataSourceRepository.findById(id);
-//
-//                String orgName = organisation.getOrganisationName();
-//                String organisationCode = organisation.getOrganisationCode();
-//                int businessType = organisation.getBusinessType();
-//                String organisationAddress = organisation.getOrganisationAddress();
-//                String organisationPhone = organisation.getOrganisationPhone();
-//                String organisationEmail = organisation.getOrganisationEmail();
-//
-//                log.info("My Update Data : {}", orgName);
-//
-//                if (!orgName.isEmpty() && !orgName.equalsIgnoreCase(dbOrganisation.getOrganisationName())) {
-//                    dbOrganisation.setOrganisationName(orgName);
-//                }
-//                if (!organisationCode.isEmpty() && !organisationCode.equalsIgnoreCase(dbOrganisation.getOrganisationCode())){
-//                    dbOrganisation.setOrganisationCode(organisationCode);
-//                }
-//                if (businessType != 0) {
-//                    dbOrganisation.setBusinessType(businessType);
-//                }
-//                if (!organisationAddress.isEmpty() && !organisationAddress.equalsIgnoreCase(dbOrganisation.getOrganisationAddress())) {
-//                    dbOrganisation.setOrganisationAddress(organisationAddress);
-//                }
-//                if (!organisationPhone.isEmpty() && !organisationPhone.equalsIgnoreCase(dbOrganisation.getOrganisationPhone())) {
-//                    dbOrganisation.setOrganisationPhone(organisationPhone);
-//                }
-//                if (!organisationEmail.isEmpty() && !organisationEmail.equalsIgnoreCase(dbOrganisation.getOrganisationEmail())) {
-//                    dbOrganisation.setOrganisationEmail(organisationEmail);
-//                }
-//                organisationRepository.save(dbOrganisation);
-//            }
-//        } catch (Exception e) {
-//
-//        }
-//        return dbOrganisation;
-//    }
+    @Override
+    public DataSource updataDataSource(DataSource dataSource) {
+        DataSource updateDataSource = null;
+        try {
+
+            Long id = dataSource.getId();
+            if (dataSourceRepository.existsById(id)) {
+
+                DataSource dbDataSource = dataSourceRepository.findById(id).get();
+
+                String name = dataSource.getName();
+                String dataSourceUrl = dataSource.getDataSourceUrl();
+                String excelUrl = dataSource.getExcelUrl();
+                String dataSourceType = dataSource.getDataSourceType();
+                String dataUsage = dataSource.getDataUsage();
+                int status = dataSource.getStatus();
+                String action = dataSource.getAction();
+                String excelPath = dataSource.getExcelPath();
+                String expiry = dataSource.getExpiry();
+                int kycId = dataSource.getKycId();
+                int maxApprovals = dataSource.getMaxApprovals();
+                int approvalStatus = dataSource.getApprovalStatus();
+                int approvalLevel = dataSource.getApprovalLevel();
+                int updateCycle = dataSource.getUpdateCycle();
+                int scoringDataSize = dataSource.getScoringDataSize();
+
+
+
+                if (!name.isEmpty() && !name.equalsIgnoreCase(dbDataSource.getName())) {
+                    dbDataSource.setName(name);
+                }
+                if (!dataSourceUrl.isEmpty() && !dataSourceUrl.equalsIgnoreCase(dbDataSource.getDataSourceType())) {
+                    dbDataSource.setName(dataSourceUrl);
+                }
+                if (!excelUrl.isEmpty() && !excelUrl.equalsIgnoreCase(dbDataSource.getExcelUrl())) {
+                    dbDataSource.setExcelUrl(excelUrl);
+                }
+                if (!dataSourceType.isEmpty() && !dataSourceType.equalsIgnoreCase(dbDataSource.getDataSourceType())){
+                    dbDataSource.setExcelUrl(dataSourceType);
+                }
+                if (!excelPath.isEmpty() && !excelPath.equalsIgnoreCase(dbDataSource.getExcelPath())){
+                    dbDataSource.setExcelPath(excelPath);
+                }
+                if (!expiry.isEmpty() && !expiry.equalsIgnoreCase(dbDataSource.getExpiry())){
+                    dbDataSource.setExpiry(expiry);
+                }
+                if (!dataUsage.isEmpty() && !dataUsage.equalsIgnoreCase(dbDataSource.getDataUsage())){
+                    dbDataSource.setDataUsage(dataUsage);
+                }
+                if (status != 0 && status != dbDataSource.getStatus()){
+                    dbDataSource.setStatus(status);
+                }
+                if (!action.isEmpty() && !action.equalsIgnoreCase(dbDataSource.getAction())){
+                    dbDataSource.setAction(action);
+                }
+                if (kycId != 0 && kycId != dbDataSource.getKycId()){
+                    dbDataSource.setKycId(kycId);
+                }
+                if (maxApprovals != 0 && maxApprovals != dbDataSource.getMaxApprovals()){
+                    dbDataSource.setMaxApprovals(maxApprovals);
+                }
+                if (approvalStatus != 0 && approvalStatus != dbDataSource.getApprovalStatus()){
+                    dbDataSource.setApprovalStatus(approvalStatus);
+                }
+                if (approvalLevel != 0 && approvalLevel != dbDataSource.getApprovalLevel()){
+                    dbDataSource.setApprovalLevel(approvalLevel);
+                }
+                if (updateCycle != 0 && updateCycle != dbDataSource.getUpdateCycle()){
+                    dbDataSource.setUpdateCycle(updateCycle);
+                }
+                if (scoringDataSize != 0 && scoringDataSize != dbDataSource.getScoringDataSize()){
+                    dbDataSource.setScoringDataSize(scoringDataSize);
+                }
+
+                updateDataSource = dataSourceRepository.save(dbDataSource);
+
+            }
+        } catch (Exception e) {
+
+        }
+        return updateDataSource;
+    }
 
     @Override
     public void deleteDataSource(int id) {

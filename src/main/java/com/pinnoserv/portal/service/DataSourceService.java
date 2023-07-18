@@ -10,7 +10,7 @@ public interface DataSourceService {
     DataSource findById(DataSource dataSource);
     List<DataSource> findAll();
     void createDataSource(DataSource dataSource);
-//    DataSource updataDataSource(DataSource dataSource);
+    DataSource updataDataSource(DataSource dataSource);
     void deleteDataSource(int id);
 
 }

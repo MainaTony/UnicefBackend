@@ -48,7 +48,13 @@ public class DataSourceBestController {
     }
 
     @PostMapping("/updateById")
-    public ResponseEntity<String> updateById(){
+    public ResponseEntity<String> updateById(@RequestBody DataSource dataSource){
+        try{
+            dataSourceService.updataDataSource(dataSource);
+        }
+        catch (Exception e){
+
+        }
         return ResponseEntity.ok("Update Successful");
     }
     @DeleteMapping("delete")
