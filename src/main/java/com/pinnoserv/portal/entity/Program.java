@@ -22,16 +22,16 @@ public class Program {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer programId;
+    private Long id;
     @Column(name = "created_by")
     private int createdBy;
 
     @Column(name = "data_source_id")
     private int dataSourceIdFk;
 
-//    @CreatedDate
+    @CreatedDate
     @Column(name = "date_created")
-    private Date dateCreated;
+    private LocalDateTime dateCreated;
 
     @Column(name = "description")
     private String description;
@@ -49,7 +49,7 @@ public class Program {
     private String primaryIdentityType;
 
     @Column(name = "status")
-    private Integer status;
+    private int status;
 
     @Column(name = "data_source")
     private String dataSource;

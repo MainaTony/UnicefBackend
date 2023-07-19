@@ -12,8 +12,8 @@ import java.util.Optional;
  * @author mwendwakelvin
  */
 @Repository
-public interface ProgramRepository extends JpaRepository<Program, Integer> {
-    Optional<Program> findByProgramId(Integer id);
+public interface ProgramRepository extends JpaRepository<Program, Long> {
+//    Optional<Program> findByProgramId(Integer id);
 
-    List<Program> findAllByOrganisationIdFk(Integer organisationId);
+//    List<Program> findAllByOrganisationIdFk(Integer organisationId);
 }
