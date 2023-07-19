@@ -9,6 +9,7 @@ import com.pinnoserv.portal.repositories.ScoreCategoryMasterRepository;
 import com.pinnoserv.portal.repositories.ScoreCategoryMasterViewRepository;
 import com.pinnoserv.portal.service.DatabaseService;
 import com.pinnoserv.portal.service.RestTemplateServices;
+import com.pinnoserv.portal.service.ScoreCategoryMasterService;
 import com.pinnoserv.portal.utils.SharedFunctions;
 //import com.pinnoserv.portal.view.ScoreCategoryMasterView;
 import org.slf4j.Logger;
@@ -45,217 +46,61 @@ public class ScoreCategoryMasterController {
     @Autowired
     ScoreCategoryMasterViewRepository scoreCategoryMasterViewRepository;
 
+    @Autowired
+    ScoreCategoryMasterService scoreCategoryMasterService;
+
 
     @PostMapping("/create")
-    public ResponseEntity<?> addNewScoreCategoryMaster(@RequestHeader("Authorization") String Authorization, @RequestBody() ScoreCategoryMaster scoreCategoryMaster) {
-        LOG.info("---------------------------STARTING 'Add New Score Category Master' --------------------------------");
-        ApiResponse apiResponse = new ApiResponse();
-        HttpStatus responseStatus = HttpStatus.OK;
-        try {
-            ApiUsers user = sharedFunctions.verifyToken(Authorization);
-            if(user != null) {
-            }
-            //private String used;
-            ScoreCategoryMaster savedScoreCategoryMaster = scoreCategoryMasterRepository.saveAndFlush(scoreCategoryMaster);
-            apiResponse.setEntity(savedScoreCategoryMaster);
-            apiResponse.setResponseCode("00");
-            apiResponse.setResponseDescription("Success! Score Category Master saved.");
-        } catch (Exception e) {
-            LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
-            e.printStackTrace();
-            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-                Map<String, String> error = new HashMap();
-                error.put("error", e.getMessage());
-                error.put("cause", e.getCause().toString());
-                apiResponse.setEntity(error);
-            }
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Could not add Score Category Master");
-            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-            LOG.info("---------------------------ENDING 'Add New Score Category Master'--------------------------------'");
+    public ResponseEntity<String> addNewScoreCategoryMaster(@RequestBody ScoreCategoryMaster scoreCategoryMaster) {
+        try{
+            scoreCategoryMasterService.createScoreCategoryMaster(scoreCategoryMaster);
         }
-        return new ResponseEntity<>(apiResponse, responseStatus);
+        catch (Exception e){
+
+        }
+        return ResponseEntity.ok("Score Category Master Created Successfully");
     }
 
 
     @PostMapping("/viewById")
-    public ResponseEntity<?> viewById(@RequestBody() Map<String, Object> requestParams) {
-        LOG.info("---------------------------STARTING 'VIEW SCORE CATEGORY MASTER' --------------------------------");
-        ApiResponse apiResponse = new ApiResponse();
-        HttpStatus responseStatus = HttpStatus.OK;
-        try {
-            String scoreCategoryMasterId = requestParams.containsKey("scoreCategoryMasterId") ? requestParams.get("scoreCategoryMasterId").toString() : null;
-            if (scoreCategoryMasterId == null) {
-                apiResponse.setResponseCode("01");
-                apiResponse.setResponseDescription("Error! Parameter scoreCategoryMasterId is required.");
-                responseStatus = HttpStatus.BAD_REQUEST;
-                LOG.info("PARAMETER {scoreCategoryMasterId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
-                return new ResponseEntity<>(apiResponse, responseStatus);
-            }
-            Optional<ScoreCategoryMaster> scoreCategoryMasterSearch = scoreCategoryMasterViewRepository.findById(new Integer(scoreCategoryMasterId));
-            if (!scoreCategoryMasterSearch.isPresent()) {
-                LOG.info("SCORE CATEGORY MASTER NOT FOUND >> RETURNING WITH STATUS CODE 01");
-                apiResponse.setResponseDescription("Score Category Master Not Found!");
-                apiResponse.setResponseCode("01");
-                responseStatus = HttpStatus.OK;
-                return new ResponseEntity<>(apiResponse, responseStatus);
-            }
-            ScoreCategoryMaster scoreCategoryMasterEntity = scoreCategoryMasterSearch.get();
-            apiResponse.setEntity(scoreCategoryMasterEntity);
-            apiResponse.setResponseCode("00");
-            apiResponse.setResponseDescription("Success! Score Category Master Fetched.");
-            LOG.info("OK! RETURNING WITH STATUS CODE 00");
-        } catch (Exception e) {
-            LOG.error("ERROR! COULD NOT FETCH SCORE CATEGORY MASTER >> " + e.getMessage());
-            e.printStackTrace();
-            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-                Map<String, String> error = new HashMap();
-                error.put("error", e.getMessage());
-                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
-                apiResponse.setEntity(error);
-            }
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Could not View Score Category Master");
-            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
+    public ResponseEntity<ScoreCategoryMaster> viewById(@RequestBody ScoreCategoryMaster scoreCategoryMaster) {
+        ScoreCategoryMaster idScoreCategoryMaster = null;
+        try{
+            scoreCategoryMasterService.viewById(scoreCategoryMaster);
         }
-        LOG.info("---------------------------ENDING 'VIEW SCORE CATEGORY MASTER'--------------------------------'");
-        return new ResponseEntity<>(apiResponse, responseStatus);
+        catch (Exception e){
+        }
+        return ResponseEntity.ok(idScoreCategoryMaster);
     }
 
 
     @PostMapping("/getAll")
-    public ResponseEntity<?> getScoreCategoryMasterByProductId(@RequestBody() Map<String, Object> requestParams) {
-        LOG.info("---------------------------STARTING 'FETCH SCORE CATEGORY MASTER' ----------------------------");
-        LOG.info("PARAMS GOTTEN >> {}", requestParams);
-        ApiResponse apiResponse = new ApiResponse();
-        HttpStatus httpStatus = null;
-        String productId = requestParams.containsKey("productId") ? requestParams.get("productId").toString() : null;
-        if (productId == null) {
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Parameter productId is required.");
-            httpStatus = HttpStatus.BAD_REQUEST;
-            LOG.info("PARAMETER {productId} NOT FOUND IN REQUEST >> RETURNING WITH RESPONSE CODE >> {}", apiResponse.getResponseCode());
-            return new ResponseEntity<>(apiResponse, httpStatus);
+    public ResponseEntity<List<ScoreCategoryMaster>> getScoreCategoryMasterByProductId(@RequestBody() Map<String, Object> requestParams) {
+        List<ScoreCategoryMaster> scoreCategoryMasters = null;
+        try{
+            scoreCategoryMasters = scoreCategoryMasterService.getAll();
+        } catch (Exception e){
+
         }
-        try {
-            List<ScoreCategoryMaster> scoreCategoryMasterList = scoreCategoryMasterViewRepository.findAllByProductIdFk(new Integer(productId));
-            if (scoreCategoryMasterList.isEmpty()) {
-                LOG.info("DID NOT FIND Score Category Master >> RETURNING WITH STATUS CODE 01");
-                apiResponse.setResponseDescription("Not Found!");
-                apiResponse.setResponseCode("01");
-                apiResponse.setRecordCount(0);
-                apiResponse.setEntity("Did not find any Score Category Master Records for params " + requestParams);
-                LOG.info("---------------------------ENDING 'Get Score Category Master BY ID'--------------------------------'");
-                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-            }
-            LOG.info("NUMBER OF Score Category Master Records FOUND >> {}" + scoreCategoryMasterList.size());
-            apiResponse.setRecordCount(scoreCategoryMasterList.size());
-            apiResponse.setEntity(scoreCategoryMasterList);
-            apiResponse.setResponseCode("00");
-            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
-        } catch (Exception e) {
-            LOG.error("ERROR! " + e.getMessage());
-            e.printStackTrace();
-            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-                Map<String, String> error = new HashMap();
-                error.put("error", e.getMessage());
-                error.put("cause", e.getCause().toString());
-                apiResponse.setEntity(error);
-            }
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Could not fetch Score Category Master Records");
-            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-            LOG.info("---------------------------ENDING 'GET Score Category Master BY ID' WITH ID >> " + productId + "--------------------------------'");
-            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        LOG.info("---------------------------ENDING 'GET Score Category Master BY ID' WITH ID >> " + productId + "--------------------------------'");
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return ResponseEntity.ok(scoreCategoryMasters);
     }
 
-    @PostMapping("/listAll")
-    public ResponseEntity<?> getAllScoreCategoryMaster() {
-        LOG.info("---------------------------STARTING 'FETCH ALL SCORE CATEGORY MASTER' ----------------------------");
-        ApiResponse apiResponse = new ApiResponse();
-        try {
-            List<ScoreCategoryMaster> scoreCategoryMaster = scoreCategoryMasterViewRepository.findAll();
-            if (scoreCategoryMaster.isEmpty()) {
-                LOG.info("DID NOT FIND ANY SCORE CATEGORY MASTER >> RETURNING WITH STATUS CODE 01");
-                apiResponse.setResponseDescription("Not Found!");
-                apiResponse.setResponseCode("01");
-                apiResponse.setRecordCount(0);
-                apiResponse.setEntity("Did not find any Score Category Master");
-                LOG.info("---------------------------ENDING 'GET ALL SCORE CATEGORY MASTER'--------------------------------'");
-                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-            }
-            LOG.info("NUMBER OF SCORE CATEGORY MASTER FOUND >> {}" + scoreCategoryMaster.size());
-            apiResponse.setRecordCount(scoreCategoryMaster.size());
-            apiResponse.setEntity(scoreCategoryMaster);
-            apiResponse.setResponseCode("00");
-            LOG.info("OK >> RETURNING WITH STATUS CODE 00");
-        } catch (Exception e) {
-            LOG.error("ERROR! " + e.getMessage());
-            e.printStackTrace();
-            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-                Map<String, String> error = new HashMap();
-                error.put("error", e.getMessage());
-                error.put("cause", e.getCause().toString());
-                apiResponse.setEntity(error);
-            }
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Could not fetch Any Score Category Master");
-            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-            LOG.info("---------------------------ENDING GET ALL SCORE CATEGORY MASTER --------------------------------'");
-            return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteById(@RequestBody ScoreCategoryMaster scoreCategoryMaster){
+        try{
+            scoreCategoryMasterService.deleteById(scoreCategoryMaster);
+        } catch (Exception e){
         }
-        LOG.info("---------------------------ENDING 'GET ALL SCORE CATEGORY MASTER --------------------------------'");
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return ResponseEntity.ok("Score Category Master Deleted Successfully");
     }
 
     @PostMapping("/updateById")
-    public ResponseEntity<?> updateById(@RequestHeader("Authorization") String Authorization, @RequestBody() ScoreCategoryMaster scoreCategoryMaster) {
-        LOG.info("---------------------------STARTING 'UPDATE Score Category Master' --------------------------------");
-        ApiResponse apiResponse = new ApiResponse();
-        HttpStatus responseStatus = HttpStatus.OK;
-        try {
-            Optional<ScoreCategoryMaster> scoreCategoryMasterSearch = scoreCategoryMasterRepository.findById(scoreCategoryMaster.getId());
-            if (!scoreCategoryMasterSearch.isPresent()) {
-                LOG.info("Score Category Master Not Found >> RETURNING WITH STATUS CODE 01");
-                apiResponse.setResponseDescription("Score Category Master Not Found!");
-                apiResponse.setResponseCode("01");
-                responseStatus = HttpStatus.OK;
-                return new ResponseEntity<>(apiResponse, responseStatus);
-            }
-            ScoreCategoryMaster scoreCategoryMasterEntity = scoreCategoryMasterSearch.get();
-            ApiUsers user = sharedFunctions.verifyToken(Authorization);
-            /*if(user != null)
-                scoreCategoryMasterEntity.setUpdatedBy(user.getId());*/
-            scoreCategoryMasterEntity.setName(scoreCategoryMaster.getName());
-            scoreCategoryMasterEntity.setProductIdFk(scoreCategoryMaster.getProductIdFk());
-            scoreCategoryMasterEntity.setContribution(scoreCategoryMaster.getContribution());
-            scoreCategoryMasterEntity.setUsed(scoreCategoryMaster.getUsed());
-            scoreCategoryMasterRepository.save(scoreCategoryMasterEntity);
-            apiResponse.setEntity(scoreCategoryMasterEntity);
-            apiResponse.setResponseCode("00");
-            apiResponse.setResponseDescription("Success! Score Category Master Saved.");
-            LOG.info("OK! RETURNING WITH STATUS CODE 00");
-        } catch (Exception e) {
-            LOG.error("ERROR! COULD NOT UPDATE >> " + e.getMessage());
-            e.printStackTrace();
-            if (environment.getRequiredProperty("api-responses.return-errors", Boolean.class)) {
-                Map<String, String> error = new HashMap();
-                error.put("error", e.getMessage());
-                error.put("cause", e.getCause() != null ? e.getCause().toString() : "");
-                apiResponse.setEntity(error);
-            }
-            apiResponse.setResponseCode("01");
-            apiResponse.setResponseDescription("Error! Could not add Score Category Master");
-            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            LOG.info("OK >> RETURNING WITH STATUS CODE 01");
-        }
-        LOG.info("---------------------------ENDING 'UPDATE Score Category Master'--------------------------------'");
-        return new ResponseEntity<>(apiResponse, responseStatus);
-    }
+    public ResponseEntity<String> updateById(@RequestBody ScoreCategoryMaster scoreCategoryMaster) {
+        try{
+            scoreCategoryMasterService.updateById(scoreCategoryMaster);
+        } catch (Exception e){
 
+        }
+        return ResponseEntity.ok("Score Category Master Updated Successfully");
+    }
 }

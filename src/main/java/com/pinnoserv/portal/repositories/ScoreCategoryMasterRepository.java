@@ -12,8 +12,8 @@ import java.util.Optional;
  * @author mwendwakelvin
  */
 @Repository
-public interface ScoreCategoryMasterRepository extends JpaRepository<ScoreCategoryMaster, Integer> {
-    Optional<ScoreCategoryMaster> findById(Integer id);
+public interface ScoreCategoryMasterRepository extends JpaRepository<ScoreCategoryMaster, Long> {
+//    Optional<ScoreCategoryMaster> findById(Integer id);
 
-    List<ScoreCategoryMaster> findAllByProductIdFk(Integer productId);
+//    List<ScoreCategoryMaster> findAllByProductIdFk(Integer productId);
 }
