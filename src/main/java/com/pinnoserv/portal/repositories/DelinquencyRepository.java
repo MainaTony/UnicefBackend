@@ -12,8 +12,8 @@ import java.util.Optional;
  * @author mwendwakelvin
  */
 @Repository
-public interface DelinquencyRepository extends JpaRepository<DelinquencyModel, Integer> {
-    Optional<DelinquencyModel> findByDeliquencyModelId(Integer id);
+public interface DelinquencyRepository extends JpaRepository<DelinquencyModel, Long> {
+//    Optional<DelinquencyModel> findByDeliquencyModelId(Integer id);
 
-    List<DelinquencyModel> findAllByProductIdFk(Integer productId);
+//    List<DelinquencyModel> findAllByProductIdFk(Integer productId);
 }

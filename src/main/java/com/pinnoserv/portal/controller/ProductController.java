@@ -94,8 +94,6 @@ public class ProductController {
     return ResponseEntity.ok("Product Deleted Successfully");
     }
 
-
-
     @PostMapping("/updateById")
     public ResponseEntity<String> updateById(@RequestBody Product product) {
         try{
