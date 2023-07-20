@@ -1,5 +1,8 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ProductById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ProductGetAll;
 import com.pinnoserv.portal.entity.Product;
 import com.pinnoserv.portal.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +11,18 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
     ProductRepository productRepository;
     @Override
-    public void createProduct(Product product) {
+    public CreateUpdateDeleteResponseDto createProduct(Product product) {
 
         try{
+            Long id = product.getId();
+            if(!productRepository.existsById(id)){
             Product createProduct = Product.builder()
                     .name(product.getName())
                     .minAmount(product.getMinAmount())
@@ -42,41 +49,86 @@ public class ProductServiceImpl implements ProductService{
                     .automatedScoring(product.getAutomatedScoring())
                     .build();
             productRepository.save(createProduct);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(PROGRAM_CREATED)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(productRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(PRODUCT_EXISTS)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
         } catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(PRODUCT_NOT_CREATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
-    public Product getProductById(Product product) {
+    public ProductById getProductById(Product product) {
         Product productResponse = null;
         try{
             Long id = product.getId();
             if(productRepository.existsById(id)){
                 productResponse = productRepository.findById(id).get();
+                ProductById productById = ProductById.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .product(productResponse)
+                        .build();
+                return productById;
+            }
+            if(!productRepository.existsById(id)){
+                ProductById productById = ProductById.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(PRODUCT_NOT_EXIST)
+                        .product(null)
+                        .build();
+                return productById;
             }
         }
         catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-        return productResponse;
+        ProductById productById = ProductById.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .product(null)
+                .build();
+        return productById;
     }
 
     @Override
-    public List<Product> getAll() {
+    public ProductGetAll getAll() {
         List<Product> allProducts = null;
         try{
             allProducts =  productRepository.findAll();
+            if(allProducts != null){
+                ProductGetAll productGetAll = ProductGetAll.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .products(allProducts)
+                        .build();
+                return productGetAll;
+            }
+            ProductGetAll productGetAll = ProductGetAll.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .products(null)
+                    .build();
+            return productGetAll;
         }
         catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-        return allProducts;
     }
 
     @Override
-    public void updateById(Product product) {
+    public CreateUpdateDeleteResponseDto updateById(Product product) {
         try{
             Long id = product.getId();
             if(productRepository.existsById(id)){
@@ -173,24 +225,58 @@ public class ProductServiceImpl implements ProductService{
                     dbProduct.setLoanLimitLoanNumCap(loanLimitLoanNumCap);
                 }
                 productRepository.save(dbProduct);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(PRODUCT_UPDATED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!productRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(PRODUCT_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         }
         catch (Exception e){
-
+            throw new RuntimeException(e);
         }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(PRODUCT_NOT_UPDATED)
+                .build();
+        return createUpdateDeleteResponseDto;
 
     }
 
     @Override
-    public void deleteById(Product product) {
+    public CreateUpdateDeleteResponseDto deleteById(Product product) {
         try{
             Long id = product.getId();
             if(productRepository.existsById(id)){
                 productRepository.deleteById(id);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(PRODUCT_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!productRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(PRODUCT_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         }
         catch (Exception e){
+            throw new RuntimeException(e);
         }
-
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(PRODUCT_NOT_DELETED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 }
