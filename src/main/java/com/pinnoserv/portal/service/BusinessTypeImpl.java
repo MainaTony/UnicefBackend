@@ -18,7 +18,6 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 public class BusinessTypeImpl implements BusinessTypeService{
     @Autowired
     BusinessTypeRepository businessTypeRepository;
-
     @Override
     public BusinessTypeByIdDto getBusinessById(BusinessType businessType) {
 

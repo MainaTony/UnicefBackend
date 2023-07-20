@@ -26,6 +26,8 @@ public class ConfigServiceImpl implements ConfigService{
     @Override
     public CreateUpdateDeleteResponseDto createConfig(Config config) {
         try {
+            Long id = config.getId();
+            if(!configRepository.existsById(id)){
             log.info("-------------Persisting Config to Database------------");
             Config configCreated = Config.builder()
                     .createdBy(Long.valueOf(2))
@@ -44,11 +46,23 @@ public class ConfigServiceImpl implements ConfigService{
                     .ResponseMessage(CONFIG_CREATED)
                     .build();
             return createUpdateDeleteResponseDto;
+            }
+            if(configRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_EXISTS)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(CONFIG_NOT_CREATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
     @Override
     public ConfigById getConfigById(Config config) {
@@ -63,13 +77,20 @@ public class ConfigServiceImpl implements ConfigService{
                         .build();
                 return configById;
             }
+            if (!configRepository.existsById(id)){
+                ConfigById configById = ConfigById.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_NOT_EXIST)
+                        .config(null)
+                        .build();
+                return configById;
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
         ConfigById configById = ConfigById.builder()
                 .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(CONFIG_NOT_EXIST)
+                .ResponseMessage(CONFIG_NOT_CREATED)
                 .config(null)
                 .build();
         return configById;
@@ -80,13 +101,24 @@ public class ConfigServiceImpl implements ConfigService{
         List<Config> allConfigs= null;
         try{
             allConfigs = configRepository.findAll();
-            ConfigGetAll configGetAll = ConfigGetAll.builder()
-                    .ResponseCode(SUCCESS_RESPONSE)
-                    .configs(allConfigs)
-                    .build();
-            return configGetAll;
-
-        } catch (Exception e){}
+            if(!allConfigs.isEmpty()) {
+                ConfigGetAll configGetAll = ConfigGetAll.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .configs(allConfigs)
+                        .build();
+                return configGetAll;
+            }
+            if (allConfigs.isEmpty()){
+                ConfigGetAll configGetAll = ConfigGetAll.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_NOT_EXIST)
+                        .configs(null)
+                        .build();
+                return configGetAll;
+            }
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
         ConfigGetAll configGetAll = ConfigGetAll.builder()
                 .ResponseCode(UNSUCCESS_RESPONSE)
                 .configs(null)
@@ -96,10 +128,10 @@ public class ConfigServiceImpl implements ConfigService{
 
     @Override
     public CreateUpdateDeleteResponseDto updateById(Config config) {
-        Long id = config.getId();
         log.info("Started the update Functionality");
-        Config configDb = null;
         try {
+            Config configDb = null;
+            Long id = config.getId();
             if (configRepository.existsById(id)) {
                 configDb = configRepository.findById(id).get();
 
@@ -127,6 +159,13 @@ public class ConfigServiceImpl implements ConfigService{
                         .build();
                 return createUpdateDeleteResponseDto;
             }
+            if(!configRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -146,6 +185,13 @@ public class ConfigServiceImpl implements ConfigService{
                 CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
                         .ResponseCode(SUCCESS_RESPONSE)
                         .ResponseMessage(CONFIG_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!configRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_NOT_EXIST)
                         .build();
                 return createUpdateDeleteResponseDto;
             }
