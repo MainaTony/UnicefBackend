@@ -1,5 +1,8 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreParamById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreParamGetAll;
 import com.pinnoserv.portal.entity.Config;
 import com.pinnoserv.portal.entity.ScoreParam;
 import com.pinnoserv.portal.repositories.ScoreParamRepository;
@@ -9,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @Service
 @Slf4j
 public class ScoreParamServiceImpl implements ScoreParamService{
@@ -17,10 +23,12 @@ public class ScoreParamServiceImpl implements ScoreParamService{
     }
     ScoreParamRepository scoreParamRepository;
     @Override
-    public ScoreParam createScoreParam(ScoreParam scoreParam) {
+    public CreateUpdateDeleteResponseDto createScoreParam(ScoreParam scoreParam) {
 
         ScoreParam createScoreParam = null;
         try {
+            Long id = scoreParam.getId();
+            if(!scoreParamRepository.existsById(id)){
             log.info("-------------Persisting Score Param to Database------------");
                 createScoreParam = ScoreParam.builder()
                         .name(scoreParam.getName())
@@ -37,38 +45,85 @@ public class ScoreParamServiceImpl implements ScoreParamService{
                         .inTrash("No")
                         .build();
                 scoreParamRepository.save(createScoreParam);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_CREATED)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(scoreParamRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_EXISTS)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return createScoreParam;
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_PARAM_NOT_CREATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
-    public ScoreParam getScoreParamById(ScoreParam scoreParam) {
+    public ScoreParamById getScoreParamById(ScoreParam scoreParam) {
         Long id = scoreParam.getId();
         ScoreParam myScoreParam = null;
         try {
             if (scoreParamRepository.existsById(id)) {
                 myScoreParam = scoreParamRepository.findById(id).get();
+                ScoreParamById scoreParamById = ScoreParamById.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .scoreParam(myScoreParam)
+                        .build();
+                return scoreParamById;
+            }
+            if(!scoreParamRepository.existsById(id)){
+                ScoreParamById scoreParamById = ScoreParamById.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_NOT_EXIST)
+                        .scoreParam(null)
+                        .build();
+                return scoreParamById;
             }
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
-        return myScoreParam;
+        ScoreParamById scoreParamById = ScoreParamById.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .scoreParam(null)
+                .build();
+        return scoreParamById;
     }
 
     @Override
-    public List<ScoreParam> getAllScoreParams() {
+    public ScoreParamGetAll getAllScoreParams() {
         List<ScoreParam> allScoreParams= null;
         try{
             allScoreParams = scoreParamRepository.findAll();
-
-        } catch (Exception e){}
-        return allScoreParams;
+            if(allScoreParams != null){
+                ScoreParamGetAll scoreParamGetAll = ScoreParamGetAll.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .scoreParams(allScoreParams)
+                        .build();
+                return scoreParamGetAll;
+            }
+            ScoreParamGetAll scoreParamGetAll = ScoreParamGetAll.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(SCORE_PARAM_NOT_EXIST)
+                    .scoreParams(null)
+                    .build();
+            return scoreParamGetAll;
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public ScoreParam updateById(ScoreParam scoreParam) {
+    public CreateUpdateDeleteResponseDto updateById(ScoreParam scoreParam) {
         Long id = scoreParam.getId();
         log.info("Started the update Functionality");
         ScoreParam scoreParamDb = null;
@@ -121,20 +176,55 @@ public class ScoreParamServiceImpl implements ScoreParamService{
                     scoreParamDb.setUpdateCycle(updateCycle);
                 }
                 scoreParamRepository.save(scoreParamDb);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_UPDATED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!scoreParamRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
-        return scoreParamDb;
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(SUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_PARAM_NOT_UPDATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
-    public void deleteById(ScoreParam scoreParam) {
+    public CreateUpdateDeleteResponseDto deleteById(ScoreParam scoreParam) {
         Long id = scoreParam.getId();
         try{
             if(scoreParamRepository.existsById(id)){
                 scoreParamRepository.deleteById(id);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
-        } catch (Exception e) {}
+            if(!scoreParamRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_PARAM_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(SUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_PARAM_NOT_DELETED_SUCCESSFULLY)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 }
