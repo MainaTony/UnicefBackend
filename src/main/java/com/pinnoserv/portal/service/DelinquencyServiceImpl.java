@@ -1,5 +1,8 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.DelinquencyById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.DelinquencyGetAll;
 import com.pinnoserv.portal.entity.DelinquencyModel;
 import com.pinnoserv.portal.repositories.DelinquencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +10,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @Service
 public class DelinquencyServiceImpl implements DelinquencyService{
     @Autowired
     DelinquencyRepository delinquencyRepository;
 
     @Override
-    public void createDelinquency(DelinquencyModel delinquencyModel) {
+    public CreateUpdateDeleteResponseDto createDelinquency(DelinquencyModel delinquencyModel) {
         try{
+            Long id = delinquencyModel.getId();
+            if(!delinquencyRepository.existsById(id)){
             DelinquencyModel createDelinquencyModel = DelinquencyModel.builder()
                     .productIdFk(delinquencyModel.getProductIdFk())
                     .action(delinquencyModel.getAction())
@@ -28,42 +35,92 @@ public class DelinquencyServiceImpl implements DelinquencyService{
                     .canSuspend(delinquencyModel.getCanSuspend())
                     .build();
             delinquencyRepository.save(createDelinquencyModel);
-        }
-        catch (Exception e){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_CREATED)
+                        .build();
+                return createUpdateDeleteResponseDto;
 
+            }
+            if(delinquencyRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_EXISTS)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
         }
+
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(DELINQUENCY_NOT_CREATED)
+                .build();
+        return createUpdateDeleteResponseDto;
 
     }
 
     @Override
-    public DelinquencyModel findById(DelinquencyModel delinquencyModel) {
+    public DelinquencyById findById(DelinquencyModel delinquencyModel) {
         DelinquencyModel idDelinquency = null;
         try{
             Long id = delinquencyModel.getId();
             if(delinquencyRepository.existsById(id)){
                 idDelinquency = delinquencyRepository.findById(id).get();
+                DelinquencyById delinquencyById = DelinquencyById.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .delinquencyModel(idDelinquency)
+                        .build();
+                return delinquencyById;
+            }
+            if(!delinquencyRepository.existsById(id)){
+                DelinquencyById delinquencyById = DelinquencyById.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_NOT_EXIST)
+                        .delinquencyModel(null)
+                        .build();
+                return delinquencyById;
             }
         }
         catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-        return idDelinquency;
+        DelinquencyById delinquencyById = DelinquencyById.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .delinquencyModel(null)
+                .build();
+        return delinquencyById;
     }
 
     @Override
-    public List<DelinquencyModel> findAll() {
+    public DelinquencyGetAll findAll() {
         List<DelinquencyModel> delinquencyModels = null;
         try{
             delinquencyModels = delinquencyRepository.findAll();
+            if(delinquencyModels != null){
+            DelinquencyGetAll delinquencyGetAll = DelinquencyGetAll.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .delinquencyModels(delinquencyModels)
+                    .build();
+            return delinquencyGetAll;
+            }
+
+            DelinquencyGetAll delinquencyGetAll = DelinquencyGetAll.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(DELINQUENCY_NOT_EXIST)
+                    .delinquencyModels(null)
+                    .build();
+            return delinquencyGetAll;
         }
         catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-        return delinquencyModels;
     }
 
     @Override
-    public void updateById(DelinquencyModel delinquencyModel) {
+    public CreateUpdateDeleteResponseDto updateById(DelinquencyModel delinquencyModel) {
         try{
             Long id = delinquencyModel.getId();
             if(delinquencyRepository.existsById(id)){
@@ -110,21 +167,56 @@ public class DelinquencyServiceImpl implements DelinquencyService{
                     dbDelinquencyModel.setCanSuspend(canSuspend);
                 }
                 delinquencyRepository.save(dbDelinquencyModel);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_UPDATED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!delinquencyRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch (Exception e){
-
+            throw new RuntimeException(e);
         }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(DELINQUENCY_NOT_UPDATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
-    public void deleteById(DelinquencyModel delinquencyModel) {
+    public CreateUpdateDeleteResponseDto deleteById(DelinquencyModel delinquencyModel) {
         try{
             Long id = delinquencyModel.getId();
             if(delinquencyRepository.existsById(id)){
                 delinquencyRepository.deleteById(id);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!delinquencyRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(DELINQUENCY_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         }
         catch (Exception e){
+            throw new RuntimeException(e);
         }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(DELINQUENCY_NOT_DELETED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 }
