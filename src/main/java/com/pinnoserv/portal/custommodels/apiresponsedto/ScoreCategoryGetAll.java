@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -14,5 +16,5 @@ public class ScoreCategoryGetAll {
     public String ResponseCode;
 
     public String ResponseMessage;
-    ScoreCategory scoreCategory;
+    List<ScoreCategory> scoreCategories;
 }

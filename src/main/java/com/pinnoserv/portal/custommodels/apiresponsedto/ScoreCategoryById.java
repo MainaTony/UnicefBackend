@@ -16,5 +16,5 @@ public class ScoreCategoryById {
     public String ResponseCode;
 
     public String ResponseMessage;
-    List<ScoreCategory> scoreCategories;
+    ScoreCategory scoreCategorie;
 }
