@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @Service
 public class OrganisationServiceImpl implements OrganisationService{
     private OrganisationRepository organisationRepository;
@@ -39,15 +41,16 @@ public class OrganisationServiceImpl implements OrganisationService{
                 .organisationEmail(organisation.getOrganisationEmail())
                 .build();
         organisationRepository.save(orgCreated);
-
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(SUCCESS_RESPONSE)
+                .ResponseMessage(ORGANISATION_CREATED)
+                .build();
         try {
             log.info("-------------Persisting Organisation to Database------------");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
-        return null;
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
@@ -64,12 +67,23 @@ public class OrganisationServiceImpl implements OrganisationService{
                 log.info("Id is Available");
                 org = organisationRepository.findById(orgCode).get();
                 log.info("Response from the repository {}", org);
+                OrganisationById organisationById = OrganisationById.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .organisation(org)
+                        .build();
+                return organisationById;
             }
+
             log.info("Id is Not Available");
         } catch (Exception e) {
-
+            new RuntimeException();
         }
-        return org;
+        OrganisationById organisationById = OrganisationById.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(ORGANISATION_NOT_EXIST)
+                .organisation(null)
+                .build();
+        return organisationById;
     }
 
     @Override
@@ -82,13 +96,22 @@ public class OrganisationServiceImpl implements OrganisationService{
             allOrgs = organisationRepository.findAll();
             if(allOrgs.isEmpty()){
             log.info("The List is empty");
+                OrganisationGetAll organisationGetAll = OrganisationGetAll.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .organisations(allOrgs)
+                        .build();
+                return organisationGetAll;
             }
         }
         catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-
-        return allOrgs;
+        OrganisationGetAll organisationGetAll = OrganisationGetAll.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(ORGANISATION_NOT_EXIST)
+                .organisations(null)
+                .build();
+        return organisationGetAll;
     }
 
     @Override
@@ -135,11 +158,21 @@ public class OrganisationServiceImpl implements OrganisationService{
                     dbOrganisation.setOrganisationEmail(organisationEmail);
                 }
                 organisationRepository.save(dbOrganisation);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(ORGANISATION_UPDATED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch (Exception e) {
+            throw new RuntimeException(e);
 
         }
-        return dbOrganisation;
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(ORGANISATION_NOT_UPDATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
@@ -152,9 +185,19 @@ public class OrganisationServiceImpl implements OrganisationService{
         try{
             if(organisationRepository.existsById(orgCode)){
                 organisationRepository.deleteById(orgCode);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(ORGANISATION_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch(Exception e){
-
+            throw new RuntimeException(e);
         }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(ORGANISATION_NOT_DELETED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 }
