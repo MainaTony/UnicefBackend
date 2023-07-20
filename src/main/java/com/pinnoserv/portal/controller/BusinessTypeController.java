@@ -1,6 +1,7 @@
 package com.pinnoserv.portal.controller;
 
 import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.custommodels.apiresponsedto.*;
 import com.pinnoserv.portal.entity.ApiUsers;
 //import com.pinnoserv.portal.entity.DataSource;
 //import com.pinnoserv.portal.entity.Organisation;
@@ -23,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @RestController
 @RequestMapping("/businesstype")
 @Slf4j
@@ -39,10 +42,11 @@ public class BusinessTypeController {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessTypeController.class);
 
     @PostMapping("/create")
-    public ResponseEntity<?> addNewBusinessType(@RequestHeader("Authorization") String Authorization, @RequestBody() com.pinnoserv.portal.entity.BusinessType businessType) {
+    public ResponseEntity<CreateResponseDto> addNewBusinessType(@RequestHeader("Authorization") String Authorization, @RequestBody() com.pinnoserv.portal.entity.BusinessType businessType) {
         LOG.info("---------------------------STARTING 'ADD NEW BUSINESS TYPE' --------------------------------");
         ApiResponse apiResponse = new ApiResponse();
         HttpStatus responseStatus = HttpStatus.OK;
+
         try {
             LOG.info("---------------------------ACCESSING THE APIUSER TABLE--------------------------------");
             ApiUsers user = sharedFunctions.verifyToken(Authorization);
@@ -58,7 +62,11 @@ public class BusinessTypeController {
             com.pinnoserv.portal.entity.BusinessType savedBusinessType = businessTypeRepository.saveAndFlush(businessType);
             apiResponse.setResponseCode("00");
             apiResponse.setResponseDescription("Business Type Added Successfully");
-            return new ResponseEntity<>(apiResponse, responseStatus);
+            CreateResponseDto businessTypeResponse = CreateResponseDto.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_CREATED)
+                    .build();
+            return new ResponseEntity<>(businessTypeResponse, responseStatus);
 
         } catch (Exception e) {
             LOG.error("ERROR! COULD NOT SAVE >> " + e.getMessage());
@@ -71,11 +79,19 @@ public class BusinessTypeController {
             }
             apiResponse.setResponseCode("01");
             apiResponse.setResponseDescription("Error! Could not add Business Type");
+            CreateResponseDto businessTypeErrorResponse = CreateResponseDto.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_NOT_CREATED)
+                    .build();
             responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             LOG.info("OK >> RETURNING WITH STATUS CODE 01");
             LOG.info("---------------------------ENDING 'ADD NEW DATA SOURCE'--------------------------------'");
         }
-        return new ResponseEntity<>(apiResponse, responseStatus);
+        CreateResponseDto businessTypeErrorResponse = CreateResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(BUSINESS_TYPE_NOT_CREATED)
+                .build();
+        return new ResponseEntity<>(businessTypeErrorResponse, responseStatus);
     }
 
     @PostMapping("/success")
@@ -83,46 +99,83 @@ public class BusinessTypeController {
         return "Business Type Controller works";
     }
     @PostMapping("/getById")
-    public ResponseEntity<BusinessType> businessTypeById(@RequestBody BusinessType businessType) {
+    public ResponseEntity<BusinessTypeByIdDto> businessTypeById(@RequestBody BusinessType businessType) {
         BusinessType myBusiness = null;
         try {
             myBusiness = businessTypeService.getBusinessById(businessType);
+            BusinessTypeByIdDto businessTypeByIdDto = BusinessTypeByIdDto.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .businessType(myBusiness)
+                    .build();
+            return ResponseEntity.ok(businessTypeByIdDto);
         } catch (Exception e) {
-
+            BusinessTypeByIdDto businessTypeByIdDto = BusinessTypeByIdDto.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_NOT_EXIST)
+                    .businessType(null)
+                    .build();
+            return ResponseEntity.ok(businessTypeByIdDto);
         }
-        ApiResponse businessTypeResponse = new ApiResponse();
-        businessTypeResponse.setResponseCode("01");
-        businessTypeResponse.setResponseDescription("Request Failed");
-        return ResponseEntity.ok(myBusiness);
+
     }
 
     @PostMapping("/getAll")
-    public ResponseEntity<List<BusinessType>> getAllById(){
+    public ResponseEntity<BusinessTypeGetAll> getAllById(){
         List<BusinessType> businessResponse = null;
         try{
             businessResponse = businessTypeService.getAllBusinesses();
+            BusinessTypeGetAll businessTypeGetAll = BusinessTypeGetAll.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .businessType(businessResponse)
+                    .build();
+            return ResponseEntity.ok(businessTypeGetAll);
         } catch (Exception e) {
-
+            BusinessTypeGetAll businessTypeGetAll = BusinessTypeGetAll.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_NOT_EXIST)
+                    .businessType(null)
+                    .build();
+            return ResponseEntity.ok(businessTypeGetAll);
         }
-        return ResponseEntity.ok(businessResponse);
+
     }
 //
     @PostMapping("/updateById")
-    public ResponseEntity<BusinessType> geUpdateById(@RequestBody BusinessType businessType) {
+    public ResponseEntity<UpdateRResponseDto> geUpdateById(@RequestBody BusinessType businessType) {
         BusinessType updatedBusiness = null;
         try {
             updatedBusiness = businessTypeService.updateById(businessType);
+            UpdateRResponseDto updateRResponseDto = UpdateRResponseDto.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_UPDATED_SUCCESSFULLY)
+                    .build();
+            return ResponseEntity.ok(updateRResponseDto);
         } catch (Exception e) {
+            UpdateRResponseDto updateRResponseDto = UpdateRResponseDto.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_NOT_UPDATED)
+                    .build();
+            return ResponseEntity.ok(updateRResponseDto);
         }
 
-        return ResponseEntity.ok(updatedBusiness);
     }
 
     @PostMapping("/deleteById")
-    public ResponseEntity<?> deleteBusinessType(@RequestBody BusinessType businessType){
+    public ResponseEntity<CreateUpdateDeleteResponseDto> deleteBusinessType(@RequestBody BusinessType businessType){
         try{
             businessTypeService.deleteById(businessType);
-        } catch (Exception e) {}
-        return ResponseEntity.ok("Business Deleted Successfully");
+            CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_DELETED_SUCCESSFULLY)
+                    .build();
+            return ResponseEntity.ok(createUpdateDeleteResponseDto);
+        } catch (Exception e) {
+            CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .ResponseMessage(BUSINESS_TYPE_DELETED_SUCCESSFULLY)
+                    .build();
+            return ResponseEntity.ok(createUpdateDeleteResponseDto);
+        }
+
     }
 }
