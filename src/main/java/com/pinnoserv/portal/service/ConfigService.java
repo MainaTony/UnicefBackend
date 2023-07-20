@@ -1,13 +1,16 @@
 package com.pinnoserv.portal.service;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ConfigById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ConfigGetAll;
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.entity.Config;
 
 import java.util.List;
 
 public interface ConfigService {
-    Config createConfig(Config config);
-    Config getConfigById(Config config);
-    List<Config> getAllConfigs();
-    Config updateById(Config config);
+    CreateUpdateDeleteResponseDto createConfig(Config config);
+    ConfigById getConfigById(Config config);
+    ConfigGetAll getAllConfigs();
+    CreateUpdateDeleteResponseDto updateById(Config config);
 
-    void deleteById(Config config);
+    CreateUpdateDeleteResponseDto deleteById(Config config);
 }

@@ -1,5 +1,8 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.ConfigById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ConfigGetAll;
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.entity.BusinessType;
 import com.pinnoserv.portal.entity.Config;
 import com.pinnoserv.portal.entity.Organisation;
@@ -9,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @Slf4j
 @Service
 public class ConfigServiceImpl implements ConfigService{
@@ -18,57 +24,78 @@ public class ConfigServiceImpl implements ConfigService{
     }
 
     @Override
-    public Config createConfig(Config config) {
-        log.info("");
-        Config configCreated = Config.builder()
-                .createdBy(Long.valueOf(2))
-                .createdDate(LocalDateTime.now())
-                .category(config.getCategory())
-                .name(config.getName())
-                .value(config.getValue())
-                .largeValue(config.getLargeValue())
-                .organisationIdFk(config.getOrganisationIdFk())
-                .updatedBy(config.getUpdatedBy())
-                .updatedDate(LocalDateTime.now())
-                .build();
-        configRepository.save(configCreated);
-
+    public CreateUpdateDeleteResponseDto createConfig(Config config) {
         try {
             log.info("-------------Persisting Config to Database------------");
-        } catch (Exception e) {
+            Config configCreated = Config.builder()
+                    .createdBy(Long.valueOf(2))
+                    .createdDate(LocalDateTime.now())
+                    .category(config.getCategory())
+                    .name(config.getName())
+                    .value(config.getValue())
+                    .largeValue(config.getLargeValue())
+                    .organisationIdFk(config.getOrganisationIdFk())
+                    .updatedBy(config.getUpdatedBy())
+                    .updatedDate(LocalDateTime.now())
+                    .build();
+            configRepository.save(configCreated);
+            CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .ResponseMessage(CONFIG_CREATED)
+                    .build();
+            return createUpdateDeleteResponseDto;
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-
-        return configCreated;
     }
     @Override
-    public Config getConfigById(Config config) {
+    public ConfigById getConfigById(Config config) {
         Long id = config.getId();
         Config myConfig = null;
         try {
             if (configRepository.existsById(id)) {
                 myConfig = configRepository.findById(id).get();
+                ConfigById configById = ConfigById.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .config(myConfig)
+                        .build();
+                return configById;
             }
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
 
-        return myConfig;
+        ConfigById configById = ConfigById.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(CONFIG_NOT_EXIST)
+                .config(null)
+                .build();
+        return configById;
     }
 
     @Override
-    public List<Config> getAllConfigs() {
+    public ConfigGetAll getAllConfigs() {
         List<Config> allConfigs= null;
         try{
             allConfigs = configRepository.findAll();
+            ConfigGetAll configGetAll = ConfigGetAll.builder()
+                    .ResponseCode(SUCCESS_RESPONSE)
+                    .configs(allConfigs)
+                    .build();
+            return configGetAll;
 
         } catch (Exception e){}
-        return allConfigs;
+        ConfigGetAll configGetAll = ConfigGetAll.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .configs(null)
+                .build();
+        return configGetAll;
     }
 
     @Override
-    public Config updateById(Config config) {
+    public CreateUpdateDeleteResponseDto updateById(Config config) {
         Long id = config.getId();
         log.info("Started the update Functionality");
         Config configDb = null;
@@ -94,20 +121,41 @@ public class ConfigServiceImpl implements ConfigService{
                     configDb.setValue(value);
                 }
                 configRepository.save(configDb);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_UPDATED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
-        return configDb;
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(CONFIG_NOT_UPDATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
-    public void deleteById(Config config) {
+    public CreateUpdateDeleteResponseDto deleteById(Config config) {
         Long id = config.getId();
         try{
             if(configRepository.existsById(id)){
                 configRepository.deleteById(id);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(CONFIG_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(CONFIG_NOT_DELETED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 }
