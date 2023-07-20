@@ -1,5 +1,8 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardGetAll;
 import com.pinnoserv.portal.entity.ScoreCard;
 import com.pinnoserv.portal.repositories.ScoreCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,59 +10,112 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
+
 @Service
 public class ScoreCardServiceImpl implements ScoreCardService{
     @Autowired
     ScoreCardRepository scoreCardRepository;
 
     @Override
-    public void createScoreCard(ScoreCard scoreCard) {
+    public CreateUpdateDeleteResponseDto createScoreCard(ScoreCard scoreCard) {
         try {
-            ScoreCard createScoreCard = ScoreCard.builder()
-                    .scoreParamIdFk(scoreCard.getScoreParamIdFk())
-                    .dataColumn(scoreCard.getDataColumn())
-                    .criteria(scoreCard.getCriteria())
-                    .dataSourceIdFk(scoreCard.getDataSourceIdFk())
-                    .approvalStatus(scoreCard.getApprovalStatus())
-                    .approvalLevel(scoreCard.getApprovalLevel())
-                    .maxApprovals(scoreCard.getMaxApprovals())
-                    .updateCycle(scoreCard.getUpdateCycle())
-                    .inTrash("No")
-                    .build();
-            scoreCardRepository.save(createScoreCard);
+            Long id = scoreCard.getId();
+            if (!scoreCardRepository.existsById(id)){
+                ScoreCard createScoreCard = ScoreCard.builder()
+                        .scoreParamIdFk(scoreCard.getScoreParamIdFk())
+                        .dataColumn(scoreCard.getDataColumn())
+                        .criteria(scoreCard.getCriteria())
+                        .dataSourceIdFk(scoreCard.getDataSourceIdFk())
+                        .approvalStatus(scoreCard.getApprovalStatus())
+                        .approvalLevel(scoreCard.getApprovalLevel())
+                        .maxApprovals(scoreCard.getMaxApprovals())
+                        .updateCycle(scoreCard.getUpdateCycle())
+                        .inTrash("No")
+                        .build();
+                scoreCardRepository.save(createScoreCard);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_CREATED)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(scoreCardRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_CREATED)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+
         } catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_CARD_NOT_CREATED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 
     @Override
-    public ScoreCard getById(ScoreCard scoreCard) {
+    public ScoreCardById getById(ScoreCard scoreCard) {
         ScoreCard idScoreCard = null;
         try {
             Long id = scoreCard.getId();
             if(scoreCardRepository.existsById(id)){
                 idScoreCard = scoreCardRepository.findById(id).get();
+                ScoreCardById scoreCardById = ScoreCardById.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .scoreCard(idScoreCard)
+                        .build();
+                return scoreCardById;
+            }
+            if(!scoreCardRepository.existsById(id)){
+                ScoreCardById scoreCardById = ScoreCardById.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_NOT_EXIST)
+                        .scoreCard(null)
+                        .build();
+                return scoreCardById;
             }
 
         } catch (Exception e){
-
+            throw new RuntimeException(e);
         }
-        return idScoreCard;
+        ScoreCardById scoreCardById = ScoreCardById.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_CARD_NOT_EXIST)
+                .scoreCard(null)
+                .build();
+        return scoreCardById;
     }
 
     @Override
-    public List<ScoreCard> getAll() {
+    public ScoreCardGetAll getAll() {
         List<ScoreCard> scoreCards = null;
         try{
             scoreCards = scoreCardRepository.findAll();
+            if(!scoreCards.isEmpty()){
+                ScoreCardGetAll scoreCardGetAll = ScoreCardGetAll.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .scoreCards(scoreCards)
+                        .build();
+                return scoreCardGetAll;
+            }
+            ScoreCardGetAll scoreCardGetAll = ScoreCardGetAll.builder()
+                    .ResponseCode(UNSUCCESS_RESPONSE)
+                    .ResponseMessage(SCORE_CARD_NOT_EXIST)
+                    .scoreCards(null)
+                    .build();
+            return scoreCardGetAll;
         } catch (Exception e){
+            throw new RuntimeException(e);
         }
-        return scoreCards;
     }
 
     @Override
-    public void updateById(ScoreCard scoreCard) {
+    public CreateUpdateDeleteResponseDto updateById(ScoreCard scoreCard) {
         try {
             Long id = scoreCard.getId();
             if(scoreCardRepository.existsById(id)){
@@ -72,7 +128,6 @@ public class ScoreCardServiceImpl implements ScoreCardService{
                 int maxApprovals = scoreCard.getMaxApprovals();
                 int updateCycle = scoreCard.getUpdateCycle();
                 ScoreCard dbScoreCard = scoreCardRepository.findById(id).get();
-
 
                 if (!dataColumn.isEmpty() && !dataColumn.equalsIgnoreCase(dbScoreCard.getDataColumn())){
                     dbScoreCard.setDataColumn(dataColumn);
@@ -98,22 +153,57 @@ public class ScoreCardServiceImpl implements ScoreCardService{
                 if (maxApprovals != 0 && maxApprovals != dbScoreCard.getMaxApprovals()){
                     dbScoreCard.setMaxApprovals(maxApprovals);
                 }
+                scoreCardRepository.save(dbScoreCard);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_UPDATED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!scoreCardRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch (Exception e){
-
+            throw new RuntimeException(e);
         }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_CARD_NOT_UPDATED)
+                .build();
+        return createUpdateDeleteResponseDto;
 
     }
 
     @Override
-    public void deleteById(ScoreCard scoreCard) {
+    public CreateUpdateDeleteResponseDto deleteById(ScoreCard scoreCard) {
         try {
             Long id = scoreCard.getId();
             if(scoreCardRepository.existsById(id)){
                 scoreCardRepository.deleteById(id);
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(SUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_DELETED_SUCCESSFULLY)
+                        .build();
+                return createUpdateDeleteResponseDto;
+            }
+            if(!scoreCardRepository.existsById(id)){
+                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                        .ResponseCode(UNSUCCESS_RESPONSE)
+                        .ResponseMessage(SCORE_CARD_NOT_EXIST)
+                        .build();
+                return createUpdateDeleteResponseDto;
             }
         } catch (Exception e){
-
+            throw new RuntimeException(e);
         }
+        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+                .ResponseCode(UNSUCCESS_RESPONSE)
+                .ResponseMessage(SCORE_CARD_NOT_DELETED)
+                .build();
+        return createUpdateDeleteResponseDto;
     }
 }

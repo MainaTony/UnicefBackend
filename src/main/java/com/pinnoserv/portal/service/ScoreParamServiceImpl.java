@@ -121,7 +121,6 @@ public class ScoreParamServiceImpl implements ScoreParamService{
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public CreateUpdateDeleteResponseDto updateById(ScoreParam scoreParam) {
         Long id = scoreParam.getId();

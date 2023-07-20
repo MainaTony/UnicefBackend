@@ -1,13 +1,16 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardGetAll;
 import com.pinnoserv.portal.entity.ScoreCard;
 
 import java.util.List;
 
 public interface ScoreCardService {
-    void createScoreCard(ScoreCard scoreCard);
-    ScoreCard getById(ScoreCard scoreCard);
-    List<ScoreCard> getAll();
-    void updateById(ScoreCard scoreCard);
-    void deleteById(ScoreCard scoreCard);
+    CreateUpdateDeleteResponseDto createScoreCard(ScoreCard scoreCard);
+    ScoreCardById getById(ScoreCard scoreCard);
+    ScoreCardGetAll getAll();
+    CreateUpdateDeleteResponseDto updateById(ScoreCard scoreCard);
+    CreateUpdateDeleteResponseDto deleteById(ScoreCard scoreCard);
 }
