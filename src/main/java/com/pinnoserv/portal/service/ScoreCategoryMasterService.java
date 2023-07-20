@@ -1,13 +1,16 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCategoryMasterById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCategoryMasterGetAll;
 import com.pinnoserv.portal.entity.ScoreCategoryMaster;
 
 import java.util.List;
 
 public interface ScoreCategoryMasterService {
-    void createScoreCategoryMaster(ScoreCategoryMaster scoreCategoryMaster);
-    ScoreCategoryMaster viewById(ScoreCategoryMaster scoreCategoryMaster);
-    List<ScoreCategoryMaster> getAll();
-    void updateById(ScoreCategoryMaster scoreCategoryMaster);
-    void deleteById(ScoreCategoryMaster scoreCategoryMaster);
+    CreateUpdateDeleteResponseDto createScoreCategoryMaster(ScoreCategoryMaster scoreCategoryMaster);
+    ScoreCategoryMasterById viewById(ScoreCategoryMaster scoreCategoryMaster);
+    ScoreCategoryMasterGetAll getAll();
+    CreateUpdateDeleteResponseDto updateById(ScoreCategoryMaster scoreCategoryMaster);
+    CreateUpdateDeleteResponseDto deleteById(ScoreCategoryMaster scoreCategoryMaster);
 }
