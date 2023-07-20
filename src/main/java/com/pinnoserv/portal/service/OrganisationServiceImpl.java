@@ -1,5 +1,8 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationGetAll;
 import com.pinnoserv.portal.entity.Organisation;
 import com.pinnoserv.portal.repositories.OrganisationRepository;
 import lombok.Builder;
@@ -21,7 +24,7 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
     Logger log = LoggerFactory.getLogger(OrganisationServiceImpl.class);
     @Override
-    public String createOrganisation(Organisation organisation) {
+    public CreateUpdateDeleteResponseDto createOrganisation(Organisation organisation) {
         log.info("");
         Organisation orgCreated = Organisation.builder()
                 .createdBy(2)
@@ -35,7 +38,6 @@ public class OrganisationServiceImpl implements OrganisationService{
                 .organisationPhone(organisation.getOrganisationPhone())
                 .organisationEmail(organisation.getOrganisationEmail())
                 .build();
-
         organisationRepository.save(orgCreated);
 
         try {
@@ -49,7 +51,7 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
     @Override
-    public Organisation getById(Organisation organisation) {
+    public OrganisationById getById(Organisation organisation) {
         Long orgCode = organisation.getId();
         log.info("Initiating Get By Id, Value  {} ", orgCode);
 //        Steps
@@ -71,7 +73,7 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
     @Override
-    public List<Organisation> getAll() {
+    public OrganisationGetAll getAll() {
 //        Steps
 //        1. Check if org Code exists
 //        2. Fetch all the organisations
@@ -90,7 +92,7 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
     @Override
-    public Organisation updateById(Organisation organisation) {
+    public CreateUpdateDeleteResponseDto updateById(Organisation organisation) {
 //        Check if the Organisation exists
 //        Update the only values that have values in them and leave out the empty ones
 
@@ -141,7 +143,7 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
     @Override
-    public void deleteById(Organisation organisation) {
+    public CreateUpdateDeleteResponseDto deleteById(Organisation organisation) {
 //        Check if the organisation exists
 //        Delete the organisation
 
