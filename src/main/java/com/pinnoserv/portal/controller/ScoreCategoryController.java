@@ -89,7 +89,6 @@ public class ScoreCategoryController {
         try {
             scoreCategoryService.updateById(scoreCategory);
         } catch (Exception e){
-
         }
         return ResponseEntity.ok("Score Category Updated Successfully");
     }
