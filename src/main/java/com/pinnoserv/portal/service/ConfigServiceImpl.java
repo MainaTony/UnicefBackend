@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ConfigById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ConfigGetAll;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
@@ -22,12 +23,11 @@ public class ConfigServiceImpl implements ConfigService{
     public ConfigServiceImpl(ConfigRepository configRepository){
         this.configRepository = configRepository;
     }
-
+    ApiResponse apiResponse = new ApiResponse();
     @Override
-    public CreateUpdateDeleteResponseDto createConfig(Config config) {
+    public ApiResponse createConfig(Config config) {
         try {
             Long id = config.getId();
-            if(!configRepository.existsById(id)){
             log.info("-------------Persisting Config to Database------------");
             Config configCreated = Config.builder()
                     .createdBy(Long.valueOf(2))
@@ -41,93 +41,72 @@ public class ConfigServiceImpl implements ConfigService{
                     .updatedDate(LocalDateTime.now())
                     .build();
             configRepository.save(configCreated);
-            CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                    .ResponseCode(SUCCESS_RESPONSE)
-                    .ResponseMessage(CONFIG_CREATED)
-                    .build();
-            return createUpdateDeleteResponseDto;
-            }
-            if(configRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_EXISTS)
-                        .build();
-                return createUpdateDeleteResponseDto;
-            }
+            apiResponse.setResponseCode(SUCCESS_RESPONSE);
+            apiResponse.setResponseDescription(CONFIG_CREATED);
+            apiResponse.setEntity(null);
+            return apiResponse;
+
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(CONFIG_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+
     }
     @Override
-    public ConfigById getConfigById(Config config) {
+    public ApiResponse getConfigById(Config config) {
         Long id = config.getId();
         Config myConfig = null;
         try {
             if (configRepository.existsById(id)) {
                 myConfig = configRepository.findById(id).get();
-                ConfigById configById = ConfigById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .config(myConfig)
-                        .build();
-                return configById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_FETCHED);
+                apiResponse.setEntity(myConfig);
+                return apiResponse;
             }
             if (!configRepository.existsById(id)){
-                ConfigById configById = ConfigById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_NOT_EXIST)
-                        .config(null)
-                        .build();
-                return configById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ConfigById configById = ConfigById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(CONFIG_NOT_CREATED)
-                .config(null)
-                .build();
-        return configById;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public ConfigGetAll getAllConfigs() {
+    public ApiResponse getAllConfigs() {
         List<Config> allConfigs= null;
         try{
             allConfigs = configRepository.findAll();
             if(!allConfigs.isEmpty()) {
-                ConfigGetAll configGetAll = ConfigGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .configs(allConfigs)
-                        .build();
-                return configGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_ALL_FETCHED);
+                apiResponse.setEntity(allConfigs);
+                return apiResponse;
             }
             if (allConfigs.isEmpty()){
-                ConfigGetAll configGetAll = ConfigGetAll.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_NOT_EXIST)
-                        .configs(null)
-                        .build();
-                return configGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        ConfigGetAll configGetAll = ConfigGetAll.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .configs(null)
-                .build();
-        return configGetAll;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(Config config) {
+    public ApiResponse updateById(Config config) {
         log.info("Started the update Functionality");
         try {
             Config configDb = null;
@@ -153,55 +132,50 @@ public class ConfigServiceImpl implements ConfigService{
                     configDb.setValue(value);
                 }
                 configRepository.save(configDb);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!configRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(CONFIG_NOT_UPDATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(Config config) {
+    public ApiResponse deleteById(Config config) {
         Long id = config.getId();
         try{
             if(configRepository.existsById(id)){
                 configRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!configRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(CONFIG_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(CONFIG_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(CONFIG_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(CONFIG_NOT_DELETED);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 }

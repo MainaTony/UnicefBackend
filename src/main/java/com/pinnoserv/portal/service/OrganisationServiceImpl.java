@@ -68,11 +68,6 @@ public class OrganisationServiceImpl implements OrganisationService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-//        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-//        apiResponse.setResponseDescription(ORGANISATION_EXISTS);
-//        apiResponse.setEntity(null);
-//        return apiResponse;
     }
 
     @Override
