@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.BusinessTypeByIdDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.BusinessTypeGetAll;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
@@ -18,70 +19,62 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 public class BusinessTypeImpl implements BusinessTypeService{
     @Autowired
     BusinessTypeRepository businessTypeRepository;
+
+    ApiResponse apiResponse = new ApiResponse();
     @Override
-    public BusinessTypeByIdDto getBusinessById(BusinessType businessType) {
+    public ApiResponse getBusinessById(BusinessType businessType) {
 
         BusinessType myBusiness = null;
         try {
             Long id = businessType.getId();
             if (businessTypeRepository.existsById(id)) {
                 myBusiness = businessTypeRepository.findById(id).get();
-                BusinessTypeByIdDto businessTypeByIdDto = BusinessTypeByIdDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .businessType(myBusiness)
-                        .build();
-                return businessTypeByIdDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_FETCHED);
+                apiResponse.setEntity(myBusiness);
+                return apiResponse;
             }
             if(!businessTypeRepository.existsById(id)){
-                BusinessTypeByIdDto businessTypeByIdDto = BusinessTypeByIdDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(BUSINESS_TYPE_NOT_EXIST)
-                        .businessType(null)
-                        .build();
-                return businessTypeByIdDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        BusinessTypeByIdDto businessTypeByIdDto = BusinessTypeByIdDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage("Not Found")
-                .businessType(null)
-                .build();
-        return businessTypeByIdDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 
     @Override
-    public BusinessTypeGetAll getAllBusinesses() {
-        List<BusinessType> allBusiness= null;
-        try{
+    public ApiResponse getAllBusinesses() {
+        List<BusinessType> allBusiness = null;
+
             allBusiness = businessTypeRepository.findAll();
             if(!allBusiness.isEmpty()){
-                BusinessTypeGetAll businessTypeGetAll = BusinessTypeGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .businessType(allBusiness)
-                        .build();
-                return businessTypeGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_ALL_FETCHED);
+                apiResponse.setEntity(allBusiness);
+                return apiResponse;
+
             }
             if(allBusiness.isEmpty()){
-                BusinessTypeGetAll businessTypeGetAll = BusinessTypeGetAll.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .businessType(null)
-                        .build();
-                return businessTypeGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_NOT_EXIST);
+                apiResponse.setEntity(allBusiness);
+                return apiResponse;
             }
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-        BusinessTypeGetAll businessTypeGetAll = BusinessTypeGetAll.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .businessType(null)
-                .build();
-        return businessTypeGetAll;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(BusinessType businessType) {
+    public ApiResponse updateById(BusinessType businessType) {
         Long id = businessType.getId();
         BusinessType business = null;
         try {
@@ -96,55 +89,49 @@ public class BusinessTypeImpl implements BusinessTypeService{
                     business.setDescription(description);
                 }
                 businessTypeRepository.save(business);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(BUSINESS_TYPE_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!businessTypeRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(BUSINESS_TYPE_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(BUSINESS_TYPE_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(BusinessType businessType) {
+    public ApiResponse deleteById(BusinessType businessType) {
         Long id = businessType.getId();
         try{
             if(businessTypeRepository.existsById(id)){
                 businessTypeRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(BUSINESS_TYPE_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!businessTypeRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(BUSINESS_TYPE_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(BUSINESS_TYPE_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(BUSINESS_TYPE_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }

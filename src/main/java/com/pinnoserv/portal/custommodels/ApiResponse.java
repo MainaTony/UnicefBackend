@@ -20,7 +20,7 @@ public class ApiResponse<T> {
     protected String responseCode;
     protected String responseDescription;
     private T entity;
-    private Integer recordCount;
+//    private Integer recordCount;
 
     public ApiResponse() {
     }
@@ -30,7 +30,7 @@ public class ApiResponse<T> {
         this.responseCode = responseCode;
         this.responseDescription = responseDescription;
         this.entity = entity;
-        this.recordCount = recordCount;
+//        this.recordCount = recordCount;
     }
 
     public ApiResponse(String responseCode, String responseDescription, T entity) {
@@ -82,13 +82,13 @@ public class ApiResponse<T> {
     /**
      * @return recordCount for results on each request
      */
-    public Integer getRecordCount() {
-        return recordCount;
-    }
-
-    public void setRecordCount(Integer recordCount) {
-        this.recordCount = recordCount;
-    }
+//    public Integer getRecordCount() {
+//        return recordCount;
+//    }
+//
+//    public void setRecordCount(Integer recordCount) {
+//        this.recordCount = recordCount;
+//    }
 
     @Override
     public String toString() {

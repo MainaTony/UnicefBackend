@@ -17,6 +17,8 @@ import java.util.Objects;
 @Table(name = "score_card")
 public class ScoreCard {
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "score_param_id_fk")
     private int scoreParamIdFk;

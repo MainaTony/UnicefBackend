@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationGetAll;
@@ -25,97 +26,119 @@ public class OrganisationServiceImpl implements OrganisationService{
 
     }
     Logger log = LoggerFactory.getLogger(OrganisationServiceImpl.class);
+    ApiResponse apiResponse = new ApiResponse();
     @Override
-    public CreateUpdateDeleteResponseDto createOrganisation(Organisation organisation) {
-        log.info("");
-        Organisation orgCreated = Organisation.builder()
-                .createdBy(2)
-                .dateCreated(LocalDateTime.now())
-                .intrash("No")
-                .status(Boolean.TRUE)
-                .organisationName(organisation.getOrganisationName())
-                .organisationCode(organisation.getOrganisationCode())
-                .businessType(organisation.getBusinessType())
-                .organisationAddress(organisation.getOrganisationAddress())
-                .organisationPhone(organisation.getOrganisationPhone())
-                .organisationEmail(organisation.getOrganisationEmail())
-                .build();
-        organisationRepository.save(orgCreated);
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(SUCCESS_RESPONSE)
-                .ResponseMessage(ORGANISATION_CREATED)
-                .build();
+    public ApiResponse createOrganisation(Organisation organisation) {
+
         try {
             log.info("-------------Persisting Organisation to Database------------");
+            Long id = organisation.getId();
+                Organisation orgCreated = Organisation.builder()
+                        .createdBy(2)
+                        .dateCreated(LocalDateTime.now())
+                        .intrash("No")
+                        .status(Boolean.TRUE)
+                        .organisationName(organisation.getOrganisationName())
+                        .organisationCode(organisation.getOrganisationCode())
+                        .businessType(organisation.getBusinessType())
+                        .organisationAddress(organisation.getOrganisationAddress())
+                        .organisationPhone(organisation.getOrganisationPhone())
+                        .organisationEmail(organisation.getOrganisationEmail())
+                        .build();
+                organisationRepository.save(orgCreated);
+
+//                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+//                        .ResponseCode(SUCCESS_RESPONSE)
+//                        .ResponseMessage(ORGANISATION_CREATED)
+//                        .build();
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
+//            if(organisationRepository.existsById(id)){
+////                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
+////                        .ResponseCode(UNSUCCESS_RESPONSE)
+////                        .ResponseMessage(ORGANISATION_EXISTS)
+////                        .build();
+//                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+//                apiResponse.setResponseDescription(ORGANISATION_EXISTS);
+//                apiResponse.setEntity(null);
+//                return apiResponse;
+//            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return createUpdateDeleteResponseDto;
+
+//        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+//        apiResponse.setResponseDescription(ORGANISATION_EXISTS);
+//        apiResponse.setEntity(null);
+//        return apiResponse;
     }
 
     @Override
-    public OrganisationById getById(Organisation organisation) {
-        Long orgCode = organisation.getId();
-        log.info("Initiating Get By Id, Value  {} ", orgCode);
-//        Steps
-//        Check if org exist
-//        Fetch details of the organisation
-
-        Organisation org = null;
+    public ApiResponse getById(Organisation organisation) {
+        ApiResponse apiResponse = new ApiResponse();
         try {
+            Long orgCode = organisation.getId();
+            log.info("Initiating Get By Id, Value  {} ", orgCode);
+            Organisation org = null;
             if (organisationRepository.existsById(orgCode)) {
                 log.info("Id is Available");
                 org = organisationRepository.findById(orgCode).get();
                 log.info("Response from the repository {}", org);
-                OrganisationById organisationById = OrganisationById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .organisation(org)
-                        .build();
-                return organisationById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_FETCHED);
+                apiResponse.setEntity(org);
+                return apiResponse;
+            }
+            if (!organisationRepository.existsById(orgCode)){
+                log.info("Id is Not Available");
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
 
-            log.info("Id is Not Available");
         } catch (Exception e) {
             new RuntimeException();
         }
-        OrganisationById organisationById = OrganisationById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(ORGANISATION_NOT_EXIST)
-                .organisation(null)
-                .build();
-        return organisationById;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public OrganisationGetAll getAll() {
-//        Steps
-//        1. Check if org Code exists
-//        2. Fetch all the organisations
+    public ApiResponse getAll() {
         List<Organisation> allOrgs = null;
-        try{
+        try {
             allOrgs = organisationRepository.findAll();
-            if(allOrgs.isEmpty()){
-            log.info("The List is empty");
-                OrganisationGetAll organisationGetAll = OrganisationGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .organisations(allOrgs)
-                        .build();
-                return organisationGetAll;
+            if (!allOrgs.isEmpty()) {
+                log.info("Get All Success");
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_ALL_FETCHED);
+                apiResponse.setEntity(allOrgs);
+                return apiResponse;
+            }
+            if (allOrgs.isEmpty()) {
+                log.info("Get All Not Successful");
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        OrganisationGetAll organisationGetAll = OrganisationGetAll.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(ORGANISATION_NOT_EXIST)
-                .organisations(null)
-                .build();
-        return organisationGetAll;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(Organisation organisation) {
+    public ApiResponse updateById(Organisation organisation) {
 //        Check if the Organisation exists
 //        Update the only values that have values in them and leave out the empty ones
 
@@ -158,25 +181,22 @@ public class OrganisationServiceImpl implements OrganisationService{
                     dbOrganisation.setOrganisationEmail(organisationEmail);
                 }
                 organisationRepository.save(dbOrganisation);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(ORGANISATION_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
-
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(ORGANISATION_NOT_UPDATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(ORGANISATION_NOT_UPDATED);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(Organisation organisation) {
+    public ApiResponse deleteById(Organisation organisation) {
 //        Check if the organisation exists
 //        Delete the organisation
 
@@ -185,19 +205,24 @@ public class OrganisationServiceImpl implements OrganisationService{
         try{
             if(organisationRepository.existsById(orgCode)){
                 organisationRepository.deleteById(orgCode);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(ORGANISATION_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
+            }
+            if(!organisationRepository.existsById(orgCode)){
+                organisationRepository.deleteById(orgCode);
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(ORGANISATION_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch(Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(ORGANISATION_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 }

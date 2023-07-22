@@ -1,5 +1,9 @@
 package com.pinnoserv.portal.controller;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
+import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationById;
+import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationGetAll;
 import com.pinnoserv.portal.entity.Organisation;
 import com.pinnoserv.portal.service.DatabaseService;
 import com.pinnoserv.portal.service.OrganisationService;
@@ -7,11 +11,15 @@ import javassist.bytecode.stackmap.BasicBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.ORGANISATION_CREATED;
+import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.SUCCESS_RESPONSE;
 
 @RestController
 @RequestMapping("/organisation")
@@ -24,61 +32,29 @@ public class OrganisationController {
 
 //    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/create")
-    public ResponseEntity<?> createOrganisation(@RequestHeader("Authorization") String Authorization, @RequestBody() Organisation organisation){
+    public ApiResponse createOrganisation(@RequestBody() Organisation organisation){
         log.info("----------------------Initiated Creating of Organisation------------------------------------");
-
-        try{
-            organisationService.createOrganisation(organisation);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return ResponseEntity.ok(organisation);
-
+        return organisationService.createOrganisation(organisation);
     }
 
     @PostMapping("/getById")
-    public ResponseEntity<Organisation> getOrganisationById(@RequestBody Organisation organisation) {
-        Organisation org = null;
-        try {
-            org = organisationService.getById(organisation);
-        } catch (Exception e) {
-
-        }
-        return ResponseEntity.ok(org);
+    public ApiResponse getOrganisationById(@RequestBody Organisation organisation) {
+        return organisationService.getById(organisation);
     }
 
     @PostMapping("/getAll")
-    public ResponseEntity<List<Organisation>> getAll() {
-
-        List<Organisation> allOrgs = null;
-        try {
-            allOrgs = organisationService.getAll();
-        } catch (Exception e) {
-
-        }
-        return ResponseEntity.ok(allOrgs);
+    public ApiResponse getAll() {
+        return organisationService.getAll();
     }
+
     @PostMapping("/updateById")
-    public ResponseEntity<Organisation> updateById(@RequestBody Organisation organisation) {
-
-        Organisation myOrg = null;
-        try {
-            myOrg = organisationService.updateById(organisation);
-        } catch (Exception e) {
-
-        }
-        return ResponseEntity.ok(myOrg);
+    public ApiResponse updateById(@RequestBody Organisation organisation) {
+        return organisationService.updateById(organisation);
     }
 
     @DeleteMapping("/deleteById")
-    public ResponseEntity<String> deleteOrganisation(@RequestBody Organisation organisation){
-        try{
-            organisationService.deleteById(organisation);
-        } catch (Exception e){
-
-        }
-    return ResponseEntity.ok("Organisation Deleted Successfully");
+    public ApiResponse deleteOrganisation(@RequestBody Organisation organisation){
+    return organisationService.deleteById(organisation);
     }
 
 
