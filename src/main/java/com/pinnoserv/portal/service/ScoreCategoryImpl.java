@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardGetAll;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCategoryById;
@@ -15,10 +16,11 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 
 @Service
 public class ScoreCategoryImpl implements ScoreCategoryService{
+    ApiResponse apiResponse = new ApiResponse();
     @Autowired
     ScoreCategoryRepository scoreCategoryRepository;
     @Override
-    public CreateUpdateDeleteResponseDto createScoreCategory(ScoreCategory scoreCategory) {
+    public ApiResponse createScoreCategory(ScoreCategory scoreCategory) {
         try{
             Long id = scoreCategory.getId();
             if(!scoreCategoryRepository.existsById(id)){
@@ -35,87 +37,77 @@ public class ScoreCategoryImpl implements ScoreCategoryService{
                         .inTrash("No")
                         .build();
                 scoreCategoryRepository.save(createScoreCategory);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(scoreCategoryRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_EXISTS)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_EXISTS);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(SUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CATEGORY_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 
     @Override
-    public ScoreCategoryById getById(ScoreCategory scoreCategory) {
+    public ApiResponse getById(ScoreCategory scoreCategory) {
         ScoreCategory idScoreCategory = null;
         try{
             Long id = scoreCategory.getId();
             if(scoreCategoryRepository.existsById(id)){
                 idScoreCategory = scoreCategoryRepository.findById(id).get();
-                ScoreCategoryById scoreCategoryById = ScoreCategoryById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreCategorie(idScoreCategory)
-                        .build();
-                return scoreCategoryById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_FETCHED);
+                apiResponse.setEntity(idScoreCategory);
+                return apiResponse;
             }
             if(!scoreCategoryRepository.existsById(id)){
-                ScoreCategoryById scoreCategoryById = ScoreCategoryById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_NOT_EXIST)
-                        .scoreCategorie(null)
-                        .build();
-                return scoreCategoryById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        ScoreCategoryById scoreCategoryById = ScoreCategoryById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .scoreCategorie(null)
-                .build();
-        return scoreCategoryById;
-    }
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
+        }
 
     @Override
-    public ScoreCategoryGetAll getAll() {
+    public ApiResponse getAll() {
         List<ScoreCategory> scoreCategories = null;
         try{
             scoreCategories = scoreCategoryRepository.findAll();
             if(scoreCategories != null){
-                ScoreCategoryGetAll scoreCardGetAll = ScoreCategoryGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreCategories(scoreCategories)
-                        .build();
-                return scoreCardGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_ALL_FETCHED);
+                apiResponse.setEntity(scoreCategories);
+                return apiResponse;
             }
-            ScoreCategoryGetAll scoreCardGetAll = ScoreCategoryGetAll.builder()
-                    .ResponseCode(UNSUCCESS_RESPONSE)
-                    .ResponseMessage(SCORE_CATEGORY_NOT_EXIST)
-                    .scoreCategories(null)
-                    .build();
-            return scoreCardGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_NOT_EXIST);
+                apiResponse.setEntity(scoreCategories);
+                return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(ScoreCategory scoreCategory) {
+    public ApiResponse updateById(ScoreCategory scoreCategory) {
         try{
             Long id = scoreCategory.getId();
             if(scoreCategoryRepository.existsById(id)){
@@ -158,56 +150,50 @@ public class ScoreCategoryImpl implements ScoreCategoryService{
                     dbScoreCategory.setUpdateCycle(updateCycle);
                 }
                 scoreCategoryRepository.save(dbScoreCategory);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!scoreCategoryRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CATEGORY_NOT_UPDATED)
-                .build();
-        return createUpdateDeleteResponseDto;
-
-    }
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_NOT_UPDATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
+        }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(ScoreCategory scoreCategory) {
+    public ApiResponse deleteById(ScoreCategory scoreCategory) {
         try{
             Long id = scoreCategory.getId();
             if(scoreCategoryRepository.existsById(id)){
                 scoreCategoryRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!scoreCategoryRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                    apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(SCORE_CATEGORY_NOT_EXIST);
+                    apiResponse.setEntity(null);
+                    return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CATEGORY_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_NOT_DELETED);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }
