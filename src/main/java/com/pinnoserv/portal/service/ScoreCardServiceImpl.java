@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCardGetAll;
@@ -14,11 +15,12 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 
 @Service
 public class ScoreCardServiceImpl implements ScoreCardService{
+    ApiResponse apiResponse = new ApiResponse();
     @Autowired
     ScoreCardRepository scoreCardRepository;
 
     @Override
-    public CreateUpdateDeleteResponseDto createScoreCard(ScoreCard scoreCard) {
+    public ApiResponse createScoreCard(ScoreCard scoreCard) {
         try {
             Long id = scoreCard.getId();
             if (!scoreCardRepository.existsById(id)){
@@ -34,88 +36,77 @@ public class ScoreCardServiceImpl implements ScoreCardService{
                         .inTrash("No")
                         .build();
                 scoreCardRepository.save(createScoreCard);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(scoreCardRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
 
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CARD_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_NOT_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 
     @Override
-    public ScoreCardById getById(ScoreCard scoreCard) {
+    public ApiResponse getById(ScoreCard scoreCard) {
         ScoreCard idScoreCard = null;
         try {
             Long id = scoreCard.getId();
             if(scoreCardRepository.existsById(id)){
                 idScoreCard = scoreCardRepository.findById(id).get();
-                ScoreCardById scoreCardById = ScoreCardById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreCard(idScoreCard)
-                        .build();
-                return scoreCardById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_FETCHED);
+                apiResponse.setEntity(idScoreCard);
+                return apiResponse;
             }
             if(!scoreCardRepository.existsById(id)){
-                ScoreCardById scoreCardById = ScoreCardById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_NOT_EXIST)
-                        .scoreCard(null)
-                        .build();
-                return scoreCardById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
 
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        ScoreCardById scoreCardById = ScoreCardById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CARD_NOT_EXIST)
-                .scoreCard(null)
-                .build();
-        return scoreCardById;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public ScoreCardGetAll getAll() {
+    public ApiResponse getAll() {
         List<ScoreCard> scoreCards = null;
         try{
             scoreCards = scoreCardRepository.findAll();
             if(!scoreCards.isEmpty()){
-                ScoreCardGetAll scoreCardGetAll = ScoreCardGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreCards(scoreCards)
-                        .build();
-                return scoreCardGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_FETCHED);
+                apiResponse.setEntity(scoreCards);
+                return apiResponse;
             }
-            ScoreCardGetAll scoreCardGetAll = ScoreCardGetAll.builder()
-                    .ResponseCode(UNSUCCESS_RESPONSE)
-                    .ResponseMessage(SCORE_CARD_NOT_EXIST)
-                    .scoreCards(null)
-                    .build();
-            return scoreCardGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(ScoreCard scoreCard) {
+    public ApiResponse updateById(ScoreCard scoreCard) {
         try {
             Long id = scoreCard.getId();
             if(scoreCardRepository.existsById(id)){
@@ -154,56 +145,50 @@ public class ScoreCardServiceImpl implements ScoreCardService{
                     dbScoreCard.setMaxApprovals(maxApprovals);
                 }
                 scoreCardRepository.save(dbScoreCard);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!scoreCardRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CARD_NOT_UPDATED)
-                .build();
-        return createUpdateDeleteResponseDto;
-
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(ScoreCard scoreCard) {
+    public ApiResponse deleteById(ScoreCard scoreCard) {
         try {
             Long id = scoreCard.getId();
             if(scoreCardRepository.existsById(id)){
                 scoreCardRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!scoreCardRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CARD_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CARD_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CARD_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }
