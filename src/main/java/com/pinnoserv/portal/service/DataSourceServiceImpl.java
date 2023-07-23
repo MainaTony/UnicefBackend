@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.DataSourceById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.DataSourceGetAll;
@@ -18,66 +19,59 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 @Slf4j
 @Service
 public class DataSourceServiceImpl implements DataSourceService{
+    ApiResponse apiResponse = new ApiResponse();
     @Autowired
     DataSourceRepository dataSourceRepository;
     @Override
-    public DataSourceById findById(DataSource dataSource) {
+    public ApiResponse findById(DataSource dataSource) {
 
         DataSource dataSourceResponse = null;
         try {
             Long id = dataSource.getId();
             if(dataSourceRepository.existsById(id)) {
                 dataSourceResponse = dataSourceRepository.findById(id).get();
-                DataSourceById dataSourceById = DataSourceById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .dataSource(dataSourceResponse)
-                        .build();
-                return dataSourceById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_FETCHED);
+                apiResponse.setEntity(dataSourceResponse);
+                return apiResponse;
             }
             if(!dataSourceRepository.existsById(id)){
                 dataSourceRepository.deleteById(id);
-                DataSourceById dataSourceById = DataSourceById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DATA_SOURCE_NOT_EXIST)
-                        .dataSource(null)
-                        .build();
-                return dataSourceById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        DataSourceById dataSourceById = DataSourceById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DATA_SOURCE_NOT_EXIST)
-                .dataSource(null)
-                .build();
-        return dataSourceById;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(DATA_SOURCE_NOT_EXIST);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public DataSourceGetAll findAll() {
+    public ApiResponse findAll() {
         List<DataSource> listDatasource = null;
         try {
             listDatasource = dataSourceRepository.findAll();
             if(listDatasource != null){
-                DataSourceGetAll dataSourceGetAll = DataSourceGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .dataSources(listDatasource)
-                        .build();
-                return dataSourceGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_ALL_FETCHED);
+                apiResponse.setEntity(listDatasource);
+                return apiResponse;
             }
         } catch (Exception e) {
         }
-        DataSourceGetAll dataSourceGetAll = DataSourceGetAll.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DATA_SOURCE_NOT_EXIST)
-                .dataSources(null)
-                .build();
-        return dataSourceGetAll;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(DATA_SOURCE_NOT_EXIST);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto createDataSource(DataSource dataSource) {
+    public ApiResponse createDataSource(DataSource dataSource) {
         try {
             log.info("Begin Create Datasource Service");
             Long id = dataSource.getId();
@@ -103,24 +97,22 @@ public class DataSourceServiceImpl implements DataSourceService{
                         .organisationIdFk(dataSource.getOrganisationIdFk())
                         .build();
                 dataSourceRepository.save(createDatasource);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(DATA_SOURCE_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DATA_SOURCE_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(DATA_SOURCE_NOT_CREATED);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updataDataSource(DataSource dataSource) {
+    public ApiResponse updataDataSource(DataSource dataSource) {
         DataSource updateDataSource = null;
         try {
 
@@ -195,57 +187,52 @@ public class DataSourceServiceImpl implements DataSourceService{
 
                 updateDataSource = dataSourceRepository.save(dbDataSource);
 
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(DATA_SOURCE_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
 
             }
             if(!dataSourceRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DATA_SOURCE_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(SUCCESS_RESPONSE)
-                .ResponseMessage(DATA_SOURCE_UPDATED_SUCCESSFULLY)
-                .build();
-        return createUpdateDeleteResponseDto;
+            apiResponse.setResponseCode(SUCCESS_RESPONSE);
+            apiResponse.setResponseDescription(DATA_SOURCE_UPDATED_SUCCESSFULLY);
+            apiResponse.setEntity(null);
+            return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteDataSource(DataSource dataSource) {
+    public ApiResponse deleteDataSource(DataSource dataSource) {
         try{
             Long id = dataSource.getId();
             if(dataSourceRepository.existsById(id)){
             dataSourceRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(DATA_SOURCE_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!dataSourceRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DATA_SOURCE_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DATA_SOURCE_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DATA_SOURCE_NOT_DELETED);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }

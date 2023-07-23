@@ -1,70 +1,41 @@
-//package com.pinnoserv.portal.controller;
-//
-//import com.pinnoserv.portal.entity.DataSource;
-//import com.pinnoserv.portal.service.DataSourceService;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/datasource")
-//@Slf4j
-//public class DataSourceBestController {
-//    @Autowired
-//    DataSourceService dataSourceService;
-//    @PostMapping("/create")
-//    public ResponseEntity<String> createDataSource(@RequestBody DataSource dataSource){
-//
-//        try{
-//            log.info("Begin Create endpoint");
-//            dataSourceService.createDataSource(dataSource);
-//        } catch (Exception e){
-//
-//        }
-//        return ResponseEntity.ok("Datasource Created");
-//    }
-//    @PostMapping("/getAll")
-//    public ResponseEntity<List<DataSource>> findAll() {
-//        List<DataSource> dataSources = null;
-//        try {
-//            dataSources = dataSourceService.findAll();
-//        } catch (Exception e) {
-//
-//        }
-//        return ResponseEntity.ok(dataSources);
-//    }
-//
-//    @PostMapping("/getById")
-//    public ResponseEntity<DataSource> getById(@RequestBody DataSource dataSource) {
-//        DataSource dataSource1 = null;
-//        try {
-//            dataSource1 = dataSourceService.findById(dataSource);
-//        } catch (Exception e) {
-//        }
-//        return ResponseEntity.ok(dataSource1);
-//    }
-//
-//    @PostMapping("/updateById")
-//    public ResponseEntity<String> updateById(@RequestBody DataSource dataSource){
-//        try{
-//            dataSourceService.updataDataSource(dataSource);
-//        }
-//        catch (Exception e){
-//
-//        }
-//        return ResponseEntity.ok("Update Successful");
-//    }
-//    @DeleteMapping("delete")
-//    public ResponseEntity<String> delete(@RequestBody DataSource dataSource){
-//        try{
-//            dataSourceService.deleteDataSource(dataSource);
-//        }
-//        catch (Exception e){
-//
-//        }
-//        return ResponseEntity.ok("Deleted Successfully");
-//    }
-//}
+package com.pinnoserv.portal.controller;
+
+import com.pinnoserv.portal.custommodels.ApiResponse;
+import com.pinnoserv.portal.entity.DataSource;
+import com.pinnoserv.portal.service.DataSourceService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/datasource")
+@Slf4j
+public class DataSourceBestController {
+    @Autowired
+    DataSourceService dataSourceService;
+    @PostMapping("/create")
+    public ApiResponse createDataSource(@RequestBody DataSource dataSource){
+        return dataSourceService.createDataSource(dataSource);
+    }
+    @PostMapping("/getAll")
+    public ApiResponse findAll() {
+        return  dataSourceService.findAll();
+    }
+
+    @PostMapping("/getById")
+    public ApiResponse getById(@RequestBody DataSource dataSource) {
+        return dataSourceService.findById(dataSource);
+    }
+
+    @PostMapping("/updateById")
+    public ApiResponse updateById(@RequestBody DataSource dataSource){
+        return dataSourceService.updataDataSource(dataSource);
+    }
+    @DeleteMapping("/delete")
+    public ApiResponse delete(@RequestBody DataSource dataSource){
+        return dataSourceService.deleteDataSource(dataSource);
+    }
+}
