@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCategoryMasterById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreCategoryMasterGetAll;
@@ -14,10 +15,11 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 
 @Service
 public class ScoreCategoryMasterImpl implements ScoreCategoryMasterService{
+    ApiResponse apiResponse = new ApiResponse();
     @Autowired
     ScoreCategoryMasterRepository scoreCategoryMasterRepository;
     @Override
-    public CreateUpdateDeleteResponseDto createScoreCategoryMaster(ScoreCategoryMaster scoreCategoryMaster) {
+    public ApiResponse createScoreCategoryMaster(ScoreCategoryMaster scoreCategoryMaster) {
         try{
             Long id = scoreCategoryMaster.getId();
             if(!scoreCategoryMasterRepository.existsById(id)){
@@ -28,80 +30,71 @@ public class ScoreCategoryMasterImpl implements ScoreCategoryMasterService{
                     .used(scoreCategoryMaster.getUsed())
                     .productName(scoreCategoryMaster.getProductName())
                     .build();
-            scoreCategoryMasterRepository.save(createScoreCategoryMaster);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_MASTER_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                scoreCategoryMasterRepository.save(createScoreCategoryMaster);
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
-            CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                    .ResponseCode(UNSUCCESS_RESPONSE)
-                    .ResponseMessage(SCORE_CATEGORY_MASTER_EXISTS)
-                    .build();
-            return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_EXISTS);
+                apiResponse.setEntity(null);
+                return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public ScoreCategoryMasterById viewById(ScoreCategoryMaster scoreCategoryMaster) {
+    public ApiResponse viewById(ScoreCategoryMaster scoreCategoryMaster) {
         ScoreCategoryMaster idScoreCategoryMaster = null;
         try{
             Long id = scoreCategoryMaster.getId();
             if(scoreCategoryMasterRepository.existsById(id)){
                 idScoreCategoryMaster = scoreCategoryMasterRepository.findById(id).get();
-                ScoreCategoryMasterById scoreCategoryMasterById = ScoreCategoryMasterById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreCategoryMaster(idScoreCategoryMaster)
-                        .build();
-                return scoreCategoryMasterById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_FETCHED);
+                apiResponse.setEntity(idScoreCategoryMaster);
+                return apiResponse;
             }
             if(!scoreCategoryMasterRepository.existsById(id)){
-                ScoreCategoryMasterById scoreCategoryMasterById = ScoreCategoryMasterById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_MASTER_NOT_EXIST)
-                        .scoreCategoryMaster(null)
-                        .build();
-                return scoreCategoryMasterById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        ScoreCategoryMasterById scoreCategoryMasterById = ScoreCategoryMasterById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .scoreCategoryMaster(null)
-                .build();
-        return scoreCategoryMasterById;
+            apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+            apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+            apiResponse.setEntity(null);
+            return apiResponse;
     }
 
     @Override
-    public ScoreCategoryMasterGetAll getAll() {
+    public ApiResponse getAll() {
         List<ScoreCategoryMaster> scoreCategoryMasters = null;
         try{
             scoreCategoryMasters = scoreCategoryMasterRepository.findAll();
             if(scoreCategoryMasters != null){
-                ScoreCategoryMasterGetAll scoreCategoryMasterGetAll = ScoreCategoryMasterGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreCategoryMasters(scoreCategoryMasters)
-                        .build();
-                return scoreCategoryMasterGetAll;
+                    apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_ALL_FETCHED);
+                    apiResponse.setEntity(scoreCategoryMasters);
+                    return apiResponse;
             }
-            ScoreCategoryMasterGetAll scoreCategoryMasterGetAll = ScoreCategoryMasterGetAll.builder()
-                    .ResponseCode(UNSUCCESS_RESPONSE)
-                    .ResponseMessage(SCORE_CATEGORY_MASTER_NOT_EXIST)
-                    .scoreCategoryMasters(null)
-                    .build();
-            return scoreCategoryMasterGetAll;
+                    apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_NOT_EXIST);
+                    apiResponse.setEntity(null);
+                    return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(ScoreCategoryMaster scoreCategoryMaster) {
+    public ApiResponse updateById(ScoreCategoryMaster scoreCategoryMaster) {
         try {
             Long id = scoreCategoryMaster.getId();
             if(scoreCategoryMasterRepository.existsById(id)){
@@ -127,56 +120,50 @@ public class ScoreCategoryMasterImpl implements ScoreCategoryMasterService{
                 if (contribution != 0 && contribution != dbScoreCategoryMaster.getContribution()){
                     dbScoreCategoryMaster.setContribution(contribution);
                 }
-                scoreCategoryMasterRepository.save(dbScoreCategoryMaster);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_MASTER_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                    scoreCategoryMasterRepository.save(dbScoreCategoryMaster);
+                    apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_UPDATED_SUCCESSFULLY);
+                    apiResponse.setEntity(null);
+                    return apiResponse;
             }
             if(!scoreCategoryMasterRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_MASTER_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                    apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_NOT_EXIST);
+                    apiResponse.setEntity(null);
+                    return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(SUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CATEGORY_MASTER_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
-    }
+                    apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                    apiResponse.setEntity(null);
+                    return apiResponse;
+        }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(ScoreCategoryMaster scoreCategoryMaster) {
+    public ApiResponse deleteById(ScoreCategoryMaster scoreCategoryMaster) {
         try{
         Long id = scoreCategoryMaster.getId();
         if(scoreCategoryMasterRepository.existsById(id)){
             scoreCategoryMasterRepository.deleteById(id);
-            CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                    .ResponseCode(SUCCESS_RESPONSE)
-                    .ResponseMessage(SCORE_CATEGORY_MASTER_DELETED_SUCCESSFULLY)
-                    .build();
-            return createUpdateDeleteResponseDto;
+            apiResponse.setResponseCode(SUCCESS_RESPONSE);
+            apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_DELETED_SUCCESSFULLY);
+            apiResponse.setEntity(null);
+            return apiResponse;
         }
             if(!scoreCategoryMasterRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_CATEGORY_MASTER_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_CATEGORY_MASTER_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_NOT_DELETED);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }

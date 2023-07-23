@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.DelinquencyById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.DelinquencyGetAll;
@@ -14,11 +15,12 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 
 @Service
 public class DelinquencyServiceImpl implements DelinquencyService{
+    ApiResponse apiResponse = new ApiResponse();
     @Autowired
     DelinquencyRepository delinquencyRepository;
 
     @Override
-    public CreateUpdateDeleteResponseDto createDelinquency(DelinquencyModel delinquencyModel) {
+    public ApiResponse createDelinquency(DelinquencyModel delinquencyModel) {
         try{
             Long id = delinquencyModel.getId();
             if(!delinquencyRepository.existsById(id)){
@@ -35,84 +37,73 @@ public class DelinquencyServiceImpl implements DelinquencyService{
                     .canSuspend(delinquencyModel.getCanSuspend())
                     .build();
             delinquencyRepository.save(createDelinquencyModel);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
 
             }
             if(delinquencyRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_EXISTS)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_EXISTS);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
 
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DELINQUENCY_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
 
     }
 
     @Override
-    public DelinquencyById findById(DelinquencyModel delinquencyModel) {
+    public ApiResponse findById(DelinquencyModel delinquencyModel) {
         DelinquencyModel idDelinquency = null;
         try{
             Long id = delinquencyModel.getId();
             if(delinquencyRepository.existsById(id)){
                 idDelinquency = delinquencyRepository.findById(id).get();
-                DelinquencyById delinquencyById = DelinquencyById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .delinquencyModel(idDelinquency)
-                        .build();
-                return delinquencyById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_FETCHED);
+                apiResponse.setEntity(idDelinquency);
+                return apiResponse;
             }
             if(!delinquencyRepository.existsById(id)){
-                DelinquencyById delinquencyById = DelinquencyById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_NOT_EXIST)
-                        .delinquencyModel(null)
-                        .build();
-                return delinquencyById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        DelinquencyById delinquencyById = DelinquencyById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .delinquencyModel(null)
-                .build();
-        return delinquencyById;
+            apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+            apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+            apiResponse.setEntity(null);
+            return apiResponse;
     }
 
     @Override
-    public DelinquencyGetAll findAll() {
+    public ApiResponse findAll() {
         List<DelinquencyModel> delinquencyModels = null;
         try{
             delinquencyModels = delinquencyRepository.findAll();
             if(delinquencyModels != null){
-            DelinquencyGetAll delinquencyGetAll = DelinquencyGetAll.builder()
-                    .ResponseCode(SUCCESS_RESPONSE)
-                    .delinquencyModels(delinquencyModels)
-                    .build();
-            return delinquencyGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_ALL_FETCHED);
+                apiResponse.setEntity(delinquencyModels);
+                return apiResponse;
             }
-
-            DelinquencyGetAll delinquencyGetAll = DelinquencyGetAll.builder()
-                    .ResponseCode(UNSUCCESS_RESPONSE)
-                    .ResponseMessage(DELINQUENCY_NOT_EXIST)
-                    .delinquencyModels(null)
-                    .build();
-            return delinquencyGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_NOT_EXIST);
+                apiResponse.setEntity(delinquencyModels);
+                return apiResponse;
         }
         catch (Exception e){
             throw new RuntimeException(e);
@@ -120,7 +111,7 @@ public class DelinquencyServiceImpl implements DelinquencyService{
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(DelinquencyModel delinquencyModel) {
+    public ApiResponse updateById(DelinquencyModel delinquencyModel) {
         try{
             Long id = delinquencyModel.getId();
             if(delinquencyRepository.existsById(id)){
@@ -167,56 +158,50 @@ public class DelinquencyServiceImpl implements DelinquencyService{
                     dbDelinquencyModel.setCanSuspend(canSuspend);
                 }
                 delinquencyRepository.save(dbDelinquencyModel);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!delinquencyRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DELINQUENCY_NOT_UPDATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_NOT_UPDATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(DelinquencyModel delinquencyModel) {
+    public ApiResponse deleteById(DelinquencyModel delinquencyModel) {
         try{
             Long id = delinquencyModel.getId();
             if(delinquencyRepository.existsById(id)){
                 delinquencyRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(DELINQUENCY_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!delinquencyRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(DELINQUENCY_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                    apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                    apiResponse.setResponseDescription(DELINQUENCY_NOT_EXIST);
+                    apiResponse.setEntity(null);
+                    return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(DELINQUENCY_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 }
