@@ -40,8 +40,7 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                     .description(scoreParamMaster.getDescription())
                     .inTrash("No")
                     .build();
-            scoreParamMasterRepository.save(scoreParamMasterCreated);
-
+                scoreParamMasterRepository.save(scoreParamMasterCreated);
                 apiResponse.setResponseCode(SUCCESS_RESPONSE);
                 apiResponse.setResponseDescription(SCORE_PARAM_MASTER_CREATED);
                 apiResponse.setEntity(null);
