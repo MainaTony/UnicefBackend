@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreParamMasterById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ScoreParamMasterGetAll;
@@ -17,12 +18,13 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 @Service
 @Slf4j
 public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
+    ApiResponse apiResponse = new ApiResponse();
     ScoreParamMasterRepository scoreParamMasterRepository;
     public ScoreParamMasterServiceImpl(ScoreParamMasterRepository scoreParamMasterRepository){
         this.scoreParamMasterRepository = scoreParamMasterRepository;
     }
     @Override
-    public CreateUpdateDeleteResponseDto createScoreParamMaster(ScoreParamMaster scoreParamMaster) {
+    public ApiResponse createScoreParamMaster(ScoreParamMaster scoreParamMaster) {
         ScoreParamMaster scoreParamMasterCreated = null;
         try {
             Long id = scoreParamMaster.getId();
@@ -39,85 +41,76 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                     .inTrash("No")
                     .build();
             scoreParamMasterRepository.save(scoreParamMasterCreated);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(scoreParamMasterRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_EXISTS)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_EXISTS);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_PARAM_MASTER_NOT_CREATED)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public ScoreParamMasterById getScoreParamMasterById(ScoreParamMaster scoreParamMaster) {
+    public ApiResponse getScoreParamMasterById(ScoreParamMaster scoreParamMaster) {
         Long id = scoreParamMaster.getId();
         ScoreParamMaster myScoreParamMaster = null;
         try {
             if (scoreParamMasterRepository.existsById(id)) {
                 myScoreParamMaster = scoreParamMasterRepository.findById(id).get();
-                ScoreParamMasterById scoreParamMasterById = ScoreParamMasterById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreParamMaster(myScoreParamMaster)
-                        .build();
-                return scoreParamMasterById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_FETCHED);
+                apiResponse.setEntity(myScoreParamMaster);
+                return apiResponse;
             }
             if(!scoreParamMasterRepository.existsById(id)){
-                ScoreParamMasterById scoreParamMasterById = ScoreParamMasterById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_NOT_EXIST)
-                        .scoreParamMaster(null)
-                        .build();
-                return scoreParamMasterById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ScoreParamMasterById scoreParamMasterById = ScoreParamMasterById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .scoreParamMaster(null)
-                .build();
-        return scoreParamMasterById;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public ScoreParamMasterGetAll getAllScoreParamMaster() {
+    public ApiResponse getAllScoreParamMaster() {
         List<ScoreParamMaster> allScoreParamMasters = null;
         try{
             allScoreParamMasters = scoreParamMasterRepository.findAll();
             if(!allScoreParamMasters.isEmpty()){
-                ScoreParamMasterGetAll scoreParamMasterGetAll = ScoreParamMasterGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .scoreParamMasters(allScoreParamMasters)
-                        .build();
-                return scoreParamMasterGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_ALL_FETCHED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
-            ScoreParamMasterGetAll scoreParamMasterGetAll = ScoreParamMasterGetAll.builder()
-                    .ResponseCode(UNSUCCESS_RESPONSE)
-                    .ResponseMessage(SCORE_PARAM_MASTER_NOT_EXIST)
-                    .scoreParamMasters(null)
-                    .build();
-            return scoreParamMasterGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(ScoreParamMaster scoreParamMaster) {
+    public ApiResponse updateById(ScoreParamMaster scoreParamMaster) {
         Long id = scoreParamMaster.getId();
         log.info("Started the update Functionality");
         ScoreParamMaster scoreParamMasterDb = null;
@@ -151,55 +144,50 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                     scoreParamMasterDb.setDescription(description);
                 }
                 scoreParamMasterRepository.save(scoreParamMasterDb);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!scoreParamMasterRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
-            }
-        } catch (Exception e) {
-
-        }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_PARAM_MASTER_NOT_UPDATED)
-                .build();
-        return createUpdateDeleteResponseDto;
-    }
-
-    @Override
-    public CreateUpdateDeleteResponseDto deleteById(ScoreParamMaster scoreParamMaster) {
-        Long id = scoreParamMaster.getId();
-        try{
-            if(scoreParamMasterRepository.existsById(id)){
-                scoreParamMasterRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
-            }
-            if(!scoreParamMasterRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(SCORE_PARAM_MASTER_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(SUCCESS_RESPONSE)
-                .ResponseMessage(SCORE_PARAM_MASTER_NOT_DELETED)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
+    }
+
+    @Override
+    public ApiResponse deleteById(ScoreParamMaster scoreParamMaster) {
+        Long id = scoreParamMaster.getId();
+        try{
+            if(scoreParamMasterRepository.existsById(id)){
+                scoreParamMasterRepository.deleteById(id);
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
+            }
+            if(!scoreParamMasterRepository.existsById(id)){
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }
