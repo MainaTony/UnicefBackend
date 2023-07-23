@@ -1,5 +1,6 @@
 package com.pinnoserv.portal.service;
 
+import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ProgramById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.ProgramGetAll;
@@ -17,11 +18,12 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 @Service
 @Slf4j
 public class ProgamServiceImpl implements ProgramService{
+    ApiResponse apiResponse = new ApiResponse();
     @Autowired
     ProgramRepository programRepository;
 
     @Override
-    public CreateUpdateDeleteResponseDto createProgram(Program program) {
+    public ApiResponse createProgram(Program program) {
         try{
             Long id = program.getId();
             if(!programRepository.existsById(id)){
@@ -39,86 +41,76 @@ public class ProgamServiceImpl implements ProgramService{
                         .organisation(program.getOrganisation())
                         .build();
                 programRepository.save(createProgram);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_CREATED)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_CREATED);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(programRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_EXISTS)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_EXISTS);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .ResponseMessage(PROGRAM_EXISTS)
-                .build();
-        return createUpdateDeleteResponseDto;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(PROGRAM_EXISTS);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public ProgramById getById(Program program) {
+    public ApiResponse getById(Program program) {
         Program idProgram =null;
         try{
             Long id = program.getId();
             if(programRepository.existsById(id)) {
                 idProgram = programRepository.findById(id).get();
-                ProgramById programById = ProgramById.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .program(idProgram)
-                        .build();
-                return programById;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_FETCHED);
+                apiResponse.setEntity(idProgram);
+                return apiResponse;
             }
             if(!programRepository.existsById(id)) {
-                ProgramById programById = ProgramById.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_NOT_EXIST)
-                        .program(null)
-                        .build();
-                return programById;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        ProgramById programById = ProgramById.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .program(null)
-                .build();
-        return programById;
+        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+        apiResponse.setEntity(null);
+        return apiResponse;
     }
 
     @Override
-    public ProgramGetAll getAll() {
+    public ApiResponse getAll() {
         List<Program> allPrograms = null;
         try{
             allPrograms = programRepository.findAll();
             if(allPrograms != null){
-                ProgramGetAll programGetAll = ProgramGetAll.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_NOT_EXIST)
-                        .programs(null)
-                        .build();
-                return programGetAll;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
-                ProgramGetAll programGetAll = ProgramGetAll.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .programs(allPrograms)
-                        .build();
-                return programGetAll;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_ALL_FETCHED);
+                apiResponse.setEntity(allPrograms);
+                return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public CreateUpdateDeleteResponseDto updateById(Program program) {
+    public ApiResponse updateById(Program program) {
         try{
             Long id = program.getId();
             if(programRepository.existsById(id)){
@@ -157,54 +149,51 @@ public class ProgamServiceImpl implements ProgramService{
                     updateProgram.setOrganisationIdFk(organisationIdFk);
                 }
                 programRepository.save(updateProgram);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_UPDATED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_UPDATED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!programRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .build();
-        return createUpdateDeleteResponseDto;
-    }
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
+        }
 
     @Override
-    public CreateUpdateDeleteResponseDto deleteById(Program program) {
+    public ApiResponse deleteById(Program program) {
         try{
             Long id = program.getId();
             if(programRepository.existsById(id)){
                 programRepository.deleteById(id);
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(SUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_DELETED_SUCCESSFULLY)
-                        .build();
-                return createUpdateDeleteResponseDto;
+
+                apiResponse.setResponseCode(SUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_DELETED_SUCCESSFULLY);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
             if(!programRepository.existsById(id)){
-                CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                        .ResponseCode(UNSUCCESS_RESPONSE)
-                        .ResponseMessage(PROGRAM_NOT_EXIST)
-                        .build();
-                return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_NOT_EXIST);
+                apiResponse.setEntity(null);
+                return apiResponse;
             }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        CreateUpdateDeleteResponseDto createUpdateDeleteResponseDto = CreateUpdateDeleteResponseDto.builder()
-                .ResponseCode(UNSUCCESS_RESPONSE)
-                .build();
-        return createUpdateDeleteResponseDto;
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
+                apiResponse.setEntity(null);
+                return apiResponse;
     }
 }
