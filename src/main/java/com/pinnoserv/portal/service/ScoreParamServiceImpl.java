@@ -29,8 +29,6 @@ public class ScoreParamServiceImpl implements ScoreParamService{
 
         ScoreParam createScoreParam = null;
         try {
-            Long id = scoreParam.getId();
-            if(!scoreParamRepository.existsById(id)){
             log.info("-------------Persisting Score Param to Database------------");
                 createScoreParam = ScoreParam.builder()
                         .name(scoreParam.getName())
@@ -51,20 +49,10 @@ public class ScoreParamServiceImpl implements ScoreParamService{
                 apiResponse.setResponseDescription(SCORE_PARAM_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
-            if(scoreParamRepository.existsById(id)){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(SCORE_PARAM_EXISTS);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
-                apiResponse.setEntity(null);
-                return apiResponse;
+
         }
 
     @Override

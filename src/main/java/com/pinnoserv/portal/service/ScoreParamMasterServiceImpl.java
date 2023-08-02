@@ -27,8 +27,6 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
     public ApiResponse createScoreParamMaster(ScoreParamMaster scoreParamMaster) {
         ScoreParamMaster scoreParamMasterCreated = null;
         try {
-            Long id = scoreParamMaster.getId();
-            if(!scoreParamMasterRepository.existsById(id)){
             log.info("-------------Persisting Score Param Master to Database------------");
             scoreParamMasterCreated = ScoreParamMaster.builder()
                     .name(scoreParamMaster.getName())
@@ -45,20 +43,10 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
                 apiResponse.setResponseDescription(SCORE_PARAM_MASTER_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
-            if(scoreParamMasterRepository.existsById(id)){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(SCORE_PARAM_MASTER_EXISTS);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
-        apiResponse.setEntity(null);
-        return apiResponse;
     }
 
     @Override
@@ -96,7 +84,7 @@ public class ScoreParamMasterServiceImpl implements ScoreParamMasterService{
             if(!allScoreParamMasters.isEmpty()){
                 apiResponse.setResponseCode(SUCCESS_RESPONSE);
                 apiResponse.setResponseDescription(SCORE_PARAM_MASTER_ALL_FETCHED);
-                apiResponse.setEntity(null);
+                apiResponse.setEntity(allScoreParamMasters);
                 return apiResponse;
             }
                 apiResponse.setResponseCode(UNSUCCESS_RESPONSE);

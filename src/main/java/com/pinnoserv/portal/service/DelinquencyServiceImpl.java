@@ -23,11 +23,11 @@ public class DelinquencyServiceImpl implements DelinquencyService{
     public ApiResponse createDelinquency(DelinquencyModel delinquencyModel) {
         try{
             Long id = delinquencyModel.getId();
-            if(!delinquencyRepository.existsById(id)){
             DelinquencyModel createDelinquencyModel = DelinquencyModel.builder()
                     .productIdFk(delinquencyModel.getProductIdFk())
                     .action(delinquencyModel.getAction())
                     .period(delinquencyModel.getPeriod())
+                    .penalty(delinquencyModel.getPenalty())
                     .penaltyType(delinquencyModel.getPenaltyType())
                     .inTrash("No")
                     .canDefault(delinquencyModel.getCanDefault())
@@ -41,24 +41,11 @@ public class DelinquencyServiceImpl implements DelinquencyService{
                 apiResponse.setResponseDescription(DELINQUENCY_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-
-            }
-            if(delinquencyRepository.existsById(id)){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(DELINQUENCY_EXISTS);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
         }
 
         catch (Exception e){
             throw new RuntimeException(e);
         }
-        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-        apiResponse.setResponseDescription(UNCAUGHT_ERROR);
-        apiResponse.setEntity(null);
-        return apiResponse;
-
     }
 
     @Override

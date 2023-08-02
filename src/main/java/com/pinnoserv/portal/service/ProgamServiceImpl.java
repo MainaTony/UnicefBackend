@@ -26,7 +26,6 @@ public class ProgamServiceImpl implements ProgramService{
     public ApiResponse createProgram(Program program) {
         try{
             Long id = program.getId();
-            if(!programRepository.existsById(id)){
                 Program createProgram = Program.builder()
                         .createdBy(program.getCreatedBy())
                         .dataSourceIdFk(program.getDataSourceIdFk())
@@ -45,20 +44,10 @@ public class ProgamServiceImpl implements ProgramService{
                 apiResponse.setResponseDescription(PROGRAM_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
-            if(programRepository.existsById(id)){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(PROGRAM_EXISTS);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-        apiResponse.setResponseDescription(PROGRAM_EXISTS);
-        apiResponse.setEntity(null);
-        return apiResponse;
+
     }
 
     @Override
@@ -95,14 +84,14 @@ public class ProgamServiceImpl implements ProgramService{
         try{
             allPrograms = programRepository.findAll();
             if(allPrograms != null){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(PROGRAM_NOT_EXIST);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
                 apiResponse.setResponseCode(SUCCESS_RESPONSE);
                 apiResponse.setResponseDescription(PROGRAM_ALL_FETCHED);
                 apiResponse.setEntity(allPrograms);
+                return apiResponse;
+            }
+                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+                apiResponse.setResponseDescription(PROGRAM_NOT_EXIST);
+                apiResponse.setEntity(null);
                 return apiResponse;
         } catch (Exception e){
             throw new RuntimeException(e);

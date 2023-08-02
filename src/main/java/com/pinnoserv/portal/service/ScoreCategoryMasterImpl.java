@@ -21,8 +21,6 @@ public class ScoreCategoryMasterImpl implements ScoreCategoryMasterService{
     @Override
     public ApiResponse createScoreCategoryMaster(ScoreCategoryMaster scoreCategoryMaster) {
         try{
-            Long id = scoreCategoryMaster.getId();
-            if(!scoreCategoryMasterRepository.existsById(id)){
             ScoreCategoryMaster createScoreCategoryMaster = ScoreCategoryMaster.builder()
                     .name(scoreCategoryMaster.getName())
                     .productIdFk(scoreCategoryMaster.getProductIdFk())
@@ -33,11 +31,6 @@ public class ScoreCategoryMasterImpl implements ScoreCategoryMasterService{
                 scoreCategoryMasterRepository.save(createScoreCategoryMaster);
                 apiResponse.setResponseCode(SUCCESS_RESPONSE);
                 apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_CREATED);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(SCORE_CATEGORY_MASTER_EXISTS);
                 apiResponse.setEntity(null);
                 return apiResponse;
         } catch (Exception e){

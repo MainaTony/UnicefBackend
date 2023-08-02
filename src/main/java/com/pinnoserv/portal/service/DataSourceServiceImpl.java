@@ -74,8 +74,6 @@ public class DataSourceServiceImpl implements DataSourceService{
     public ApiResponse createDataSource(DataSource dataSource) {
         try {
             log.info("Begin Create Datasource Service");
-            Long id = dataSource.getId();
-            if(dataSourceRepository.existsById(id)) {
                 DataSource createDatasource = DataSource.builder()
                         .name(dataSource.getName())
                         .dataSourceUrl(dataSource.getDataSourceUrl())
@@ -101,14 +99,15 @@ public class DataSourceServiceImpl implements DataSourceService{
                 apiResponse.setResponseDescription(DATA_SOURCE_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
+
         }catch (Exception e){
             throw new RuntimeException(e);
+//            apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
+//            apiResponse.setResponseDescription(DATA_SOURCE_NOT_CREATED);
+//            apiResponse.setEntity(null);
+//            return apiResponse;
         }
-        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-        apiResponse.setResponseDescription(DATA_SOURCE_NOT_CREATED);
-        apiResponse.setEntity(null);
-        return apiResponse;
+
     }
 
     @Override

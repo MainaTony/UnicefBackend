@@ -22,8 +22,6 @@ public class ScoreCardServiceImpl implements ScoreCardService{
     @Override
     public ApiResponse createScoreCard(ScoreCard scoreCard) {
         try {
-            Long id = scoreCard.getId();
-            if (!scoreCardRepository.existsById(id)){
                 ScoreCard createScoreCard = ScoreCard.builder()
                         .scoreParamIdFk(scoreCard.getScoreParamIdFk())
                         .dataColumn(scoreCard.getDataColumn())
@@ -40,21 +38,10 @@ public class ScoreCardServiceImpl implements ScoreCardService{
                 apiResponse.setResponseDescription(SCORE_CARD_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
-            if(scoreCardRepository.existsById(id)){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(SCORE_CARD_CREATED);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
 
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(SCORE_CARD_NOT_CREATED);
-                apiResponse.setEntity(null);
-                return apiResponse;
     }
 
     @Override

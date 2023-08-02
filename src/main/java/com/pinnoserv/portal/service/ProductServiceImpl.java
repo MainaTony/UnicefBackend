@@ -23,8 +23,6 @@ public class ProductServiceImpl implements ProductService{
     public ApiResponse createProduct(Product product) {
 
         try{
-            Long id = product.getId();
-            if(!productRepository.existsById(id)){
             Product createProduct = Product.builder()
                     .name(product.getName())
                     .minAmount(product.getMinAmount())
@@ -33,9 +31,11 @@ public class ProductServiceImpl implements ProductService{
                     .minRepayPeriod(product.getMinRepayPeriod())
                     .recipientType(product.getRecipientType())
                     .dateCreated(LocalDateTime.now())
+                    .createdBy(1)
                     .status(product.getStatus())
                     .inTrash("No")
                     .interestRate(product.getInterestRate())
+                    .interestType(product.getInterestType())
                     .armotized(product.getArmotized())
                     .reducingBalance(product.getReducingBalance())
                     .installmentPeriod(product.getInstallmentPeriod())
@@ -49,26 +49,17 @@ public class ProductServiceImpl implements ProductService{
                     .loanLimitLoanAmountCap(product.getLoanLimitLoanAmountCap())
                     .takeChargesUpfront(product.getTakeChargesUpfront())
                     .automatedScoring(product.getAutomatedScoring())
+                    .organisation(product.getOrganisation())
                     .build();
                 productRepository.save(createProduct);
                 apiResponse.setResponseCode(SUCCESS_RESPONSE);
                 apiResponse.setResponseDescription(PRODUCT_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
-            if(productRepository.existsById(id)){
-                apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(PRODUCT_EXISTS);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
+
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        apiResponse.setResponseCode(UNSUCCESS_RESPONSE);
-        apiResponse.setResponseDescription(PRODUCT_NOT_CREATED);
-        apiResponse.setEntity(null);
-        return apiResponse;
     }
 
     @Override

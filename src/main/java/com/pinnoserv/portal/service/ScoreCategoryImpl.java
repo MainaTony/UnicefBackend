@@ -22,8 +22,7 @@ public class ScoreCategoryImpl implements ScoreCategoryService{
     @Override
     public ApiResponse createScoreCategory(ScoreCategory scoreCategory) {
         try{
-            Long id = scoreCategory.getId();
-            if(!scoreCategoryRepository.existsById(id)){
+
                 ScoreCategory createScoreCategory = ScoreCategory.builder()
                         .name(scoreCategory.getName())
                         .productIdFk(scoreCategory.getProductIdFk())
@@ -41,21 +40,10 @@ public class ScoreCategoryImpl implements ScoreCategoryService{
                 apiResponse.setResponseDescription(SCORE_CATEGORY_CREATED);
                 apiResponse.setEntity(null);
                 return apiResponse;
-            }
-            if(scoreCategoryRepository.existsById(id)){
-                apiResponse.setResponseCode(SUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(SCORE_CATEGORY_EXISTS);
-                apiResponse.setEntity(null);
-                return apiResponse;
-            }
         }
         catch (Exception e){
             throw new RuntimeException(e);
         }
-                apiResponse.setResponseCode(SUCCESS_RESPONSE);
-                apiResponse.setResponseDescription(UNCAUGHT_ERROR);
-                apiResponse.setEntity(null);
-                return apiResponse;
     }
 
     @Override

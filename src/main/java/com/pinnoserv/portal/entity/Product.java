@@ -75,12 +75,14 @@ public class Product {
     private Double takeChargesUpfront;
     @Column(name = "automated_scoring")
     private Integer automatedScoring;
-    @ManyToOne
-    @JoinColumn(
-            name = "organisation_id",
-            referencedColumnName = "organisation_id"
-    )
-    private Organisation organisation;
+//    @ManyToOne
+//    @JoinColumn(
+//            name = "organisation_id",
+//            referencedColumnName = "organisation_id"
+//    )
+//    private Organisation organisation;
+
+    private String organisation;
 
 
 
