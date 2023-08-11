@@ -6,7 +6,9 @@ public class ResponseUtil {
     public static final String SUCCESS_RESPONSE = "00";
 
     public static final String UNSUCCESS_RESPONSE = "01";
+
     public static final String UNCAUGHT_ERROR = "Other Error";
+    public static final String DIRECTORY = System.getProperty("user.home")+"\\Downloads\\uploads\\";
 
     //    BUSINESS_TYPE
     public static final String BUSINESS_TYPE_CREATED = "Business Type Created";

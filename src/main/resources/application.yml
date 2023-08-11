@@ -6,6 +6,10 @@ server:
 ---
 spring:
   profiles: default
+  servlet:
+    multipart:
+      max-file-size: 1000000000MB
+      max-request-size: 10000000MB
 #flyway:
 #  baseline-on-migration: true
 #  url: jdbc:mysql://localhost:3360/credit_scoring
