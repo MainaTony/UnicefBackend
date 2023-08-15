@@ -8,6 +8,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -33,9 +37,16 @@ public class BusinessType {
     private Integer createdBy;
     @Column(name = "in_trash")
     private String inTrash;
+    @OneToMany(
+            mappedBy = "businessType",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true
+    )
+    private List<Organisation> organisation;
+
 //    @OneToMany(mappedBy = "businessTypeByBusinessTypeFk")
 //    private Collection<Organisation> organisationsById;
-
 //
 //    public Integer getId() {
 //        return id;

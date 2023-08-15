@@ -4,12 +4,15 @@ import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.apiresponsedto.CreateUpdateDeleteResponseDto;
 import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationById;
 import com.pinnoserv.portal.custommodels.apiresponsedto.OrganisationGetAll;
+import com.pinnoserv.portal.entity.BusinessType;
 import com.pinnoserv.portal.entity.Organisation;
+import com.pinnoserv.portal.repositories.BusinessTypeRepository;
 import com.pinnoserv.portal.repositories.OrganisationRepository;
 import lombok.Builder;
 import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +23,10 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.*;
 
 @Service
 public class OrganisationServiceImpl implements OrganisationService{
+    @Autowired
     private OrganisationRepository organisationRepository;
+    @Autowired
+    private BusinessTypeRepository businessTypeRepository;
     public OrganisationServiceImpl(OrganisationRepository organisationRepository){
         this.organisationRepository = organisationRepository;
 
@@ -32,18 +38,24 @@ public class OrganisationServiceImpl implements OrganisationService{
 
         try {
             log.info("-------------Persisting Organisation to Database------------");
-            Long id = organisation.getId();
+            Long businessId = organisation.getBusinessTypeId();
+            log.info("Business id from postman {}, ", businessId);
+            BusinessType myBusinessObject = businessTypeRepository.findById(businessId).get();
+
+            log.info("Object from db {}, ", myBusinessObject);
+
                 Organisation orgCreated = Organisation.builder()
                         .createdBy(2)
                         .dateCreated(LocalDateTime.now())
                         .intrash("No")
                         .status(Boolean.TRUE)
-                        .organisationName(organisation.getOrganisationName())
+//                        .organisationName(organisation.getOrganisationName())
                         .organisationCode(organisation.getOrganisationCode())
-                        .businessType(organisation.getBusinessType())
+//                        .businessType(myBusinessObject)
                         .organisationAddress(organisation.getOrganisationAddress())
                         .organisationPhone(organisation.getOrganisationPhone())
                         .organisationEmail(organisation.getOrganisationEmail())
+                        .businessType(organisation.getBusinessType())
                         .build();
                 organisationRepository.save(orgCreated);
 
@@ -150,7 +162,7 @@ public class OrganisationServiceImpl implements OrganisationService{
 
                 String orgName = organisation.getOrganisationName();
                 String organisationCode = organisation.getOrganisationCode();
-                int businessType = organisation.getBusinessType();
+                BusinessType businessType = organisation.getBusinessType();
                 String organisationAddress = organisation.getOrganisationAddress();
                 String organisationPhone = organisation.getOrganisationPhone();
                 String organisationEmail = organisation.getOrganisationEmail();
@@ -163,9 +175,9 @@ public class OrganisationServiceImpl implements OrganisationService{
                 if (!organisationCode.isEmpty() && !organisationCode.equalsIgnoreCase(dbOrganisation.getOrganisationCode())){
                     dbOrganisation.setOrganisationCode(organisationCode);
                 }
-                if (businessType != 0) {
-                    dbOrganisation.setBusinessType(businessType);
-                }
+//                if (businessType != 0) {
+//                    dbOrganisation.setBusinessType(businessType);
+//                }
                 if (!organisationAddress.isEmpty() && !organisationAddress.equalsIgnoreCase(dbOrganisation.getOrganisationAddress())) {
                     dbOrganisation.setOrganisationAddress(organisationAddress);
                 }

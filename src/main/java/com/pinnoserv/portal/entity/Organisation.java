@@ -33,8 +33,27 @@ public class Organisation {
     private String organisationName;
     @Column(name = "Organisation_Code")
     private String organisationCode;
-    @Column(name = "Business_Type")
-    private int businessType;
+//    @ManyToOne()
+    @ManyToOne()
+    @JoinColumn(
+            name = "business_type_id_fk",
+            referencedColumnName = "id"
+    )
+    private BusinessType businessType;
+
+    @Column(name = "business_type_id")
+    private Long businessTypeId;
+
+//    @Column(name = "Business_Type")
+//    @ManyToMany(
+//            cascade = CascadeType.ALL,
+//            fetch = FetchType.EAGER
+//    )
+//    @JoinColumn(
+//            name = "business_type_id",
+//            referencedColumnName = "id"
+//    )
+//    private BusinessType businessType;
     @Column(name = "Organisation_Address")
     private String organisationAddress;
     @Column(name = "Organisation_Phone")
