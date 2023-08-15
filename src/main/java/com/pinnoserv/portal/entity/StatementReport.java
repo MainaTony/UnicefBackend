@@ -18,41 +18,39 @@ public class StatementReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name="agent_deposit")
-    private float agentDeposit;
+    private String agentDeposit;
     @Column(name = "customers_received")
-    private float customersReceived;
+    private String customersReceived;
     @Column(name = "paybill_banks")
-    private float paybillBanks;
+    private String paybillBanks;
     @Column(name = "fuliza_received")
-    private float fulizaReceived;
+    private String fulizaReceived;
     @Column(name = "paybill_betting")
-    private float paybillBetting;
+    private String paybillBetting;
     @Column(name = "paybill_lenders")
-    private float paybillLenders;
+    private String paybillLenders;
     @Column(name = "paybill_others")
-    private float paybillOthers;
+    private String paybillOthers;
     @Column(name = "paid_out_paybill_others")
-    private float paidOutPaybillOthers;
+    private String paidOutPaybillOthers;
     @Column(name = "paid_out_customers_sent")
-    public float paidOutCustomersSent;
+    public String paidOutCustomersSent;
     @Column(name = "paid_out_agent_withdraw")
-    public float paidOutAgentWithdraw;
+    public String paidOutAgentWithdraw;
     @Column(name = "paid_out_others")
-    public float paidOutOthers;
+    public String paidOutOthers;
     @Column(name = "paid_out_buy_goods")
-    public float paidOutBuyGoods;
+    public String paidOutBuyGoods;
     @Column(name = "paid_out_banks")
-    public float paidOutBanks;
+    public String paidOutBanks;
     @Column(name = "paid_out_Utilities")
-    public float paidOutUtilities;
+    public String paidOutUtilities;
     @Column(name = "paid_out_fuliza_paid")
-    public float paidOutFulizaPaid;
+    public String paidOutFulizaPaid;
     @Column(name = "paid_out_online_purchases")
-    public float paidOutOnlinePurchases;
+    public String paidOutOnlinePurchases;
     @Column(name = "paid_out_betting")
-    public float paidOutBetting;
+    public String paidOutBetting;
     @Column(name = "paid_out_mobile_lenders")
-    public float paidOutMobileLenders;
-
-
+    public String paidOutMobileLenders;
 }

@@ -3,6 +3,7 @@ package com.pinnoserv.portal.service;
 import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.pythonmodels.PythonResponse;
 import com.pinnoserv.portal.entity.FileData;
+import com.pinnoserv.portal.entity.StatementReport;
 import com.pinnoserv.portal.repositories.FileDataRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,27 @@ public class FileDataServiceImpl implements FileDataService{
             fileApiResponse.setResponseDescription("Statement Analysis Successful");
             fileApiResponse.setEntity(payload);
             log.info("My Info Is : ", payload);
+            StatementReport mpesaReport = StatementReport.builder()
+                    .agentDeposit(payload.paidIn.agentDeposit)
+                    .customersReceived(payload.paidIn.customesRecieved)
+                    .paybillBanks(payload.paidIn.paybillBanks)
+                    .fulizaReceived(payload.paidIn.fulizaRecieved)
+                    .paybillBetting(payload.paidIn.paybillBeting)
+                    .paybillLenders(payload.paidIn.paybillLenders)
+                    .paybillOthers(payload.paidIn.paybillOthers)
+                    .paidOutPaybillOthers(payload.paidIn.paybillOthers)
+                    .paidOutCustomersSent(payload.paidOut.customersSent)
+                    .paidOutAgentWithdraw(payload.paidOut.agentWithdraw)
+                    .paidOutOthers(payload.paidOut.others)
+                    .paidOutBuyGoods(payload.paidOut.buyGoods)
+                    .paidOutBanks(payload.paidOut.banks)
+                    .paidOutUtilities(payload.paidOut.utilities)
+                    .paidOutFulizaPaid(payload.paidOut.fulizaPaid)
+                    .paidOutOnlinePurchases(payload.paidOut.onlinePurchases)
+                    .paidOutBetting(payload.paidOut.betting)
+                    .paidOutMobileLenders(payload.paidOut.mobileLenders)
+                    .build();
+
             return fileApiResponse;
 
 
