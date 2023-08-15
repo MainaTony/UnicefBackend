@@ -36,21 +36,25 @@ public class StatementReport {
     @Column(name = "paid_out_customers_sent")
     public String paidOutCustomersSent;
     @Column(name = "paid_out_agent_withdraw")
-    public String paidOutAgentWithdraw;
+    private String paidOutAgentWithdraw;
     @Column(name = "paid_out_others")
-    public String paidOutOthers;
+    private String paidOutOthers;
     @Column(name = "paid_out_buy_goods")
-    public String paidOutBuyGoods;
+    private String paidOutBuyGoods;
     @Column(name = "paid_out_banks")
-    public String paidOutBanks;
+    private String paidOutBanks;
     @Column(name = "paid_out_Utilities")
-    public String paidOutUtilities;
+    private String paidOutUtilities;
     @Column(name = "paid_out_fuliza_paid")
-    public String paidOutFulizaPaid;
+    private String paidOutFulizaPaid;
     @Column(name = "paid_out_online_purchases")
-    public String paidOutOnlinePurchases;
+    private String paidOutOnlinePurchases;
     @Column(name = "paid_out_betting")
-    public String paidOutBetting;
+    private String paidOutBetting;
     @Column(name = "paid_out_mobile_lenders")
-    public String paidOutMobileLenders;
+    private String paidOutMobileLenders;
+    @OneToOne(
+            mappedBy = "statementReport"
+    )
+    private Image image;
 }

@@ -21,5 +21,14 @@ public class Image {
     private String fileUrl;
     @Column(name = "status")
     private int status;
+    @OneToOne(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "statement_report",
+            referencedColumnName = "id"
+    )
+    private StatementReport statementReport;
 
 }
