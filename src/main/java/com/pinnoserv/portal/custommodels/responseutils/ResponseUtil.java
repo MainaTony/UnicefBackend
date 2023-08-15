@@ -8,6 +8,12 @@ public class ResponseUtil {
     public static final String UNSUCCESS_RESPONSE = "01";
 
     public static final String UNCAUGHT_ERROR = "Other Error";
+
+    public static final int SUCCESSFUL_FILE_UPLOAD_STATUS = 0;
+    public static final int PROCESSING_JOB_SCHEDULER_FILE_UPLOAD_STATUS = 1;
+    public static final int PROCESSING_SCORING_ENGINE_FILE_UPLOAD_STATUS = 2;
+    public static final int SUCCESSFUL_IN_PROCESSING_SCORING_ENGINE_FILE_UPLOAD_STATUS = 3;
+    public static final int ERROR_FILE_UPLOAD_STATUS = 4;
     public static final String DIRECTORY = System.getProperty("user.home")+"\\Downloads\\uploads\\";
 
     //    BUSINESS_TYPE
