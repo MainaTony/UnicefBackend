@@ -5,6 +5,7 @@ import com.pinnoserv.portal.custommodels.pythonmodels.PythonResponse;
 import com.pinnoserv.portal.entity.FileData;
 import com.pinnoserv.portal.entity.StatementReport;
 import com.pinnoserv.portal.repositories.FileDataRepository;
+import com.pinnoserv.portal.repositories.StatementReportRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.DIREC
 public class FileDataServiceImpl implements FileDataService{
     @Autowired
     private FileDataRepository fileDataRepository;
+    @Autowired
+    private StatementReportRepository statementReportRepository;
     private final WebClient webClient;
     ApiResponse fileApiResponse = new ApiResponse();
     public FileDataServiceImpl(WebClient webClient){
@@ -95,7 +98,7 @@ public class FileDataServiceImpl implements FileDataService{
                     .paidOutBetting(payload.paidOut.betting)
                     .paidOutMobileLenders(payload.paidOut.mobileLenders)
                     .build();
-
+            statementReportRepository.save(mpesaReport);
             return fileApiResponse;
 
 
