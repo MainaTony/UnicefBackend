@@ -26,7 +26,7 @@ public class Image {
             cascade = CascadeType.ALL
     )
     @JoinColumn(
-            name = "statement_report",
+            name = "statement_report_fk",
             referencedColumnName = "id"
     )
     private StatementReport statementReport;

@@ -1,14 +1,13 @@
 package com.pinnoserv.portal.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
@@ -23,4 +22,6 @@ public class FileData {
     private String type;
     @Column(name = "file_path")
     private String imagePath;
+    @Column(name = "file_status")
+    private int status;
 }

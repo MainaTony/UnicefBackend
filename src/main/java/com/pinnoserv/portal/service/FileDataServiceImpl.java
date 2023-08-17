@@ -2,7 +2,9 @@ package com.pinnoserv.portal.service;
 
 import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.pythonmodels.PythonResponse;
+import com.pinnoserv.portal.custommodels.responseutils.ResponseUtil;
 import com.pinnoserv.portal.entity.FileData;
+import com.pinnoserv.portal.entity.Image;
 import com.pinnoserv.portal.entity.StatementReport;
 import com.pinnoserv.portal.repositories.FileDataRepository;
 import com.pinnoserv.portal.repositories.StatementReportRepository;
@@ -27,6 +29,7 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.DIREC
 @Service
 @Slf4j
 public class FileDataServiceImpl implements FileDataService{
+
     @Autowired
     private FileDataRepository fileDataRepository;
     @Autowired
@@ -41,6 +44,7 @@ public class FileDataServiceImpl implements FileDataService{
 
     @Override
     public ApiResponse uploadImageToFileSystem(MultipartFile file) throws IOException {
+        FileData fileDataStatusUpdate = new FileData();
         log.info("Begin the Upload service");
         String filePath = FOLDER_PATH+file.getOriginalFilename();
         log.info("My File Path {}", filePath);
@@ -51,6 +55,7 @@ public class FileDataServiceImpl implements FileDataService{
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .imagePath(filePath)
+                .status(ResponseUtil.SUCCESSFUL_FILE_UPLOAD_STATUS)
                 .build();
         fileDataRepository.save(fileData);
         file.transferTo(new File(filePath));
@@ -60,17 +65,33 @@ public class FileDataServiceImpl implements FileDataService{
 //            return "File Uploaded Successfully : My File Name is = " + file.getOriginalFilename();
 //        }
 //        String customUrl = "TestParametersontheurl";
-        PythonResponse payload = webClient.get()
-                .uri("http://127.0.0.1:8000/analysis/?url="+filePath)
-                .retrieve()
-                .bodyToMono(PythonResponse.class)
-                .block();
+        PythonResponse payload = null;
+        Long fileDataId = fileData.getId();
+        if(!file.isEmpty()){
+
+            log.info("My Id is, {}", fileDataId);
+
+            FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
+            fileDataScoreEngine.setStatus(ResponseUtil.PROCESSING_SCORING_ENGINE_FILE_UPLOAD_STATUS);
+            fileDataRepository.save(fileDataScoreEngine);
+
+            payload = webClient.get()
+                    .uri("http://127.0.0.1:8000/analysis/?url="+filePath)
+                    .retrieve()
+                    .bodyToMono(PythonResponse.class)
+                    .block();
+        }
 
         if (payload.paidIn == null && payload.paidOut == null){
             fileApiResponse.setResponseCode("01");
             fileApiResponse.setResponseDescription("Statement Analysis Not Successful");
             fileApiResponse.setEntity(payload);
             log.info("My Info Is : ", payload);
+
+            FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
+            fileDataScoreEngine.setStatus(ResponseUtil.ERROR_FILE_UPLOAD_STATUS);
+            fileDataRepository.save(fileDataScoreEngine);
+//            fileDataStatusUpdate.setStatus(ResponseUtil.ERROR_FILE_UPLOAD_STATUS);
             return fileApiResponse;
         }
 
@@ -99,9 +120,11 @@ public class FileDataServiceImpl implements FileDataService{
                     .paidOutMobileLenders(payload.paidOut.mobileLenders)
                     .build();
             statementReportRepository.save(mpesaReport);
+            FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
+            fileDataScoreEngine.setStatus(ResponseUtil.SUCCESSFUL_IN_PROCESSING_SCORING_ENGINE_FILE_UPLOAD_STATUS);
+            fileDataRepository.save(fileDataScoreEngine);
+
             return fileApiResponse;
-
-
 
 //        if(payload!=null){
 //            fileApiResponse.setResponseCode("00");
