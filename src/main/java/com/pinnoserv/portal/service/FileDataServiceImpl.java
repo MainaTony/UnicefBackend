@@ -44,7 +44,6 @@ public class FileDataServiceImpl implements FileDataService{
 
     @Override
     public ApiResponse uploadImageToFileSystem(MultipartFile file) throws IOException {
-        FileData fileDataStatusUpdate = new FileData();
         log.info("Begin the Upload service");
         String filePath = FOLDER_PATH+file.getOriginalFilename();
         log.info("My File Path {}", filePath);
