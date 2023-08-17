@@ -60,11 +60,6 @@ public class FileDataServiceImpl implements FileDataService{
         fileDataRepository.save(fileData);
         file.transferTo(new File(filePath));
 
-//        http://127.0.0.1:8000/analysis/
-//        if(fileData != null){
-//            return "File Uploaded Successfully : My File Name is = " + file.getOriginalFilename();
-//        }
-//        String customUrl = "TestParametersontheurl";
         PythonResponse payload = null;
         Long fileDataId = fileData.getId();
         if(!file.isEmpty()){
