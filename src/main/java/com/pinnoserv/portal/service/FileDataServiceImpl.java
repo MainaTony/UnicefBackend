@@ -85,7 +85,6 @@ public class FileDataServiceImpl implements FileDataService{
             FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
             fileDataScoreEngine.setStatus(ResponseUtil.ERROR_FILE_UPLOAD_STATUS);
             fileDataRepository.save(fileDataScoreEngine);
-//            fileDataStatusUpdate.setStatus(ResponseUtil.ERROR_FILE_UPLOAD_STATUS);
             return fileApiResponse;
         }
 
@@ -119,17 +118,6 @@ public class FileDataServiceImpl implements FileDataService{
             fileDataRepository.save(fileDataScoreEngine);
 
             return fileApiResponse;
-
-//        if(payload!=null){
-//            fileApiResponse.setResponseCode("00");
-//            fileApiResponse.setResponseDescription("Statement Analysis Successful");
-//            fileApiResponse.setEntity(payload);
-//        }
-//
-//            fileApiResponse.setResponseCode("01");
-//            fileApiResponse.setResponseDescription("Statement Analysis Not Successful");
-//            fileApiResponse.setEntity(null);
-//            return fileApiResponse;
     }
 
     @Override
@@ -157,14 +145,6 @@ public class FileDataServiceImpl implements FileDataService{
                 .build();
         fileDataRepository.save(fileData);
         file.transferTo(new File(filePath));
-
-//        List<String> filenames = new ArrayList<>();
-//        for(MultipartFile file : multipartFile) {
-//            Path fileStorage = get(DIRECTORY, filename).toAbsolutePath().normalize();
-//            copy(file.getInputStream(), fileStorage, REPLACE_EXISTING);
-//            filenames.add(filename);
-//        }
-//        return filenames;
         return file.getOriginalFilename();
     }
 }
