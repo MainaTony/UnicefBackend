@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +30,7 @@ import static com.pinnoserv.portal.custommodels.responseutils.ResponseUtil.DIREC
 
 @Service
 @Slf4j
+@EnableScheduling
 public class FileDataServiceImpl implements FileDataService{
 
     @Autowired
@@ -118,6 +121,22 @@ public class FileDataServiceImpl implements FileDataService{
             fileDataRepository.save(fileDataScoreEngine);
 
             return fileApiResponse;
+    }
+
+//    fixedDelayString = "PT15M"
+    @Scheduled(fixedDelay = 2000)
+    public void runAfter2Seconds(){
+        List<FileData> fileDataScoreEngine = fileDataRepository.findAll();
+        fileDataScoreEngine.toArray();
+
+        if(!fileDataScoreEngine.isEmpty()){
+            for(int x=0; x<fileDataScoreEngine.size(); x++){
+                if(fileDataScoreEngine.get(x).getStatus() == 0){
+
+                }
+            }
+        }
+        log.info("I will run after every 2 seconds");
     }
 
     @Override
