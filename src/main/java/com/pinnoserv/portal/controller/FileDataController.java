@@ -2,7 +2,12 @@ package com.pinnoserv.portal.controller;
 
 import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.pythonmodels.PythonResponse;
+import com.pinnoserv.portal.entity.FileData;
+import com.pinnoserv.portal.entity.StatementReport;
+import com.pinnoserv.portal.repositories.FileDataRepository;
+import com.pinnoserv.portal.repositories.StatementReportRepository;
 import com.pinnoserv.portal.service.FileDataService;
+import com.pinnoserv.portal.service.FileDataServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +26,25 @@ import java.util.List;
 public class FileDataController {
     @Autowired
     private FileDataService fileDataService;
+    @Autowired
+    StatementReportRepository statementReportRepository;
 
     @PostMapping("/upload")
-    public ApiResponse uploadImageToFileSystem(@RequestParam("image")MultipartFile file) throws IOException {
+    public String uploadImageToFileSystem(@RequestParam("image")MultipartFile file) throws IOException {
         log.info("My Multipart file upload new is :: ", file);
-        return fileDataService.uploadImageToFileSystem(file);
+        fileDataService.uploadImageToFileSystem(file);
+        return "File updated Successfully";
+    }
+
+    @PostMapping("/allFiles")
+    public ApiResponse getAllProcessedFiles(){
+        return fileDataService.getAllStatementReports();
+    }
+
+    @PostMapping("/responsePayload/{id}")
+    public StatementReport getAReport(@PathVariable Long id){
+        StatementReport statementReport = statementReportRepository.findById(id).get();
+        return statementReport;
     }
 
     @GetMapping("/download/{filename}")

@@ -1,15 +1,17 @@
 package com.pinnoserv.portal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Setter
+@Getter
 @Builder
 @Entity()
 @Table(name = "statement_report")
@@ -53,8 +55,9 @@ public class StatementReport {
     private String paidOutBetting;
     @Column(name = "paid_out_mobile_lenders")
     private String paidOutMobileLenders;
+    @JsonIgnore
     @OneToOne(
             mappedBy = "statementReport"
     )
-    private Image image;
+    private FileData fileData;
 }

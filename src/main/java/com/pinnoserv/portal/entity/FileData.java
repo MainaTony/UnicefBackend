@@ -24,4 +24,13 @@ public class FileData {
     private String imagePath;
     @Column(name = "file_status")
     private int status;
+    @OneToOne(
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(
+            name = "report_id_fk",
+            referencedColumnName = "id"
+    )
+    private StatementReport statementReport;
 }
