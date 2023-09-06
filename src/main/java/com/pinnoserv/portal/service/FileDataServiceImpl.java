@@ -207,7 +207,7 @@ public class FileDataServiceImpl implements FileDataService{
 //
 //        if(!fileDataScoreEngine.isEmpty()){
 //            for(int x=0; x<fileDataScoreEngine.size(); x++){
-//                if(fileDataScoreEngine.get(x).getStatus() == 0){
+//                if(fileDataScoreEngine.get(x).getStatus() == 0){ fi
 //
 //                }
 //            }
@@ -254,6 +254,7 @@ public class FileDataServiceImpl implements FileDataService{
         }
         apiResponse.setResponseCode("00");
         apiResponse.setResponseDescription("Files Fetched Successfully");
+
         apiResponse.setEntity(fileData);
 
         return apiResponse;

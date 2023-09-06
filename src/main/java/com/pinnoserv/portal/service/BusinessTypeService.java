@@ -12,7 +12,6 @@ public interface BusinessTypeService {
     ApiResponse getBusinessById(BusinessType businessType);
     ApiResponse getAllBusinesses();
     ApiResponse updateById(BusinessType businessType);
-
     ApiResponse deleteById(BusinessType businessType);
 
 }

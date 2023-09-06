@@ -132,7 +132,6 @@ public class ConfigServiceImpl implements ConfigService{
                     configDb.setValue(value);
                 }
                 configRepository.save(configDb);
-
                 apiResponse.setResponseCode(SUCCESS_RESPONSE);
                 apiResponse.setResponseDescription(CONFIG_UPDATED_SUCCESSFULLY);
                 apiResponse.setEntity(null);
