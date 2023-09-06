@@ -4,10 +4,7 @@ import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.entity.Banks;
 import com.pinnoserv.portal.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/banks")
@@ -17,6 +14,19 @@ public class BankController {
     @PostMapping("/create")
     public ApiResponse createBank(@RequestBody Banks banks){
         return bankService.createBank(banks);
+    }
+    @PostMapping("/getById")
+    public ApiResponse getById(@RequestBody Banks banks){
+        return bankService.findBankById(banks);
+    }
+
+    @PostMapping("/getAll")
+    public ApiResponse getaAll(){
+        return bankService.findAllBanks();
+    }
+    @PostMapping("/deleteById")
+    public ApiResponse deleteById(@RequestBody Banks banks){
+        return bankService.deleteBank(banks);
     }
 
 }

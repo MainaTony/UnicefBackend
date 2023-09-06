@@ -163,4 +163,17 @@ public class ResponseUtil {
     public static final String SCORE_CARD_UPDATED_SUCCESSFULLY = "Score Card Updated Successfully";
     public static final String SCORE_CARD_DELETED_SUCCESSFULLY = "Score Card Deleted Successfully";
     public static final String SCORE_CARD_NOT_DELETED = "Score Card Not Deleted";
+
+
+    //    BANKS
+    public static final String BANK_CREATED = "Bank Created";
+    public static final String BANK_NOT_CREATED = "Bank Not Created";
+    public static final String BANK_NOT_UPDATED = "Bank Not Updated";
+    public static final String BANK_EXISTS = "Bank already exists";
+    public static final String BANK_FETCHED = "Bank Fetched";
+    public static final String BANK_ALL_FETCHED = "All Banks Fetched";
+    public static final String BANK_NOT_EXIST = "Bank Does Not Exist";
+    public static final String BANK_UPDATED_SUCCESSFULLY = "Bank Updated Successfully";
+    public static final String BANK_DELETED_SUCCESSFULLY = "Bank Deleted Successfully";
+    public static final String BANK_NOT_DELETED = "Bank Not Deleted";
 }
