@@ -20,6 +20,6 @@ public class Banks {
     @Column(name = "bank_name")
     private String bankName;
     @Column(name = "bank_code")
-    private int bankCode;
+    private Integer bankCode;
 
 }
