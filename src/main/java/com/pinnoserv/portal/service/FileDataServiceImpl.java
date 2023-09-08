@@ -138,65 +138,6 @@ public class FileDataServiceImpl implements FileDataService{
         fileDataRepository.save(fileData);
             }
         }
-
-//        if(!file.isEmpty()){
-//            log.info("My Id is, {}", fileDataId);
-//            FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
-//            fileDataScoreEngine.setStatus(ResponseUtil.PROCESSING_SCORING_ENGINE_FILE_UPLOAD_STATUS);
-//            fileDataRepository.save(fileDataScoreEngine);
-//            payload = webClient.get()
-//                    .uri("http://127.0.0.1:8000/analysis/?url="+filePath)
-//                    .retrieve()
-//                    .bodyToMono(PythonResponse.class)
-//                    .block();
-//        }
-//
-//        if (payload.paidIn == null && payload.paidOut == null){
-//            fileApiResponse.setResponseCode("01");
-//            fileApiResponse.setResponseDescription("Statement Analysis Not Successful");
-//            fileApiResponse.setEntity(payload);
-//            log.info("My Info Is : ", payload);
-//
-//            FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
-//            fileDataScoreEngine.setStatus(ResponseUtil.ERROR_FILE_UPLOAD_STATUS);
-//            fileDataRepository.save(fileDataScoreEngine);
-//            return fileApiResponse;
-//        }
-//
-//        fileApiResponse.setResponseCode("00");
-//        fileApiResponse.setResponseDescription("Statement Analysis Successful");
-//        fileApiResponse.setEntity(payload);
-//        log.info("My Info Is : ", payload);
-//        StatementReport mpesaReport = StatementReport.builder()
-//                .agentDeposit(payload.paidIn.agentDeposit)
-//                .customersReceived(payload.paidIn.customesRecieved)
-//                .paybillBanks(payload.paidIn.paybillBanks)
-//                .fulizaReceived(payload.paidIn.fulizaRecieved)
-//                .paybillBetting(payload.paidIn.paybillBeting)
-//                .paybillLenders(payload.paidIn.paybillLenders)
-//                .paybillOthers(payload.paidIn.paybillOthers)
-//                .paidOutPaybillOthers(payload.paidIn.paybillOthers)
-//                .paidOutCustomersSent(payload.paidOut.customersSent)
-//                .paidOutAgentWithdraw(payload.paidOut.agentWithdraw)
-//                .paidOutOthers(payload.paidOut.others)
-//                .paidOutBuyGoods(payload.paidOut.buyGoods)
-//                .paidOutBanks(payload.paidOut.banks)
-//                .paidOutUtilities(payload.paidOut.utilities)
-//                .paidOutFulizaPaid(payload.paidOut.fulizaPaid)
-//                .paidOutOnlinePurchases(payload.paidOut.onlinePurchases)
-//                .paidOutBetting(payload.paidOut.betting)
-//                .paidOutMobileLenders(payload.paidOut.mobileLenders)
-//                .build();
-//        statementReportRepository.save(mpesaReport);
-//        FileData fileDataScoreEngine = fileDataRepository.findById(fileDataId).get();
-//        fileDataScoreEngine.setStatus(ResponseUtil.SUCCESSFUL_IN_PROCESSING_SCORING_ENGINE_FILE_UPLOAD_STATUS);
-//        fileDataRepository.save(fileDataScoreEngine);
-//        return fileApiResponse;
-//
-//        ApiResponse apiResponse = new ApiResponse();
-//        apiResponse.setResponseCode("00");
-//        apiResponse.setResponseDescription("Dummy Success");
-//        return apiResponse;
     }
 
     //    fixedDelayString = "PT15M"
