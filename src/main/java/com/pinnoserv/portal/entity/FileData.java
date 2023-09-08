@@ -24,6 +24,8 @@ public class FileData {
     private String imagePath;
     @Column(name = "file_status")
     private int status;
+    @Column(name= "code")
+    private Integer bankCode;
     @OneToOne(
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER

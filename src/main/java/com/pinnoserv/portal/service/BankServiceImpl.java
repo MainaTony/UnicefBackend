@@ -36,7 +36,7 @@ public class BankServiceImpl implements BankService{
 
     @Override
     public ApiResponse findBankById(Banks banks) {
-        Long id = banks.getId();
+        Long id = banks.getId(); 
         log.info("My ID is: {}", id);
         try{
             Banks dbBank = bankRepository.findById(id).get();
