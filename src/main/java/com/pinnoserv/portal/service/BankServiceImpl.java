@@ -47,10 +47,11 @@ public class BankServiceImpl implements BankService{
                 return apiResponse;
             }
         } catch (Exception e){
-            apiResponse.setEntity(null);
+            apiResponse.setEntity(null); 
             apiResponse.setResponseCode("01");
             apiResponse.setResponseDescription(ResponseUtil.BANK_NOT_EXIST);
             return apiResponse;
+
         }
 
         apiResponse.setEntity(null);
@@ -108,5 +109,7 @@ public class BankServiceImpl implements BankService{
         apiResponse.setEntity(null);
         apiResponse.setResponseDescription(ResponseUtil.UNCAUGHT_ERROR);
         return apiResponse;
+
     }
 }
+

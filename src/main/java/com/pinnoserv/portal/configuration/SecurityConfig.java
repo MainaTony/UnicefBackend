@@ -41,7 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-
 	public SecurityConfig() {
 		super();
 		LOGGER.info("loading SecurityConfig ................................................ ");
@@ -66,7 +65,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
-
 	}
 
 	@Override
@@ -104,4 +102,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		writer.flush();
 		writer.close();
 	}
+
 }

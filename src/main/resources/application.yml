@@ -23,7 +23,7 @@ datasource:
     defaultSchema: credit_scoring
 #    CREDIT_SCORING
     url: jdbc:mysql://localhost:3360/credit_scoring
-#    jdbc:oracle:thin:@127.0.0.1:1521:dev
+#    jdbc:oracle:thin:@127.0.0.1:1521:dev 
     username: root
 #    CREDIT_SCORING
     password: gHrzCa7857459hgUR9
