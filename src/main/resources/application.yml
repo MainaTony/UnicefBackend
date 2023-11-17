@@ -1,10 +1,22 @@
 ---
 server:
+#  address: 192.168.100.111
   port: 8080
   servlet:
     context-path: /portal
 ---
 spring:
+  mail:
+    host: 'smtp.gmail.com'
+    password: fvey ulwy cjrx ocvz
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: 'true'
+    username: tonymaina36@gmail.com
   profiles: default
   servlet:
     multipart:

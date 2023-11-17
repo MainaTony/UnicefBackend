@@ -33,7 +33,6 @@ import java.util.Collections;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 	@Autowired
 	CustomUserDetailsService userDetailsService;
@@ -65,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
+
 	}
 
 	@Override
@@ -76,7 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						CorsConfiguration config = new CorsConfiguration();
 						config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
 						config.setAllowedMethods(Collections.singletonList("*"));
-						config.setAllowCredentials(true);
 						config.setAllowedHeaders(Collections.singletonList("*"));
 						config.setMaxAge(3600L);
 						return config;

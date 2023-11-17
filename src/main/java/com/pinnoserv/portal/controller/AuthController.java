@@ -2,16 +2,20 @@ package com.pinnoserv.portal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pinnoserv.portal.custommodels.JwtResponse;
+import com.pinnoserv.portal.custommodels.responseutils.ResponseUtil;
 import com.pinnoserv.portal.custommodels.userregmodel.ApiResponseBody;
 import com.pinnoserv.portal.entity.ApiUsers;
 //import com.pinnoserv.portal.entity.Users;
 import com.pinnoserv.portal.configuration.JwtToken;
 import com.pinnoserv.portal.custommodels.ApiResponse;
 import com.pinnoserv.portal.custommodels.JwtRequest;
+import com.pinnoserv.portal.entity.Banks;
+import com.pinnoserv.portal.entity.EmailDetails;
 import com.pinnoserv.portal.repositories.ApiUserRepository;
 //import com.pinnoserv.portal.repositories.UserRepository;
 import com.pinnoserv.portal.service.CustomUserDetailsService;
 import com.pinnoserv.portal.custommodels.userregmodel.ApiResponseRegistration;
+import com.pinnoserv.portal.service.EmailService;
 import com.pinnoserv.portal.utils.Crypt;
 import com.pinnoserv.portal.utils.MCrypt;
 import com.pinnoserv.portal.utils.SharedFunctions;
@@ -63,6 +67,9 @@ public class AuthController {
 
     @Autowired
     ApiUserRepository apiUserRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
@@ -195,14 +202,15 @@ public class AuthController {
                 } else {
                     String password = body.get("password");
                     String encodedPassword = new BCryptPasswordEncoder().encode(password);
-                    String fullname = body.get("fullname");
+                    String email = body.get("email");
                     Integer accessChannelId = Integer.parseInt(body.get("accesschannel"));
                     Integer organisationIdFk = new Integer("1");
                     Date createdDate = new Date(System.currentTimeMillis());
                     Integer inTrash = Integer.parseInt(body.get("inTrash"));
+                    String otp = new String("1");
 //                  body.setDateCreated(new Date(System.currentTimeMillis()));
 
-                    apiUserRepository.save(new ApiUsers(username, encodedPassword, fullname, accessChannelId, inTrash, createdDate, organisationIdFk));
+                    apiUserRepository.save(new ApiUsers(username, encodedPassword, email, accessChannelId, inTrash, createdDate, organisationIdFk, otp));
                     LOG.info("..............User Registration Successful...............");
                     apiResponseRegistration.setMessage("Success");
                     apiResponseRegistration.setNarration("User Registration Successful");
@@ -272,6 +280,98 @@ public class AuthController {
 //        }
 //    }
 //
+@PostMapping("/getEmail")
+public ApiResponse getById(@RequestBody ApiUsers apiUsers){
+        ApiResponse apiResponse = new ApiResponse();
+        String email = apiUsers.getEmail();
+
+        if(apiUserRepository.existsByEmail(email)){
+            ApiUsers dbUser = apiUserRepository.findByEmail(email);
+            LOG.info("-----------------Db User------------------ {}", dbUser);
+            Integer flag = dbUser.getAccessChannelId();
+            if(flag.equals(0)){
+                ;
+                LOG.info("-----------------Flag after Success------------------ {}", flag);
+                Random random = new Random();
+                String generatedPassword = String.format("%04d", random.nextInt(10000));
+                LOG.info("-----------------OTP------------------ {}", generatedPassword);
+                dbUser.setAccessChannelId(1);
+                dbUser.setOtp(generatedPassword);
+                EmailDetails emailDetails = EmailDetails.builder()
+                        .recipient(dbUser.getEmail())
+                        .subject("OTP VERIFICATION")
+                        .messageBody("Your Otp is "+generatedPassword)
+                        .build();
+                emailService.sendEmailAlerts(emailDetails);
+                apiUserRepository.save(dbUser);
+
+                apiResponse.setResponseCode(ResponseUtil.SUCCESS_RESPONSE);
+                apiResponse.setEntity(null);
+                apiResponse.setResponseDescription("Otp was a success Proceed with Otp Registration");
+
+            } else if(flag.equals(1)){
+                LOG.info("-----------------Flag after error------------------ {}", flag);
+                apiResponse.setResponseCode("01");
+                apiResponse.setEntity(null);
+                apiResponse.setResponseDescription("Sorry already registered, proceed to login");
+            }
+
+        } else {
+            apiResponse.setResponseCode("01");
+            apiResponse.setEntity(null);
+            apiResponse.setResponseDescription("You are not authorized to access Media Watch");
+        }
+
+    return apiResponse;
+}
+
+    @PostMapping("/verifyOtp")
+    public ApiResponse verifyToken(@RequestBody ApiUsers apiUsers){
+        ApiResponse apiResponse = new ApiResponse();
+        String otp = apiUsers.getOtp();
+        ApiUsers dbUser = apiUserRepository.findByOtp(otp);
+        String dbOtp = dbUser.getOtp();
+        if(otp.equalsIgnoreCase(dbOtp)){
+            dbUser.setOtp("0");
+
+            apiUserRepository.save(dbUser);
+            apiResponse.setResponseCode("00");
+            apiResponse.setEntity(null);
+            apiResponse.setResponseDescription("Success, Proceed to sign up");
+
+        } else {
+            apiResponse.setResponseCode("01");
+            apiResponse.setEntity(null);
+            apiResponse.setResponseDescription("Invalid otp, Please enter otp again");
+        }
+        return apiResponse;
+    }
+
+    @PostMapping("/changePassword")
+    public ApiResponse changePassword(@RequestBody ApiUsers apiUsers){
+        ApiResponse apiResponse = new ApiResponse();
+
+        String email = apiUsers.getEmail();
+        String password = apiUsers.getPassword();
+
+        ApiUsers dbUser = apiUserRepository.findByEmail(email);
+
+        if(!email.isEmpty() && apiUserRepository.existsByEmail(email)){
+            dbUser.setPassword(password);
+            apiUserRepository.save(dbUser);
+            apiResponse.setResponseCode("00");
+            apiResponse.setEntity(null);
+            apiResponse.setResponseDescription("Successfully registered to Media Watch App");
+        } else{
+            apiResponse.setResponseCode("00");
+            apiResponse.setEntity(null);
+            apiResponse.setResponseDescription("Sorry, error occurred during registration");
+        }
+        return apiResponse;
+    }
+
+
+
 
 
 }

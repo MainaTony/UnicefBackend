@@ -18,5 +18,11 @@ public interface ApiUserRepository extends JpaRepository<ApiUsers, Integer> {
 
     Boolean existsByUsername(String username);
 
+    Boolean existsByEmail(String email);
+
+    ApiUsers findByEmail(String email);
+
+    ApiUsers findByOtp(String otp);
+
     ApiUsers findByUsernameAndAccessChannelIdIn(String username, List<Integer> channelList);
 }

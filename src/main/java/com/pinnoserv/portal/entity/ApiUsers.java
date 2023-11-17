@@ -1,6 +1,7 @@
 package com.pinnoserv.portal.entity;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "ApiUsers.findAll", query = "SELECT s FROM ApiUsers s"),
         @NamedQuery(name = "ApiUsers.findById", query = "SELECT s FROM ApiUsers s WHERE s.id = :id"),
         @NamedQuery(name = "ApiUsers.findByUsername", query = "SELECT s FROM ApiUsers s WHERE s.username = :username"),
-        @NamedQuery(name = "ApiUsers.findByFullName", query = "SELECT s FROM ApiUsers s WHERE s.fullName = :fullName"),
+        @NamedQuery(name = "ApiUsers.findByFullName", query = "SELECT s FROM ApiUsers s WHERE s.email = :email"),
         @NamedQuery(name = "ApiUsers.findByIntrash", query = "SELECT s FROM ApiUsers s WHERE s.intrash = :intrash"),
         @NamedQuery(name = "ApiUsers.findByDateCreated", query = "SELECT s FROM ApiUsers s WHERE s.dateCreated = :dateCreated"),
         @NamedQuery(name = "ApiUsers.findByPassword", query = "SELECT s FROM ApiUsers s WHERE s.password = :password"),
@@ -31,12 +32,18 @@ public class ApiUsers implements Serializable {
     @Basic(optional = false)
     @Column(name = "USER_ID")
     private Integer id;
+    @Column(name = "OTP")
+    private String otp;
+//    @Column(name = "Flag")
+//    private Integer flag;
+//    @Column(name = "OTP_TIME")
+//    private LocalDateTime expirationTime;
     @Size(max = 255)
     @Column(name = "USERNAME")
     private String username;
     @Size(max = 255)
-    @Column(name = "FULL_NAME")
-    private String fullName;
+    @Column(name = "Email")
+    private String email;
     @Column(name = "INTRASH")
     private Integer intrash;
     @Column(name = "CREATE_DATE")
@@ -73,6 +80,14 @@ public class ApiUsers implements Serializable {
         this.id = id;
     }
 
+//    public Integer getFlag() {
+//        return flag;
+//    }
+//
+//    public void setFlag(Integer flag) {
+//        this.flag = flag;
+//    }
+
     public String getUsername() {
         return username;
     }
@@ -81,12 +96,20 @@ public class ApiUsers implements Serializable {
         this.username = username;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String fullName) {
+        this.email = fullName;
     }
 
     public Integer getIntrash() {
@@ -100,6 +123,11 @@ public class ApiUsers implements Serializable {
     public Date getDateCreated() {
         return dateCreated;
     }
+
+//    public LocalDateTime getExprationTime() {
+//        return expirationTime;
+//    }
+
 
     @Basic
     @Column(name = "ORGANISATION_ID_FK")
@@ -152,14 +180,18 @@ public class ApiUsers implements Serializable {
         return true;
     }
 
-    public ApiUsers(String username, String password, String fullname, Integer accessChannelId, Integer inTrash, Date dateCreated, Integer organisationIdFk) {
+    public ApiUsers(String username, String password, String email, Integer accessChannelId, Integer inTrash, Date dateCreated, Integer organisationIdFk, String otp) {
         this.username = username;
         this.password = password;
-        this.fullName = fullname;
+        this.email = email;
         this.accessChannelId = accessChannelId;
         this.intrash = inTrash;
         this.dateCreated = dateCreated;
         this.organisationIdFk = organisationIdFk;
+        this.otp = otp;
+//        this.flag = flag;
+//        this.otp = otp;
+//        this.expirationTime = expirationTime;
     }
 
     @Override
